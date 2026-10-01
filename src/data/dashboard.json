@@ -2,14 +2,14 @@
   "snapshot": "2026-10-01",
   "coverage": {
     "leadsFrom": "2026-01-12",
-    "leadsThrough": "2026-09-23",
+    "leadsThrough": "2026-09-30",
     "paymentsThrough": "2026-09-30",
     "shipmentsThrough": "2026-09-30",
     "moneyCompleteThrough": "2026-09-30",
     "firstMonth": "2026-01",
     "lastMonth": "2026-09"
   },
-  "sourceHash": "a559b65f65933ed8385622be7deef67bef26ee5a42ef266d12b8b40dc1a0a71e",
+  "sourceHash": "90b8ef63156f575108e06bb0c88c0ed1491bb713c32cc9bc6b3d00faea81fc62",
   "categories": [
     "Реготоп",
     "Контрактное производство",
@@ -7632,7 +7632,7 @@
         {
           "name": "Реготоп",
           "count": 7.0,
-          "amount": 1707924.0
+          "amount": 1743764.0
         },
         {
           "name": "Контрактное производство",
@@ -7722,7 +7722,7 @@
         {
           "name": "Реготоп",
           "count": 9.0,
-          "amount": 6704063.0
+          "amount": 6666813.0
         },
         {
           "name": "Контрактное производство",
@@ -7812,7 +7812,7 @@
         {
           "name": "Реготоп",
           "count": 9.0,
-          "amount": 3396801.17
+          "amount": 3100061.17
         },
         {
           "name": "Контрактное производство",
@@ -7882,7 +7882,7 @@
         {
           "name": "Фасадные металлокассеты",
           "count": 1.0,
-          "amount": 627000.0
+          "amount": 687000.0
         },
         {
           "name": "Корзины для кондиционеров",
@@ -7902,7 +7902,7 @@
         {
           "name": "Реготоп",
           "count": 8.0,
-          "amount": 2539098.0
+          "amount": 2543036.0
         },
         {
           "name": "Контрактное производство",
@@ -7927,7 +7927,7 @@
         {
           "name": "Фасадные металлокассеты",
           "count": 1.0,
-          "amount": 877520.0
+          "amount": 1116710.7
         },
         {
           "name": "Корзины для кондиционеров",
@@ -7947,12 +7947,12 @@
         {
           "name": "Реготоп",
           "count": 7.0,
-          "amount": 2697821.99
+          "amount": 2586881.99
         },
         {
           "name": "Контрактное производство",
           "count": 1.0,
-          "amount": 173214.8
+          "amount": 346429.6
         },
         {
           "name": "Экобоксы",
@@ -7991,8 +7991,98 @@
       "items": [
         {
           "name": "Реготоп",
+          "count": 4.0,
+          "amount": 906244.9
+        },
+        {
+          "name": "Контрактное производство",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Экобоксы",
           "count": 1.0,
-          "amount": 250562.0
+          "amount": null
+        },
+        {
+          "name": "Постаматы",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Мехобработка",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Фасадные металлокассеты",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Корзины для кондиционеров",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Блины",
+          "count": null,
+          "amount": null
+        }
+      ]
+    },
+    {
+      "date": "2026-09-24",
+      "items": [
+        {
+          "name": "Реготоп",
+          "count": 8.0,
+          "amount": 3895178.91
+        },
+        {
+          "name": "Контрактное производство",
+          "count": 3.0,
+          "amount": 102900.0
+        },
+        {
+          "name": "Экобоксы",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Постаматы",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Мехобработка",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Фасадные металлокассеты",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Корзины для кондиционеров",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Блины",
+          "count": null,
+          "amount": null
+        }
+      ]
+    },
+    {
+      "date": "2026-09-25",
+      "items": [
+        {
+          "name": "Реготоп",
+          "count": 3.0,
+          "amount": 1756874.17
         },
         {
           "name": "Контрактное производство",
@@ -8003,6 +8093,141 @@
           "name": "Экобоксы",
           "count": null,
           "amount": null
+        },
+        {
+          "name": "Постаматы",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Мехобработка",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Фасадные металлокассеты",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Корзины для кондиционеров",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Блины",
+          "count": null,
+          "amount": null
+        }
+      ]
+    },
+    {
+      "date": "2026-09-28",
+      "items": [
+        {
+          "name": "Реготоп",
+          "count": 7.0,
+          "amount": 5224419.0
+        },
+        {
+          "name": "Контрактное производство",
+          "count": 1.0,
+          "amount": 9630000.0
+        },
+        {
+          "name": "Экобоксы",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Постаматы",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Мехобработка",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Фасадные металлокассеты",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Корзины для кондиционеров",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Блины",
+          "count": null,
+          "amount": null
+        }
+      ]
+    },
+    {
+      "date": "2026-09-29",
+      "items": [
+        {
+          "name": "Реготоп",
+          "count": 7.0,
+          "amount": 3337106.87
+        },
+        {
+          "name": "Контрактное производство",
+          "count": 2.0,
+          "amount": 2.0
+        },
+        {
+          "name": "Экобоксы",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Постаматы",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Мехобработка",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Фасадные металлокассеты",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Корзины для кондиционеров",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Блины",
+          "count": null,
+          "amount": null
+        }
+      ]
+    },
+    {
+      "date": "2026-09-30",
+      "items": [
+        {
+          "name": "Реготоп",
+          "count": 2.0,
+          "amount": 2.0
+        },
+        {
+          "name": "Контрактное производство",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Экобоксы",
+          "count": 2.0,
+          "amount": 57001.0
         },
         {
           "name": "Постаматы",

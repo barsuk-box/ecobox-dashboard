@@ -14,12 +14,12 @@ const data = JSON.parse(
 const close = (a, b) => assert.ok(Math.abs(a - b) < 0.005, `${a} != ${b}`);
 test("source control totals and date coverage", () => {
   const stats = leadStats(leadRows(data));
-  assert.equal(stats.count, 1548);
-  close(stats.amount, 1455835510.67);
+  assert.equal(stats.count, 1587);
+  close(stats.amount, 1480561931.02);
   const money = monthStats(data);
   close(money.payments, 138403842.01);
   close(money.shipments, 138931851.67);
-  assert.equal(data.leads.at(-1).date, "2026-09-23");
+  assert.equal(data.leads.at(-1).date, "2026-09-30");
   assert.equal(data.snapshot, "2026-10-01");
 });
 test("monthly and category filters partition the whole without double counting", () => {
@@ -98,7 +98,7 @@ test("September close reconciles independently read daily totals and preserves c
       september[key],
     );
   assert.equal(data.coverage.moneyCompleteThrough, "2026-09-30");
-  assert.equal(data.coverage.leadsThrough, "2026-09-23");
+  assert.equal(data.coverage.leadsThrough, "2026-09-30");
   assert.equal(data.forecastMonth, "Октябрь 2026");
   assert.deepEqual(
     data.forecast.map((r) => r.amount),
@@ -109,6 +109,31 @@ test("September close reconciles independently read daily totals and preserves c
     payments: null,
     shipments: null,
   });
+});
+test("September lead additions and corrections retain missing amounts without duplicating dates", () => {
+  const september = leadStats(leadRows(data, "2026-09"));
+  assert.equal(september.count, 189);
+  close(september.amount, 127409147.7);
+  const addedDates = [
+    "2026-09-24",
+    "2026-09-25",
+    "2026-09-28",
+    "2026-09-29",
+    "2026-09-30",
+  ];
+  const added = leadStats(
+    data.leads.filter((r) => addedDates.includes(r.date)),
+  );
+  assert.equal(added.count, 35);
+  close(added.amount, 24003483.95);
+  assert.equal(new Set(data.leads.map((r) => r.date)).size, data.leads.length);
+  const corrected = data.leads.find((r) => r.date === "2026-09-23");
+  assert.equal(corrected.items.find((i) => i.name === "Реготоп").count, 4);
+  close(corrected.items.find((i) => i.name === "Реготоп").amount, 906244.9);
+  assert.deepEqual(
+    corrected.items.find((i) => i.name === "Экобоксы"),
+    { name: "Экобоксы", count: 1, amount: null },
+  );
 });
 test("GLB contains original geometry and an animation", () => {
   const b = fs.readFileSync(

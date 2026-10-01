@@ -9,18 +9,23 @@ test("desktop filters, themes, navigation, search, export and source dialog", as
   await expect(
     page.getByRole("heading", { name: "Пульс бизнеса." }),
   ).toBeVisible();
-  await expect(page.locator(".kpi").first()).toContainText("1 548");
+  await expect(page.locator(".kpi").first()).toContainText("1 587");
   await expect(page.locator(".snapshot")).toContainText("01.10.2026");
   await expect(page.locator(".coverage-note")).toContainText(
     "30 сентября 2026",
   );
   await expect(page.locator(".coverage-note")).toContainText(
-    "23 сентября 2026",
+    "Заявки, поступления и отгрузки",
   );
   await expect(
     page.getByLabel("Период отчёта").locator('option[value="2026-10"]'),
   ).toHaveCount(0);
   await page.getByLabel("Период отчёта").selectOption("2026-09");
+  await expect(page.locator(".kpi").first()).toContainText("189 заявок");
+  await expect(page.locator(".kpi").first()).toContainText("127,41");
+  await expect(
+    page.getByText("более поздних записей в листе нет", { exact: false }),
+  ).toHaveCount(0);
   await expect(page.locator(".kpi").nth(1)).toContainText("12,36");
   await expect(page.locator(".kpi").nth(2)).toContainText("19,43");
   await expect(
@@ -70,6 +75,9 @@ test("desktop filters, themes, navigation, search, export and source dialog", as
   await expect(page.getByText("Дневная динамика")).toBeVisible();
   await page.getByRole("button", { name: "О данных", exact: true }).click();
   await expect(page.getByRole("dialog")).toBeVisible();
+  await expect(page.getByRole("dialog")).toContainText(
+    "Период заявок совпадает с закрытым денежным периодом",
+  );
   await page.keyboard.press("Escape");
   await expect(page.getByRole("dialog")).toHaveCount(0);
   expect(errors).toEqual([]);

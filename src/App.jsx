@@ -504,11 +504,18 @@ function SourceModal({ close }) {
         <p>
           {data.coverage.moneyCompleteThrough
             ? `Денежные данные закрыты по ${fullDate(data.coverage.moneyCompleteThrough)}.`
-            : "Дата закрытия денежных данных не подтверждена."}
-          Лист заявок заканчивается {fullDate(data.coverage.leadsThrough)}:
-          заявок за оставшиеся дни сентября в файле нет. Пустые будущие периоды
-          не считаются нулевыми. Сумма заявок не является выручкой; разница
-          поступлений и отгрузок не является прибылью или остатком денег.
+            : "Дата закрытия денежных данных не подтверждена."}{" "}
+          Заявки представлены по {fullDate(data.coverage.leadsThrough)}.
+          {data.coverage.moneyCompleteThrough &&
+          data.coverage.leadsThrough < data.coverage.moneyCompleteThrough
+            ? " Более поздних записей заявок в листе нет."
+            : data.coverage.leadsThrough === data.coverage.moneyCompleteThrough
+              ? " Период заявок совпадает с закрытым денежным периодом."
+              : ""}{" "}
+          Пустые будущие периоды не считаются нулевыми. Сумма заявок не является
+          выручкой; разница поступлений и отгрузок не является прибылью или
+          остатком денег. Заявки без суммы учтены в количестве; денежный итог
+          включает только заполненные суммы.
         </p>
         <p>
           «Блины» на 48,678 млн ₽ указаны в исходнике отдельно от производства и
@@ -765,13 +772,23 @@ export default function App() {
               <div className="panel-note coverage-note" role="note">
                 <Info size={17} />
                 <span>
-                  Поступления и отгрузки — по{" "}
+                  {data.coverage.leadsThrough ===
+                  data.coverage.moneyCompleteThrough
+                    ? "Заявки, поступления и отгрузки — по "
+                    : "Поступления и отгрузки — по "}
                   {fullDate(
                     data.coverage.moneyCompleteThrough ||
                       data.coverage.paymentsThrough,
                   )}
-                  . Заявки — по {fullDate(data.coverage.leadsThrough)}: более
-                  поздних записей в листе нет.
+                  .
+                  {data.coverage.leadsThrough !==
+                    data.coverage.moneyCompleteThrough && (
+                    <>
+                      {" "}
+                      Заявки — по {fullDate(data.coverage.leadsThrough)}: более
+                      поздних записей в листе нет.
+                    </>
+                  )}
                 </span>
               </div>
             )}

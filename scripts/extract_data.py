@@ -11,6 +11,7 @@ from functools import lru_cache
 parser = argparse.ArgumentParser()
 parser.add_argument('source', type=Path)
 parser.add_argument('--complete-through', help='Confirmed closing date of monetary data, YYYY-MM-DD')
+parser.add_argument('--output', type=Path, default=Path('src/data/dashboard.json'))
 args = parser.parse_args()
 source = args.source
 if args.complete_through: datetime.strptime(args.complete_through, '%Y-%m-%d')
@@ -96,6 +97,6 @@ for m in monthly:
 available_months=[m['month'] for m in monthly if m['payments'] is not None or m['shipments'] is not None]
 coverage={'leadsFrom':leads[0]['date'],'leadsThrough':leads[-1]['date'],'paymentsThrough':daily['payments'][-1]['date'],'shipmentsThrough':daily['shipments'][-1]['date'],'moneyCompleteThrough':args.complete_through,'firstMonth':min(available_months),'lastMonth':max(available_months)}
 data={'snapshot':snap,'coverage':coverage,'sourceHash':hashlib.sha256(source.read_bytes()).hexdigest(),'categories':cats,'leads':leads,'pipeline':pipeline,'pipelineExtra':extra,'productionSupplement':p['E8'],'forecastMonth':forecast_month,'forecast':forecast,'monthly':monthly,'daily':daily,'reconciliation':corrections}
-Path('src/data').mkdir(parents=True,exist_ok=True)
-Path('src/data/dashboard.json').write_text(json.dumps(data,ensure_ascii=False,indent=2),encoding='utf-8')
+args.output.parent.mkdir(parents=True,exist_ok=True)
+args.output.write_text(json.dumps(data,ensure_ascii=False,indent=2),encoding='utf-8')
 print(json.dumps({'snapshot':snap,'leadsDates':[leads[0]['date'],leads[-1]['date']],'leadAmount':total([total([i['amount'] for i in r['items']]) for r in leads]),'leadCount':total([total([i['count'] for i in r['items']]) for r in leads]),'payments':total([m['payments'] for m in monthly]),'shipments':total([m['shipments'] for m in monthly]),'reconciliation':corrections},ensure_ascii=False,indent=2))
