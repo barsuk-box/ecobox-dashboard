@@ -10,6 +10,23 @@ test("desktop filters, themes, navigation, search, export and source dialog", as
     page.getByRole("heading", { name: "Пульс бизнеса." }),
   ).toBeVisible();
   await expect(page.locator(".kpi").first()).toContainText("1 548");
+  await expect(page.locator(".snapshot")).toContainText("01.10.2026");
+  await expect(page.locator(".coverage-note")).toContainText(
+    "30 сентября 2026",
+  );
+  await expect(page.locator(".coverage-note")).toContainText(
+    "23 сентября 2026",
+  );
+  await expect(
+    page.getByLabel("Период отчёта").locator('option[value="2026-10"]'),
+  ).toHaveCount(0);
+  await page.getByLabel("Период отчёта").selectOption("2026-09");
+  await expect(page.locator(".kpi").nth(1)).toContainText("12,36");
+  await expect(page.locator(".kpi").nth(2)).toContainText("19,43");
+  await expect(
+    page.getByText("сентябрь неполный", { exact: false }),
+  ).toHaveCount(0);
+  await page.getByLabel("Период отчёта").selectOption("all");
   await expect(page.locator(".assembly canvas")).toBeVisible();
   await page.getByRole("button", { name: "Пауза 3D" }).click();
   await expect(page.locator(".assembly canvas")).toHaveCount(0);
@@ -43,6 +60,9 @@ test("desktop filters, themes, navigation, search, export and source dialog", as
     .getByRole("button", { name: "Воронка продаж" })
     .click();
   await expect(page.getByText("Дополнительно в портфеле")).toBeVisible();
+  await expect(page.getByText("Октябрь 2026", { exact: true })).toBeVisible();
+  await expect(page.locator(".kpi").nth(1)).toContainText("38 сделок");
+  await expect(page.locator(".kpi").first()).toContainText("130,65");
   await page
     .getByRole("navigation", { name: "Разделы дашборда" })
     .getByRole("button", { name: "Денежный поток" })

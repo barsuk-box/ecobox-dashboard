@@ -2,13 +2,18 @@
 Supports the source's SUM formulas; unknown formulas fail instead of becoming zero.
 Usage: python scripts/extract_data.py path/to/source.xlsx
 """
-import sys, json, re, zipfile, hashlib
+import sys, json, re, zipfile, hashlib, argparse
 from pathlib import Path
 from datetime import datetime, timedelta
 from xml.etree import ElementTree as ET
 from functools import lru_cache
 
-source = Path(sys.argv[1])
+parser = argparse.ArgumentParser()
+parser.add_argument('source', type=Path)
+parser.add_argument('--complete-through', help='Confirmed closing date of monetary data, YYYY-MM-DD')
+args = parser.parse_args()
+source = args.source
+if args.complete_through: datetime.strptime(args.complete_through, '%Y-%m-%d')
 ns = {'m':'http://schemas.openxmlformats.org/spreadsheetml/2006/main'}
 with zipfile.ZipFile(source) as z:
     ss = []
@@ -53,7 +58,7 @@ def total(vals): return round(sum(v for v in vals if v is not None),2)
 
 z=sheets['Новые заявки']; cats=[z[col(i)+'1'] for i in range(2,18,2)]
 leads=[]
-for r in range(4,182):
+for r in sorted(int(c[1:]) for c in z if re.fullmatch(r'A\d+',c) and int(c[1:])>=4):
     d=z.get(f'A{r}')
     if not isinstance(d,(float,int)): continue
     items=[{'name':n,'count':num(z.get(f'{col(2+i*2)}{r}')),'amount':num(z.get(f'{col(3+i*2)}{r}'))} for i,n in enumerate(cats)]
@@ -62,6 +67,7 @@ p=sheets['Pipeline']; snap=date(p['A1'])
 pipeline=[{'stage':p[f'A{r}'].strip(),'count':p[f'B{r}'],'amount':p[f'C{r}']} for r in range(3,9)]
 extra=[{'stage':p[f'A{r}'].strip(),'count':p[f'B{r}'],'amount':p[f'C{r}']} for r in range(10,13)]
 forecast=[{'name':p[f'A{r}'],'amount':p[f'B{r}']} for r in range(14,17)]
+forecast_month = str(p['B13']).strip() + ' ' + snap[:4]
 monthly=[]; ms='ПоступленияОтгрузки - месяц'
 for c in range(2,14):
     month=date(sheets[ms][f'{col(c)}2'])[:7]
@@ -87,7 +93,9 @@ for m in monthly:
         raw=total([r['amount'] for r in daily[key] if r['date'].startswith(m['month'])])
         delta=round((m[key] or 0)-raw,2)
         if abs(delta)>.01: corrections.append({'month':m['month'],'metric':key,'monthly':m[key],'daily':raw,'difference':delta})
-data={'snapshot':snap,'sourceHash':hashlib.sha256(source.read_bytes()).hexdigest(),'categories':cats,'leads':leads,'pipeline':pipeline,'pipelineExtra':extra,'productionSupplement':p['E8'],'forecastMonth':'Сентябрь 2026','forecast':forecast,'monthly':monthly,'daily':daily,'reconciliation':corrections}
+available_months=[m['month'] for m in monthly if m['payments'] is not None or m['shipments'] is not None]
+coverage={'leadsFrom':leads[0]['date'],'leadsThrough':leads[-1]['date'],'paymentsThrough':daily['payments'][-1]['date'],'shipmentsThrough':daily['shipments'][-1]['date'],'moneyCompleteThrough':args.complete_through,'firstMonth':min(available_months),'lastMonth':max(available_months)}
+data={'snapshot':snap,'coverage':coverage,'sourceHash':hashlib.sha256(source.read_bytes()).hexdigest(),'categories':cats,'leads':leads,'pipeline':pipeline,'pipelineExtra':extra,'productionSupplement':p['E8'],'forecastMonth':forecast_month,'forecast':forecast,'monthly':monthly,'daily':daily,'reconciliation':corrections}
 Path('src/data').mkdir(parents=True,exist_ok=True)
 Path('src/data/dashboard.json').write_text(json.dumps(data,ensure_ascii=False,indent=2),encoding='utf-8')
 print(json.dumps({'snapshot':snap,'leadsDates':[leads[0]['date'],leads[-1]['date']],'leadAmount':total([total([i['amount'] for i in r['items']]) for r in leads]),'leadCount':total([total([i['count'] for i in r['items']]) for r in leads]),'payments':total([m['payments'] for m in monthly]),'shipments':total([m['shipments'] for m in monthly]),'reconciliation':corrections},ensure_ascii=False,indent=2))

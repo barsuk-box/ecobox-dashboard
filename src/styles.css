@@ -1921,6 +1921,9 @@ tbody tr:hover {
     transform: none;
   }
 }
+.coverage-note {
+  margin: 0 0 20px;
+}
 .motion-toggle {
   position: absolute;
   bottom: 14px;

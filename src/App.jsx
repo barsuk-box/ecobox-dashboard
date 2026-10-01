@@ -85,6 +85,18 @@ const day = (s) =>
     day: "numeric",
     month: "short",
   });
+const fullDate = (s) =>
+  new Date(s + "T12:00:00").toLocaleDateString("ru-RU", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+const snapshotLabel = fullDate(data.snapshot);
+const monthLabel = (s) =>
+  new Date(s + "-01T12:00:00").toLocaleDateString("ru-RU", {
+    month: "long",
+    year: "numeric",
+  });
 function Segment({ value, onChange, options, label }) {
   return (
     <div className="segment" role="group" aria-label={label}>
@@ -392,7 +404,7 @@ function exportCSV(tab, month, rows) {
         .filter(
           (r) =>
             (month === "all" || r.month === month) &&
-            r.month <= data.snapshot.slice(0, 7),
+            (r.payments !== null || r.shipments !== null),
         )
         .map((r) => [r.month, r.payments, r.shipments]),
     ];
@@ -463,12 +475,15 @@ function SourceModal({ close }) {
         </span>
         <h2 id="source-title">О данных</h2>
         <p>
-          Срез из таблицы «ЭКОБОКС 2026» от 23 сентября 2026 года. Это
-          сохранённый отчёт, без автоматической связи с 1С или CRM.
+          Срез из таблицы «ЭКОБОКС 2026» от {snapshotLabel}. Это сохранённый
+          отчёт, без автоматической связи с 1С или CRM.
         </p>
         <dl>
           <dt>Заявки</dt>
-          <dd>12 января — 23 сентября 2026</dd>
+          <dd>
+            {fullDate(data.coverage.leadsFrom)} —{" "}
+            {fullDate(data.coverage.leadsThrough)}
+          </dd>
           <dt>Поступления</dt>
           <dd>Последняя запись: {day(data.daily.payments.at(-1).date)} 2026</dd>
           <dt>Отгрузки</dt>
@@ -476,7 +491,10 @@ function SourceModal({ close }) {
             Последняя запись: {day(data.daily.shipments.at(-1).date)} 2026
           </dd>
           <dt>Воронка и прогноз</dt>
-          <dd>Срез на 23 сентября 2026</dd>
+          <dd>
+            Срез на {snapshotLabel}; прогноз —{" "}
+            {data.forecastMonth.toLowerCase()}
+          </dd>
         </dl>
         <p>
           Деньги в сводке рассчитаны по месячному листу с сохранением ручных
@@ -484,9 +502,13 @@ function SourceModal({ close }) {
           поступлениям и на −0,50 ₽ в июне по отгрузкам.
         </p>
         <p>
-          Сентябрь — неполный месяц. Пустые будущие периоды не считаются
-          нулевыми. Сумма заявок не является выручкой; разница поступлений и
-          отгрузок не является прибылью или остатком денег.
+          {data.coverage.moneyCompleteThrough
+            ? `Денежные данные закрыты по ${fullDate(data.coverage.moneyCompleteThrough)}.`
+            : "Дата закрытия денежных данных не подтверждена."}
+          Лист заявок заканчивается {fullDate(data.coverage.leadsThrough)}:
+          заявок за оставшиеся дни сентября в файле нет. Пустые будущие периоды
+          не считаются нулевыми. Сумма заявок не является выручкой; разница
+          поступлений и отгрузок не является прибылью или остатком денег.
         </p>
         <p>
           «Блины» на 48,678 млн ₽ указаны в исходнике отдельно от производства и
@@ -536,7 +558,7 @@ export default function App() {
     [rows, granularity, metric],
   );
   const months = data.monthly.filter(
-    (m) => m.month <= data.snapshot.slice(0, 7),
+    (m) => m.payments !== null || m.shipments !== null,
   );
   const moneyRows = months.filter((m) => month === "all" || m.month === month);
   const cfoRows = data.categories
@@ -631,7 +653,10 @@ export default function App() {
           <div className="top-actions">
             <span className="snapshot">
               <span />
-              Срез на 23.09.2026
+              Срез на{" "}
+              {new Date(data.snapshot + "T12:00:00").toLocaleDateString(
+                "ru-RU",
+              )}
             </span>
             <button
               className="icon-button theme-button"
@@ -692,16 +717,13 @@ export default function App() {
               </h2>
               <span>
                 {tab === "pipeline"
-                  ? "На 23 сентября 2026"
+                  ? `На ${snapshotLabel}`
                   : month === "all"
-                    ? "Январь — сентябрь 2026"
+                    ? `${monthLabel(data.coverage.firstMonth)} — ${monthLabel(data.coverage.lastMonth)}`
                     : new Date(month + "-01T12:00:00").toLocaleDateString(
                         "ru-RU",
                         { month: "long", year: "numeric" },
                       )}
-                {tab !== "pipeline" && (month === "all" || month === "2026-09")
-                  ? " · сентябрь неполный"
-                  : ""}
               </span>
             </div>
             <div className="report-controls">
@@ -737,6 +759,22 @@ export default function App() {
               </button>
             </div>
           </div>
+          {tab !== "pipeline" &&
+            (month === "all" ||
+              month >= data.coverage.leadsThrough.slice(0, 7)) && (
+              <div className="panel-note coverage-note" role="note">
+                <Info size={17} />
+                <span>
+                  Поступления и отгрузки — по{" "}
+                  {fullDate(
+                    data.coverage.moneyCompleteThrough ||
+                      data.coverage.paymentsThrough,
+                  )}
+                  . Заявки — по {fullDate(data.coverage.leadsThrough)}: более
+                  поздних записей в листе нет.
+                </span>
+              </div>
+            )}
           <div className="kpi-grid">
             {tab === "pipeline" ? (
               <>
@@ -744,7 +782,7 @@ export default function App() {
                   index={0}
                   label="Основная воронка"
                   value={compact(pipe)}
-                  sub={`${integer(pipeCount)} сделок на 23 сентября`}
+                  sub={`${integer(pipeCount)} сделок · ${day(data.snapshot)}`}
                   icon={Filter}
                   color={colors[0]}
                 />
@@ -752,7 +790,7 @@ export default function App() {
                   index={1}
                   label="В производстве"
                   value={compact(data.pipeline.at(-1).amount)}
-                  sub="41 сделка · без дополнения «Блины»"
+                  sub={`${integer(data.pipeline.at(-1).count)} сделок · без дополнения «Блины»`}
                   icon={Factory}
                   color={colors[1]}
                 />
@@ -760,7 +798,7 @@ export default function App() {
                   index={2}
                   label="Подтверждённые оплаты"
                   value={compact(data.forecast[0].amount)}
-                  sub="Прогноз на сентябрь"
+                  sub={`Прогноз · ${data.forecastMonth.toLowerCase()}`}
                   icon={Wallet}
                   color={colors[2]}
                 />
@@ -768,7 +806,7 @@ export default function App() {
                   index={3}
                   label="Оплаты с риском"
                   value={compact(data.forecast[1].amount)}
-                  sub="Прогноз на сентябрь"
+                  sub={`Прогноз · ${data.forecastMonth.toLowerCase()}`}
                   icon={FileChartColumn}
                   color={colors[3]}
                 />
@@ -779,7 +817,7 @@ export default function App() {
                   index={0}
                   label="Сумма новых заявок"
                   value={compact(stats.amount)}
-                  sub={`${integer(stats.count)} заявок за период`}
+                  sub={`${integer(stats.count)} заявок · данные по ${day(data.coverage.leadsThrough)}`}
                   icon={ChartNoAxesCombined}
                   color={colors[0]}
                 />
@@ -803,7 +841,7 @@ export default function App() {
                   index={3}
                   label="Основная воронка"
                   value={compact(pipe)}
-                  sub={`${integer(pipeCount)} сделок · срез 23 сентября`}
+                  sub={`${integer(pipeCount)} сделок · срез ${day(data.snapshot)}`}
                   icon={Filter}
                   color={colors[3]}
                 />
@@ -900,7 +938,7 @@ export default function App() {
               </Panel>
               <Panel
                 title="Воронка продаж"
-                sub="Состояние на 23 сентября 2026"
+                sub={`Состояние на ${snapshotLabel}`}
                 action={
                   <button
                     className="icon-button"
@@ -995,7 +1033,7 @@ export default function App() {
                 >
                   <Funnel full />
                 </Panel>
-                <Panel title="Прогноз оплат" sub="Сентябрь 2026">
+                <Panel title="Прогноз оплат" sub={data.forecastMonth}>
                   <div className="forecast-total">
                     <span>Все категории прогноза</span>
                     <strong>

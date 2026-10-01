@@ -17,10 +17,10 @@ test("source control totals and date coverage", () => {
   assert.equal(stats.count, 1548);
   close(stats.amount, 1455835510.67);
   const money = monthStats(data);
-  close(money.payments, 135358535.84);
-  close(money.shipments, 135302382.61);
+  close(money.payments, 138403842.01);
+  close(money.shipments, 138931851.67);
   assert.equal(data.leads.at(-1).date, "2026-09-23");
-  assert.equal(data.snapshot, "2026-09-23");
+  assert.equal(data.snapshot, "2026-10-01");
 });
 test("monthly and category filters partition the whole without double counting", () => {
   for (const metric of ["count", "amount"]) {
@@ -79,10 +79,36 @@ test("future blank data remains null; recorded zero is preserved", () => {
   );
 });
 test("main funnel excludes additional stages and the production supplement", () => {
-  close(sum(data.pipeline.map((r) => r.amount)), 132111706);
-  assert.equal(sum(data.pipeline.map((r) => r.count)), 166);
+  close(sum(data.pipeline.map((r) => r.amount)), 130651814);
+  assert.equal(sum(data.pipeline.map((r) => r.count)), 171);
   assert.equal(data.productionSupplement, 48678000);
   assert.equal(data.pipeline.length, 6);
+});
+test("September close reconciles independently read daily totals and preserves coverage differences", () => {
+  const september = monthStats(data, "2026-09");
+  close(september.payments, 12358875.89);
+  close(september.shipments, 19428261.23);
+  for (const key of ["payments", "shipments"])
+    close(
+      sum(
+        data.daily[key]
+          .filter((r) => r.date.startsWith("2026-09"))
+          .map((r) => r.amount),
+      ),
+      september[key],
+    );
+  assert.equal(data.coverage.moneyCompleteThrough, "2026-09-30");
+  assert.equal(data.coverage.leadsThrough, "2026-09-23");
+  assert.equal(data.forecastMonth, "Октябрь 2026");
+  assert.deepEqual(
+    data.forecast.map((r) => r.amount),
+    [11798463, 45764204, 19322324],
+  );
+  assert.equal(data.pipeline.at(-1).count, 38);
+  assert.deepEqual(monthStats(data, "2026-10"), {
+    payments: null,
+    shipments: null,
+  });
 });
 test("GLB contains original geometry and an animation", () => {
   const b = fs.readFileSync(

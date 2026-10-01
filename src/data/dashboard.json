@@ -1,6 +1,15 @@
 {
-  "snapshot": "2026-09-23",
-  "sourceHash": "0b53212129309e9868e4becc1ae0e7124081045ec113297f634e25c2f71382b5",
+  "snapshot": "2026-10-01",
+  "coverage": {
+    "leadsFrom": "2026-01-12",
+    "leadsThrough": "2026-09-23",
+    "paymentsThrough": "2026-09-30",
+    "shipmentsThrough": "2026-09-30",
+    "moneyCompleteThrough": "2026-09-30",
+    "firstMonth": "2026-01",
+    "lastMonth": "2026-09"
+  },
+  "sourceHash": "a559b65f65933ed8385622be7deef67bef26ee5a42ef266d12b8b40dc1a0a71e",
   "categories": [
     "Реготоп",
     "Контрактное производство",
@@ -8031,18 +8040,18 @@
     },
     {
       "stage": "Расчет",
-      "count": 12.0,
-      "amount": 13816530.0
+      "count": 26.0,
+      "amount": 28226150.0
     },
     {
       "stage": "КП выставлено",
-      "count": 102.0,
-      "amount": 84369039.0
+      "count": 94.0,
+      "amount": 76884991.0
     },
     {
       "stage": "Переговоры",
-      "count": 7.0,
-      "amount": 2811630.0
+      "count": 9.0,
+      "amount": 4542305.0
     },
     {
       "stage": "Счет согласован/договор подписан",
@@ -8051,8 +8060,8 @@
     },
     {
       "stage": "Производство",
-      "count": 41.0,
-      "amount": 28132539.0
+      "count": 38.0,
+      "amount": 18016400.0
     }
   ],
   "pipelineExtra": [
@@ -8063,29 +8072,29 @@
     },
     {
       "stage": "Долгосрочные",
-      "count": 37.0,
-      "amount": 65961248.0
+      "count": 36.0,
+      "amount": 64959798.0
     },
     {
       "stage": "Крупные",
-      "count": 4.0,
-      "amount": 37033013.0
+      "count": 2.0,
+      "amount": 20828423.0
     }
   ],
   "productionSupplement": 48678000.0,
-  "forecastMonth": "Сентябрь 2026",
+  "forecastMonth": "Октябрь 2026",
   "forecast": [
     {
       "name": "Подтвержденные",
-      "amount": 4300000.0
+      "amount": 11798463.0
     },
     {
       "name": "Подтвержденные с риском",
-      "amount": 6000000.0
+      "amount": 45764204.0
     },
     {
       "name": "Не подтвержденные",
-      "amount": 74069039.0
+      "amount": 19322324.0
     }
   ],
   "monthly": [
@@ -8430,12 +8439,12 @@
       "items": [
         {
           "name": "регистры",
-          "payments": 5449431.0,
-          "shipments": 5613579.0
+          "payments": 8038131.0,
+          "shipments": 9133673.0
         },
         {
           "name": "контракт",
-          "payments": 3270063.66,
+          "payments": 3421113.83,
           "shipments": 675643.17
         },
         {
@@ -8446,12 +8455,12 @@
         {
           "name": "экобоксы",
           "payments": 525200.0,
-          "shipments": 101590.0
+          "shipments": 142090.0
         },
         {
           "name": "металлокассеты",
-          "payments": 68875.06,
-          "shipments": 23740.0
+          "payments": 374431.06,
+          "shipments": 92615.06
         },
         {
           "name": "корзины для конд",
@@ -8464,8 +8473,8 @@
           "shipments": 9384240.0
         }
       ],
-      "payments": 9313569.72,
-      "shipments": 15798792.17
+      "payments": 12358875.89,
+      "shipments": 19428261.23
     },
     {
       "month": "2026-10",
@@ -10506,6 +10515,84 @@
           null,
           null
         ]
+      },
+      {
+        "date": "2026-09-23",
+        "amount": 135830.17,
+        "values": [
+          null,
+          135830.17,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      {
+        "date": "2026-09-24",
+        "amount": 106600.0,
+        "values": [
+          106600.0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      {
+        "date": "2026-09-25",
+        "amount": 910800.0,
+        "values": [
+          910800.0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      {
+        "date": "2026-09-28",
+        "amount": 638300.0,
+        "values": [
+          638300.0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      {
+        "date": "2026-09-29",
+        "amount": 200000.0,
+        "values": [
+          200000.0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      {
+        "date": "2026-09-30",
+        "amount": 1053776.0,
+        "values": [
+          733000.0,
+          15220.0,
+          null,
+          null,
+          305556.0,
+          null,
+          null
+        ]
       }
     ],
     "shipments": [
@@ -12389,6 +12476,84 @@
           null,
           null,
           27000.0,
+          null,
+          null,
+          null
+        ]
+      },
+      {
+        "date": "2026-09-23",
+        "amount": 171320.0,
+        "values": [
+          171320.0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      {
+        "date": "2026-09-24",
+        "amount": 431315.06,
+        "values": [
+          362440.0,
+          null,
+          null,
+          null,
+          68875.06,
+          null,
+          null
+        ]
+      },
+      {
+        "date": "2026-09-25",
+        "amount": 2240320.0,
+        "values": [
+          2240320.0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      {
+        "date": "2026-09-28",
+        "amount": 82960.0,
+        "values": [
+          82960.0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      {
+        "date": "2026-09-29",
+        "amount": 608294.0,
+        "values": [
+          608294.0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      {
+        "date": "2026-09-30",
+        "amount": 95260.0,
+        "values": [
+          54760.0,
+          null,
+          null,
+          40500.0,
           null,
           null,
           null
