@@ -772,23 +772,16 @@ export default function App() {
               <div className="panel-note coverage-note" role="note">
                 <Info size={17} />
                 <span>
-                  {data.coverage.leadsThrough ===
-                  data.coverage.moneyCompleteThrough
-                    ? "Заявки, поступления и отгрузки — по "
-                    : "Поступления и отгрузки — по "}
-                  {fullDate(
-                    data.coverage.moneyCompleteThrough ||
-                      data.coverage.paymentsThrough,
-                  )}
-                  .
-                  {data.coverage.leadsThrough !==
-                    data.coverage.moneyCompleteThrough && (
-                    <>
-                      {" "}
-                      Заявки — по {fullDate(data.coverage.leadsThrough)}: более
-                      поздних записей в листе нет.
-                    </>
-                  )}
+                  Заявки — по {fullDate(data.coverage.leadsThrough)}.
+                  Поступления — по {fullDate(data.coverage.paymentsThrough)}.
+                  Отгрузки — по {fullDate(data.coverage.shipmentsThrough)}.
+                  {data.coverage.moneyCompleteThrough &&
+                    ` Закрытый денежный период — по ${fullDate(data.coverage.moneyCompleteThrough)}.`}
+                  {data.coverage.lastMonth >
+                    data.coverage.moneyCompleteThrough?.slice(0, 7) &&
+                    " Текущий месяц не закрыт."}
+                  {data.coverage.shipmentsThrough > data.snapshot &&
+                    ` В источнике есть отгрузки после даты среза (${fullDate(data.snapshot)}); они включены в итог и требуют подтверждения.`}
                 </span>
               </div>
             )}
