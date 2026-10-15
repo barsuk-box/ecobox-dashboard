@@ -61,6 +61,13 @@ export default function Weekly({ data }) {
       <div className="weekly-toolbar">
         <div>
           <h2>Неделя в сравнении</h2>
+          <a
+            className="template-download"
+            href={`${import.meta.env.BASE_URL}templates/ecobox-weekly-template.xlsx`}
+            download
+          >
+            Скачать шаблон Excel для заполнения
+          </a>
           <p>Понедельник — воскресенье · срез {date(data.snapshot)}</p>
         </div>
         <label>

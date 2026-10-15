@@ -3,6 +3,12 @@
   gap: 22px;
   min-width: 0;
 }
+.template-download {
+  color: var(--blue);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  font-size: 14px;
+}
 .weekly-toolbar {
   display: flex;
   align-items: end;
