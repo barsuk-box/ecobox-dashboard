@@ -36,7 +36,7 @@ export default function Weekly({ data }) {
       <div className="weekly-toolbar">
         <div>
           <h2>Неделя в сравнении</h2>
-          <p>Понедельник — воскресенье · срез {date(data.snapshot)}</p>
+          <p>Пятница — четверг · срез {date(data.snapshot)}</p>
         </div>
         <label>
           Неделя

@@ -7,10 +7,13 @@ export function shift(date, days) {
 export function monday(date) {
   return shift(date, -((new Date(date + "T12:00:00Z").getUTCDay() + 6) % 7));
 }
+export function reportingWeekStart(date) {
+  return shift(date, -((new Date(date + "T12:00:00Z").getUTCDay() + 2) % 7));
+}
 export function weeks(data) {
   const result = [];
   for (
-    let d = monday(data.coverage.leadsFrom);
+    let d = reportingWeekStart(data.coverage.leadsFrom);
     d <= data.snapshot;
     d = shift(d, 7)
   )

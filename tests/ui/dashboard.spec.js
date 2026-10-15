@@ -8,13 +8,16 @@ test("weekly view compares periods and shows honest missing-data states", async 
     .getByRole("navigation", { name: "Разделы дашборда" })
     .getByRole("button", { name: "Недельная динамика" })
     .click();
-  await expect(page.getByLabel("Неделя сравнения")).toHaveValue("2026-10-12");
+  await expect(page.getByLabel("Неделя сравнения")).toHaveValue("2026-10-09");
   await expect(
     page.getByRole("heading", { name: "Регистры", level: 2 }),
   ).toBeVisible();
   await expect(
     page.getByText("Ожидаем историю сделок", { exact: true }),
   ).toHaveCount(0);
+  await expect(page.locator(".weekly-card").nth(0)).toContainText("2 403 044");
+  await expect(page.locator(".weekly-card").nth(1)).toContainText("1 892 350");
+  await expect(page.locator(".weekly-card").nth(0)).toContainText("1 065 768");
   const projects = page.locator(".expected-projects article");
   await expect(projects).toHaveCount(14);
   const amounts = await projects.evaluateAll((nodes) =>
@@ -31,7 +34,7 @@ test("weekly view compares periods and shows honest missing-data states", async 
     path: ".private/weekly-desktop.png",
     fullPage: true,
   });
-  await page.getByLabel("Неделя сравнения").selectOption("2026-09-28");
+  await page.getByLabel("Неделя сравнения").selectOption("2026-10-02");
   await expect(page.locator(".weekly")).toContainText("РУМС");
   await page.getByRole("button", { name: "Включить светлую тему" }).click();
   await page.screenshot({ path: ".private/weekly-light.png", fullPage: true });

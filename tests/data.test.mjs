@@ -1,7 +1,13 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
-import { monday, weeklyMetric, change } from "../src/weekly.js";
+import {
+  monday,
+  reportingWeekStart,
+  weeks,
+  weeklyMetric,
+  change,
+} from "../src/weekly.js";
 import {
   leadRows,
   leadStats,
@@ -282,4 +288,23 @@ test("expected projects meet threshold, sort descending and retain separate inst
     d.projects.find((p) => p.id === "ЭБ00-16231").payments[0].dueLabel,
     "15-16 октября",
   );
+});
+
+test("Friday to Thursday reporting week includes October 9 and compares October 2�8", () => {
+  assert.equal(reportingWeekStart("2026-10-15"), "2026-10-09");
+  assert.equal(reportingWeekStart("2026-10-16"), "2026-10-16");
+  assert.equal(reportingWeekStart("2027-01-01"), "2027-01-01");
+  assert.equal(weeks(data)[0], "2026-10-09");
+  for (const [metric, current, previous] of [
+    ["payments", 2403044, 1065767.5],
+    ["shipments", 1892350, 9347750],
+  ]) {
+    const m = weeklyMetric(data, "2026-10-09", metric);
+    close(m.current, current);
+    close(m.previous, previous);
+    assert.equal(m.end, "2026-10-15");
+    assert.equal(m.previousStart, "2026-10-02");
+    assert.equal(m.previousEnd, "2026-10-08");
+    assert.equal(m.partial, false);
+  }
 });
