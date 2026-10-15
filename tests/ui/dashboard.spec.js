@@ -1,4 +1,34 @@
 import { test, expect } from "@playwright/test";
+test("weekly view compares periods and shows honest missing-data states", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 1050 });
+  await page.goto("");
+  await page
+    .getByRole("navigation", { name: "Разделы дашборда" })
+    .getByRole("button", { name: "Недельная динамика" })
+    .click();
+  await expect(page.getByLabel("Неделя сравнения")).toHaveValue("2026-10-05");
+  await expect(
+    page.getByRole("heading", { name: "Регистры и «блины» отдельно" }),
+  ).toBeVisible();
+  await expect(
+    page.getByText("Ожидаем историю сделок", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByText("Реестр оплат пока не предоставлен", { exact: true }),
+  ).toBeVisible();
+  await expect(page.locator(".weekly")).toContainText("15 630 000");
+  await expect(page.locator(".weekly")).toContainText("18 016 400");
+  await page.screenshot({
+    path: ".private/weekly-desktop.png",
+    fullPage: true,
+  });
+  await page.getByLabel("Неделя сравнения").selectOption("2026-09-28");
+  await expect(page.locator(".weekly")).toContainText("28 132 539");
+  await page.getByRole("button", { name: "Включить светлую тему" }).click();
+  await page.screenshot({ path: ".private/weekly-light.png", fullPage: true });
+});
 test("desktop filters, themes, navigation, search, export and source dialog", async ({
   page,
 }) => {
@@ -97,6 +127,7 @@ for (const width of [320, 375, 390, 768])
     await page.setViewportSize({ width, height: 844 });
     await page.goto("");
     for (const [i, name] of [
+      "Недели",
       "Обзор",
       "Заявки",
       "Воронка",

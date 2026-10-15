@@ -37,6 +37,7 @@ import {
   monthStats,
 } from "./metrics.js";
 import Assembly from "./Assembly.jsx";
+import Weekly from "./Weekly.jsx";
 
 const colors = [
   "#528bff",
@@ -60,6 +61,12 @@ const names = {
 };
 const tabs = [
   {
+    id: "weekly",
+    label: "Недельная динамика",
+    short: "Недели",
+    icon: CalendarDays,
+  },
+  {
     id: "overview",
     label: "Обзор бизнеса",
     short: "Обзор",
@@ -75,6 +82,7 @@ const tabs = [
   { id: "money", label: "Денежный поток", short: "Деньги", icon: Wallet },
 ];
 const titles = {
+  weekly: ["Неделя в фокусе", "Движение денег, спрос и выполнение заказов."],
   overview: ["Пульс бизнеса", "Всё, что важно. В одном пространстве."],
   leads: ["От интереса к заказу", "Динамика входящего спроса по направлениям."],
   pipeline: ["В фокусе — сделки", "Текущий портфель и прогноз поступлений."],
@@ -717,482 +725,505 @@ export default function App() {
             </div>
             <div className="hero-index">ЭБ / 26</div>
           </section>
-          <div className="report-toolbar">
-            <div>
-              <h2>
-                {tab === "pipeline" ? "Портфель сделок" : "Ключевые показатели"}
-              </h2>
-              <span>
-                {tab === "pipeline"
-                  ? `На ${snapshotLabel}`
-                  : month === "all"
-                    ? `${monthLabel(data.coverage.firstMonth)} — ${monthLabel(data.coverage.lastMonth)}`
-                    : new Date(month + "-01T12:00:00").toLocaleDateString(
-                        "ru-RU",
-                        { month: "long", year: "numeric" },
-                      )}
-              </span>
-            </div>
-            <div className="report-controls">
-              {tab !== "pipeline" && (
-                <label className="period-select">
-                  <CalendarDays size={16} />
-                  <select
-                    value={month}
-                    onChange={(e) => setMonth(e.target.value)}
-                    aria-label="Период отчёта"
-                  >
-                    <option value="all">Весь период</option>
-                    {months.map((m) => (
-                      <option key={m.month} value={m.month}>
-                        {new Date(m.month + "-01T12:00:00").toLocaleDateString(
-                          "ru-RU",
-                          { month: "long", year: "numeric" },
-                        )}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-              )}
-              <button
-                className="export-button"
-                onClick={() => {
-                  exportCSV(tab, month, rows);
-                  setNotice("CSV-файл подготовлен к скачиванию");
-                }}
-              >
-                <ArrowDownToLine size={17} />
-                <span>Скачать CSV</span>
-              </button>
-            </div>
-          </div>
-          {tab !== "pipeline" &&
-            (month === "all" ||
-              month >= data.coverage.leadsThrough.slice(0, 7)) && (
-              <div className="panel-note coverage-note" role="note">
-                <Info size={17} />
-                <span>
-                  Заявки — по {fullDate(data.coverage.leadsThrough)}.
-                  Поступления — по {fullDate(data.coverage.paymentsThrough)}.
-                  Отгрузки — по {fullDate(data.coverage.shipmentsThrough)}.
-                  {data.coverage.moneyCompleteThrough &&
-                    ` Закрытый денежный период — по ${fullDate(data.coverage.moneyCompleteThrough)}.`}
-                  {data.coverage.lastMonth >
-                    data.coverage.moneyCompleteThrough?.slice(0, 7) &&
-                    " Текущий месяц не закрыт."}
-                  {data.coverage.shipmentsThrough > data.snapshot &&
-                    ` В источнике есть отгрузки после даты среза (${fullDate(data.snapshot)}); они включены в итог и требуют подтверждения.`}
-                </span>
-              </div>
-            )}
-          <div className="kpi-grid">
-            {tab === "pipeline" ? (
-              <>
-                <KPI
-                  index={0}
-                  label="Основная воронка"
-                  value={compact(pipe)}
-                  sub={`${integer(pipeCount)} сделок · ${day(data.snapshot)}`}
-                  icon={Filter}
-                  color={colors[0]}
-                />
-                <KPI
-                  index={1}
-                  label="В производстве"
-                  value={compact(data.pipeline.at(-1).amount)}
-                  sub={`${integer(data.pipeline.at(-1).count)} сделок · без дополнения «Блины»`}
-                  icon={Factory}
-                  color={colors[1]}
-                />
-                <KPI
-                  index={2}
-                  label="Подтверждённые оплаты"
-                  value={compact(data.forecast[0].amount)}
-                  sub={`Прогноз · ${data.forecastMonth.toLowerCase()}`}
-                  icon={Wallet}
-                  color={colors[2]}
-                />
-                <KPI
-                  index={3}
-                  label="Оплаты с риском"
-                  value={compact(data.forecast[1].amount)}
-                  sub={`Прогноз · ${data.forecastMonth.toLowerCase()}`}
-                  icon={FileChartColumn}
-                  color={colors[3]}
-                />
-              </>
-            ) : (
-              <>
-                <KPI
-                  index={0}
-                  label="Сумма новых заявок"
-                  value={compact(stats.amount)}
-                  sub={`${integer(stats.count)} заявок · данные по ${day(data.coverage.leadsThrough)}`}
-                  icon={ChartNoAxesCombined}
-                  color={colors[0]}
-                />
-                <KPI
-                  index={1}
-                  label="Поступления"
-                  value={compact(ms.payments)}
-                  sub="По месячной сводке"
-                  icon={Wallet}
-                  color={colors[1]}
-                />
-                <KPI
-                  index={2}
-                  label="Отгрузки"
-                  value={compact(ms.shipments)}
-                  sub="По месячной сводке"
-                  icon={PackageCheck}
-                  color={colors[2]}
-                />
-                <KPI
-                  index={3}
-                  label="Основная воронка"
-                  value={compact(pipe)}
-                  sub={`${integer(pipeCount)} сделок · срез ${day(data.snapshot)}`}
-                  icon={Filter}
-                  color={colors[3]}
-                />
-              </>
-            )}
-          </div>
-          {(tab === "overview" || tab === "leads") && (
-            <div className="chart-layout">
-              <Panel
-                title="Динамика заявок"
-                sub="Как меняется входящий спрос"
-                action={
-                  <Segment
-                    value={metric}
-                    onChange={setMetric}
-                    label="Метрика заявок"
-                    options={[
-                      ["amount", "Сумма"],
-                      ["count", "Количество"],
-                    ]}
-                  />
-                }
-              >
-                <div className="chart-controls">
-                  <Segment
-                    value={granularity}
-                    onChange={setGranularity}
-                    label="Группировка заявок"
-                    options={[
-                      ["day", "День"],
-                      ["week", "Неделя"],
-                      ["month", "Месяц"],
-                    ]}
-                  />
-                  {tab === "leads" && (
-                    <select
-                      className="category-select"
-                      value={category}
-                      onChange={(e) => setCategory(e.target.value)}
-                      aria-label="Направление"
-                    >
-                      <option value="all">Все направления</option>
-                      {data.categories.map((n) => (
-                        <option key={n}>{n}</option>
-                      ))}
-                    </select>
-                  )}
-                  <span className="chart-key">
-                    <i />
-                    Новые заявки
+          {tab === "weekly" ? (
+            <Weekly data={data} />
+          ) : (
+            <>
+              <div className="report-toolbar">
+                <div>
+                  <h2>
+                    {tab === "pipeline"
+                      ? "Портфель сделок"
+                      : "Ключевые показатели"}
+                  </h2>
+                  <span>
+                    {tab === "pipeline"
+                      ? `На ${snapshotLabel}`
+                      : month === "all"
+                        ? `${monthLabel(data.coverage.firstMonth)} — ${monthLabel(data.coverage.lastMonth)}`
+                        : new Date(month + "-01T12:00:00").toLocaleDateString(
+                            "ru-RU",
+                            { month: "long", year: "numeric" },
+                          )}
                   </span>
                 </div>
-                <LineChart
-                  points={points}
-                  metric={metric}
-                  granularity={granularity}
-                />
-              </Panel>
-              <Panel
-                title="Направления бизнеса"
-                sub="Доля в сумме новых заявок"
-                action={
+                <div className="report-controls">
+                  {tab !== "pipeline" && (
+                    <label className="period-select">
+                      <CalendarDays size={16} />
+                      <select
+                        value={month}
+                        onChange={(e) => setMonth(e.target.value)}
+                        aria-label="Период отчёта"
+                      >
+                        <option value="all">Весь период</option>
+                        {months.map((m) => (
+                          <option key={m.month} value={m.month}>
+                            {new Date(
+                              m.month + "-01T12:00:00",
+                            ).toLocaleDateString("ru-RU", {
+                              month: "long",
+                              year: "numeric",
+                            })}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                  )}
                   <button
-                    className="icon-button"
-                    aria-label="Подробно о направлениях"
+                    className="export-button"
                     onClick={() => {
-                      navigate("leads");
-                      setCategory("all");
+                      exportCSV(tab, month, rows);
+                      setNotice("CSV-файл подготовлен к скачиванию");
                     }}
                   >
-                    <ArrowUpRight size={19} />
+                    <ArrowDownToLine size={17} />
+                    <span>Скачать CSV</span>
                   </button>
-                }
-              >
-                <CFO rows={rows} />
-              </Panel>
-            </div>
-          )}
-          {tab === "overview" && (
-            <div className="bottom-layout">
-              <Panel
-                title="Поступления и отгрузки"
-                sub="Объём операций по месяцам"
-                action={
-                  <button
-                    className="text-button"
-                    onClick={() => navigate("money")}
-                  >
-                    Подробнее <ArrowUpRight size={15} />
-                  </button>
-                }
-              >
-                <MoneyChart rows={moneyRows} />
-              </Panel>
-              <Panel
-                title="Воронка продаж"
-                sub={`Состояние на ${snapshotLabel}`}
-                action={
-                  <button
-                    className="icon-button"
-                    aria-label="Открыть воронку"
-                    onClick={() => navigate("pipeline")}
-                  >
-                    <ArrowUpRight size={19} />
-                  </button>
-                }
-              >
-                <Funnel />
-              </Panel>
-            </div>
-          )}
-          {tab === "leads" && (
-            <Panel
-              title="Заявки по направлениям"
-              sub="Количество, сумма и доля за выбранный период"
-              className="detail-panel"
-              action={
-                <label className="search">
-                  <Search size={16} />
-                  <input
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    placeholder="Найти направление"
-                    aria-label="Поиск направления"
-                  />
-                </label>
-              }
-            >
-              <div className="table-controls">
-                <span>{category === "all" ? "Все направления" : category}</span>
-                <label>
-                  Сортировка{" "}
-                  <select
-                    value={sort}
-                    onChange={(e) => setSort(e.target.value)}
-                    aria-label="Сортировка направлений"
-                  >
-                    <option value="amount">По сумме</option>
-                    <option value="count">По количеству</option>
-                    <option value="name">По названию</option>
-                  </select>
-                </label>
+                </div>
               </div>
-              <div className="responsive-table">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Направление</th>
-                      <th>Заявки</th>
-                      <th>Сумма</th>
-                      <th>Доля</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {cfoRows.map((r) => (
-                      <tr key={r.name}>
-                        <td>
-                          <span className="table-name">
-                            <b style={{ background: r.color }} />
-                            {r.name}
-                          </span>
-                        </td>
-                        <td data-label="Заявки">{integer(r.count)}</td>
-                        <td data-label="Сумма">{money(r.amount)}</td>
-                        <td data-label="Доля">
-                          {stats.amount
-                            ? ((r.amount / stats.amount) * 100).toFixed(1)
-                            : 0}
-                          %
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                {!cfoRows.length && (
-                  <p className="empty">
-                    Направления не найдены. Измените поисковый запрос.
-                  </p>
+              {tab !== "pipeline" &&
+                (month === "all" ||
+                  month >= data.coverage.leadsThrough.slice(0, 7)) && (
+                  <div className="panel-note coverage-note" role="note">
+                    <Info size={17} />
+                    <span>
+                      Заявки — по {fullDate(data.coverage.leadsThrough)}.
+                      Поступления — по {fullDate(data.coverage.paymentsThrough)}
+                      . Отгрузки — по {fullDate(data.coverage.shipmentsThrough)}
+                      .
+                      {data.coverage.moneyCompleteThrough &&
+                        ` Закрытый денежный период — по ${fullDate(data.coverage.moneyCompleteThrough)}.`}
+                      {data.coverage.lastMonth >
+                        data.coverage.moneyCompleteThrough?.slice(0, 7) &&
+                        " Текущий месяц не закрыт."}
+                      {data.coverage.shipmentsThrough > data.snapshot &&
+                        ` В источнике есть отгрузки после даты среза (${fullDate(data.snapshot)}); они включены в итог и требуют подтверждения.`}
+                    </span>
+                  </div>
+                )}
+              <div className="kpi-grid">
+                {tab === "pipeline" ? (
+                  <>
+                    <KPI
+                      index={0}
+                      label="Основная воронка"
+                      value={compact(pipe)}
+                      sub={`${integer(pipeCount)} сделок · ${day(data.snapshot)}`}
+                      icon={Filter}
+                      color={colors[0]}
+                    />
+                    <KPI
+                      index={1}
+                      label="В производстве"
+                      value={compact(data.pipeline.at(-1).amount)}
+                      sub={`${integer(data.pipeline.at(-1).count)} сделок · без дополнения «Блины»`}
+                      icon={Factory}
+                      color={colors[1]}
+                    />
+                    <KPI
+                      index={2}
+                      label="Подтверждённые оплаты"
+                      value={compact(data.forecast[0].amount)}
+                      sub={`Прогноз · ${data.forecastMonth.toLowerCase()}`}
+                      icon={Wallet}
+                      color={colors[2]}
+                    />
+                    <KPI
+                      index={3}
+                      label="Оплаты с риском"
+                      value={compact(data.forecast[1].amount)}
+                      sub={`Прогноз · ${data.forecastMonth.toLowerCase()}`}
+                      icon={FileChartColumn}
+                      color={colors[3]}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <KPI
+                      index={0}
+                      label="Сумма новых заявок"
+                      value={compact(stats.amount)}
+                      sub={`${integer(stats.count)} заявок · данные по ${day(data.coverage.leadsThrough)}`}
+                      icon={ChartNoAxesCombined}
+                      color={colors[0]}
+                    />
+                    <KPI
+                      index={1}
+                      label="Поступления"
+                      value={compact(ms.payments)}
+                      sub="По месячной сводке"
+                      icon={Wallet}
+                      color={colors[1]}
+                    />
+                    <KPI
+                      index={2}
+                      label="Отгрузки"
+                      value={compact(ms.shipments)}
+                      sub="По месячной сводке"
+                      icon={PackageCheck}
+                      color={colors[2]}
+                    />
+                    <KPI
+                      index={3}
+                      label="Основная воронка"
+                      value={compact(pipe)}
+                      sub={`${integer(pipeCount)} сделок · срез ${day(data.snapshot)}`}
+                      icon={Filter}
+                      color={colors[3]}
+                    />
+                  </>
                 )}
               </div>
-            </Panel>
-          )}
-          {tab === "pipeline" && (
-            <>
-              <div className="bottom-layout">
-                <Panel
-                  title="Стадии продаж"
-                  sub="Суммы текущих сделок, а не последовательная конверсия"
-                >
-                  <Funnel full />
-                </Panel>
-                <Panel title="Прогноз оплат" sub={data.forecastMonth}>
-                  <div className="forecast-total">
-                    <span>Все категории прогноза</span>
-                    <strong>
-                      {compact(sum(data.forecast.map((r) => r.amount)))}{" "}
-                      <small>₽</small>
-                    </strong>
-                  </div>
-                  {data.forecast.map((r, i) => (
-                    <div className="forecast-row" key={r.name}>
-                      <div>
-                        <span
-                          className="status-dot"
-                          style={{
-                            background: [colors[1], colors[3], colors[4]][i],
-                          }}
-                        />
-                        {r.name}
-                      </div>
-                      <strong>{money(r.amount)}</strong>
-                    </div>
-                  ))}
-                  <div className="panel-note">
-                    <Info size={17} />
-                    <span>
-                      Подтверждённые, рискованные и неподтверждённые суммы
-                      показаны отдельно. Вероятности в исходной таблице не
-                      заданы.
-                    </span>
-                  </div>
-                </Panel>
-              </div>
-              <Panel
-                title="Дополнительно в портфеле"
-                sub="Эти позиции не включены в итог основной воронки"
-                className="detail-panel"
-              >
-                <div className="extra-grid">
-                  {data.pipelineExtra.map((r, i) => (
-                    <div key={r.stage}>
-                      <span>{r.stage}</span>
-                      <strong>{compact(r.amount)} ₽</strong>
-                      <small>{r.count} сдел.</small>
-                    </div>
-                  ))}
-                  <div>
-                    <span>Блины · дополнение к производству</span>
-                    <strong>{compact(data.productionSupplement)} ₽</strong>
-                    <small>Количество в источнике не указано</small>
-                  </div>
-                </div>
-              </Panel>
-            </>
-          )}
-          {tab === "money" && (
-            <>
-              <div className="bottom-layout">
-                <Panel
-                  title="Поступления и отгрузки"
-                  sub="Месячная сводка с ручными корректировками"
-                >
-                  <MoneyChart rows={moneyRows} />
-                </Panel>
-                <Panel title="Соотношение операций" sub="За выбранный период">
-                  <div className="balance">
-                    <span>Поступления минус отгрузки</span>
-                    <strong
-                      className={
-                        (ms.payments || 0) - (ms.shipments || 0) < 0
-                          ? "negative"
-                          : "positive"
-                      }
-                    >
-                      {money(
-                        ms.payments == null || ms.shipments == null
-                          ? null
-                          : ms.payments - ms.shipments,
-                      )}
-                    </strong>
-                    <p>
-                      Это разница двух потоков. Она не отражает прибыль, остаток
-                      на счетах или дебиторскую задолженность.
-                    </p>
-                  </div>
-                  <div className="panel-note">
-                    <Info size={17} />
-                    <span>
-                      Последние записи: поступления —{" "}
-                      {day(data.daily.payments.at(-1).date)}, отгрузки —{" "}
-                      {day(data.daily.shipments.at(-1).date)}.
-                    </span>
-                  </div>
-                </Panel>
-              </div>
-              <Panel
-                title="Детализация по ЦФО"
-                sub="Выберите показатель и месяц для точного сравнения"
-                className="detail-panel"
-                action={
-                  <Segment
-                    value={moneyView}
-                    onChange={setMoneyView}
-                    label="Показатель денежной таблицы"
-                    options={[
-                      ["payments", "Поступления"],
-                      ["shipments", "Отгрузки"],
-                    ]}
-                  />
-                }
-              >
-                <div className="money-table responsive-table">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Направление</th>
-                        {moneyRows.map((m) => (
-                          <th key={m.month}>{monthName(m.month)}</th>
-                        ))}
-                        <th>Итого</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {data.monthly[0].items.map((item, i) => (
-                        <tr key={item.name}>
-                          <td>{names[item.name] || item.name}</td>
-                          {moneyRows.map((m) => (
-                            <td key={m.month} data-label={monthName(m.month)}>
-                              {m.items[i][moneyView] == null
-                                ? "—"
-                                : money(m.items[i][moneyView])}
-                            </td>
+              {(tab === "overview" || tab === "leads") && (
+                <div className="chart-layout">
+                  <Panel
+                    title="Динамика заявок"
+                    sub="Как меняется входящий спрос"
+                    action={
+                      <Segment
+                        value={metric}
+                        onChange={setMetric}
+                        label="Метрика заявок"
+                        options={[
+                          ["amount", "Сумма"],
+                          ["count", "Количество"],
+                        ]}
+                      />
+                    }
+                  >
+                    <div className="chart-controls">
+                      <Segment
+                        value={granularity}
+                        onChange={setGranularity}
+                        label="Группировка заявок"
+                        options={[
+                          ["day", "День"],
+                          ["week", "Неделя"],
+                          ["month", "Месяц"],
+                        ]}
+                      />
+                      {tab === "leads" && (
+                        <select
+                          className="category-select"
+                          value={category}
+                          onChange={(e) => setCategory(e.target.value)}
+                          aria-label="Направление"
+                        >
+                          <option value="all">Все направления</option>
+                          {data.categories.map((n) => (
+                            <option key={n}>{n}</option>
                           ))}
-                          <td data-label="Итого">
-                            {money(
-                              moneyRows.some(
-                                (m) => m.items[i][moneyView] != null,
-                              )
-                                ? sum(
-                                    moneyRows.map((m) => m.items[i][moneyView]),
-                                  )
-                                : null,
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                        </select>
+                      )}
+                      <span className="chart-key">
+                        <i />
+                        Новые заявки
+                      </span>
+                    </div>
+                    <LineChart
+                      points={points}
+                      metric={metric}
+                      granularity={granularity}
+                    />
+                  </Panel>
+                  <Panel
+                    title="Направления бизнеса"
+                    sub="Доля в сумме новых заявок"
+                    action={
+                      <button
+                        className="icon-button"
+                        aria-label="Подробно о направлениях"
+                        onClick={() => {
+                          navigate("leads");
+                          setCategory("all");
+                        }}
+                      >
+                        <ArrowUpRight size={19} />
+                      </button>
+                    }
+                  >
+                    <CFO rows={rows} />
+                  </Panel>
                 </div>
-              </Panel>
-              <DailyMoney month={month} view={moneyView} />
+              )}
+              {tab === "overview" && (
+                <div className="bottom-layout">
+                  <Panel
+                    title="Поступления и отгрузки"
+                    sub="Объём операций по месяцам"
+                    action={
+                      <button
+                        className="text-button"
+                        onClick={() => navigate("money")}
+                      >
+                        Подробнее <ArrowUpRight size={15} />
+                      </button>
+                    }
+                  >
+                    <MoneyChart rows={moneyRows} />
+                  </Panel>
+                  <Panel
+                    title="Воронка продаж"
+                    sub={`Состояние на ${snapshotLabel}`}
+                    action={
+                      <button
+                        className="icon-button"
+                        aria-label="Открыть воронку"
+                        onClick={() => navigate("pipeline")}
+                      >
+                        <ArrowUpRight size={19} />
+                      </button>
+                    }
+                  >
+                    <Funnel />
+                  </Panel>
+                </div>
+              )}
+              {tab === "leads" && (
+                <Panel
+                  title="Заявки по направлениям"
+                  sub="Количество, сумма и доля за выбранный период"
+                  className="detail-panel"
+                  action={
+                    <label className="search">
+                      <Search size={16} />
+                      <input
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        placeholder="Найти направление"
+                        aria-label="Поиск направления"
+                      />
+                    </label>
+                  }
+                >
+                  <div className="table-controls">
+                    <span>
+                      {category === "all" ? "Все направления" : category}
+                    </span>
+                    <label>
+                      Сортировка{" "}
+                      <select
+                        value={sort}
+                        onChange={(e) => setSort(e.target.value)}
+                        aria-label="Сортировка направлений"
+                      >
+                        <option value="amount">По сумме</option>
+                        <option value="count">По количеству</option>
+                        <option value="name">По названию</option>
+                      </select>
+                    </label>
+                  </div>
+                  <div className="responsive-table">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Направление</th>
+                          <th>Заявки</th>
+                          <th>Сумма</th>
+                          <th>Доля</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {cfoRows.map((r) => (
+                          <tr key={r.name}>
+                            <td>
+                              <span className="table-name">
+                                <b style={{ background: r.color }} />
+                                {r.name}
+                              </span>
+                            </td>
+                            <td data-label="Заявки">{integer(r.count)}</td>
+                            <td data-label="Сумма">{money(r.amount)}</td>
+                            <td data-label="Доля">
+                              {stats.amount
+                                ? ((r.amount / stats.amount) * 100).toFixed(1)
+                                : 0}
+                              %
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    {!cfoRows.length && (
+                      <p className="empty">
+                        Направления не найдены. Измените поисковый запрос.
+                      </p>
+                    )}
+                  </div>
+                </Panel>
+              )}
+              {tab === "pipeline" && (
+                <>
+                  <div className="bottom-layout">
+                    <Panel
+                      title="Стадии продаж"
+                      sub="Суммы текущих сделок, а не последовательная конверсия"
+                    >
+                      <Funnel full />
+                    </Panel>
+                    <Panel title="Прогноз оплат" sub={data.forecastMonth}>
+                      <div className="forecast-total">
+                        <span>Все категории прогноза</span>
+                        <strong>
+                          {compact(sum(data.forecast.map((r) => r.amount)))}{" "}
+                          <small>₽</small>
+                        </strong>
+                      </div>
+                      {data.forecast.map((r, i) => (
+                        <div className="forecast-row" key={r.name}>
+                          <div>
+                            <span
+                              className="status-dot"
+                              style={{
+                                background: [colors[1], colors[3], colors[4]][
+                                  i
+                                ],
+                              }}
+                            />
+                            {r.name}
+                          </div>
+                          <strong>{money(r.amount)}</strong>
+                        </div>
+                      ))}
+                      <div className="panel-note">
+                        <Info size={17} />
+                        <span>
+                          Подтверждённые, рискованные и неподтверждённые суммы
+                          показаны отдельно. Вероятности в исходной таблице не
+                          заданы.
+                        </span>
+                      </div>
+                    </Panel>
+                  </div>
+                  <Panel
+                    title="Дополнительно в портфеле"
+                    sub="Эти позиции не включены в итог основной воронки"
+                    className="detail-panel"
+                  >
+                    <div className="extra-grid">
+                      {data.pipelineExtra.map((r, i) => (
+                        <div key={r.stage}>
+                          <span>{r.stage}</span>
+                          <strong>{compact(r.amount)} ₽</strong>
+                          <small>{r.count} сдел.</small>
+                        </div>
+                      ))}
+                      <div>
+                        <span>Блины · дополнение к производству</span>
+                        <strong>{compact(data.productionSupplement)} ₽</strong>
+                        <small>Количество в источнике не указано</small>
+                      </div>
+                    </div>
+                  </Panel>
+                </>
+              )}
+              {tab === "money" && (
+                <>
+                  <div className="bottom-layout">
+                    <Panel
+                      title="Поступления и отгрузки"
+                      sub="Месячная сводка с ручными корректировками"
+                    >
+                      <MoneyChart rows={moneyRows} />
+                    </Panel>
+                    <Panel
+                      title="Соотношение операций"
+                      sub="За выбранный период"
+                    >
+                      <div className="balance">
+                        <span>Поступления минус отгрузки</span>
+                        <strong
+                          className={
+                            (ms.payments || 0) - (ms.shipments || 0) < 0
+                              ? "negative"
+                              : "positive"
+                          }
+                        >
+                          {money(
+                            ms.payments == null || ms.shipments == null
+                              ? null
+                              : ms.payments - ms.shipments,
+                          )}
+                        </strong>
+                        <p>
+                          Это разница двух потоков. Она не отражает прибыль,
+                          остаток на счетах или дебиторскую задолженность.
+                        </p>
+                      </div>
+                      <div className="panel-note">
+                        <Info size={17} />
+                        <span>
+                          Последние записи: поступления —{" "}
+                          {day(data.daily.payments.at(-1).date)}, отгрузки —{" "}
+                          {day(data.daily.shipments.at(-1).date)}.
+                        </span>
+                      </div>
+                    </Panel>
+                  </div>
+                  <Panel
+                    title="Детализация по ЦФО"
+                    sub="Выберите показатель и месяц для точного сравнения"
+                    className="detail-panel"
+                    action={
+                      <Segment
+                        value={moneyView}
+                        onChange={setMoneyView}
+                        label="Показатель денежной таблицы"
+                        options={[
+                          ["payments", "Поступления"],
+                          ["shipments", "Отгрузки"],
+                        ]}
+                      />
+                    }
+                  >
+                    <div className="money-table responsive-table">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Направление</th>
+                            {moneyRows.map((m) => (
+                              <th key={m.month}>{monthName(m.month)}</th>
+                            ))}
+                            <th>Итого</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {data.monthly[0].items.map((item, i) => (
+                            <tr key={item.name}>
+                              <td>{names[item.name] || item.name}</td>
+                              {moneyRows.map((m) => (
+                                <td
+                                  key={m.month}
+                                  data-label={monthName(m.month)}
+                                >
+                                  {m.items[i][moneyView] == null
+                                    ? "—"
+                                    : money(m.items[i][moneyView])}
+                                </td>
+                              ))}
+                              <td data-label="Итого">
+                                {money(
+                                  moneyRows.some(
+                                    (m) => m.items[i][moneyView] != null,
+                                  )
+                                    ? sum(
+                                        moneyRows.map(
+                                          (m) => m.items[i][moneyView],
+                                        ),
+                                      )
+                                    : null,
+                                )}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </Panel>
+                  <DailyMoney month={month} view={moneyView} />
+                </>
+              )}
             </>
           )}
           <footer className="page-footer">

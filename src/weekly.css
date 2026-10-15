@@ -1,0 +1,148 @@
+.weekly {
+  display: grid;
+  gap: 22px;
+  min-width: 0;
+}
+.weekly-toolbar {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 20px;
+}
+.weekly h2 {
+  font-size: 23px;
+  margin: 0 0 12px;
+}
+.weekly h3 {
+  font-size: 17px;
+  margin: 0 0 16px;
+}
+.weekly p {
+  line-height: 1.65;
+}
+.weekly-toolbar label {
+  display: grid;
+  gap: 8px;
+  font-size: 13px;
+}
+.weekly select {
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--line);
+  padding: 12px;
+  border-radius: 12px;
+  max-width: 100%;
+}
+.weekly .panel {
+  padding: 26px;
+  min-width: 0;
+}
+.weekly-muted,
+.weekly-card p,
+.weekly small {
+  color: var(--muted);
+}
+.weekly-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+.weekly-card strong {
+  font-size: clamp(22px, 2.1vw, 32px);
+  letter-spacing: -0.05em;
+}
+.weekly-change {
+  border-top: 1px solid var(--line);
+  padding-top: 15px;
+  font-size: 14px;
+}
+.weekly-directions,
+.weekly-payments {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 22px;
+}
+.weekly-directions article,
+.weekly-payments article {
+  padding: 20px;
+  background: var(--panel2);
+  border-radius: 16px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.weekly-directions strong,
+.weekly-payments strong {
+  font-size: 24px;
+}
+.weekly-detail {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  padding: 16px 0;
+  border-top: 1px solid var(--line);
+}
+.weekly-detail small {
+  grid-column: 1/-1;
+  line-height: 1.6;
+}
+.weekly-empty {
+  border-left: 3px solid var(--blue);
+  padding: 18px 22px;
+  background: var(--panel2);
+  margin-top: 18px;
+  border-radius: 0 12px 12px 0;
+}
+.weekly summary {
+  cursor: pointer;
+  padding: 20px 0;
+  color: var(--blue);
+}
+.weekly .panel-note {
+  margin: 0;
+  display: block;
+  line-height: 1.7;
+}
+.weekly details p {
+  font-size: 14px;
+}
+@media (max-width: 1100px) {
+  .weekly-cards {
+    grid-template-columns: 1fr;
+  }
+  .weekly-card strong {
+    font-size: 30px;
+  }
+}
+@media (max-width: 760px) {
+  .mobile-nav {
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  }
+  .mobile-nav button {
+    min-width: 0;
+    font-size: 10px;
+  }
+  .weekly-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .weekly-directions,
+  .weekly-payments {
+    grid-template-columns: 1fr;
+  }
+  .weekly .panel {
+    padding: 18px;
+  }
+  .weekly h2 {
+    font-size: 21px;
+  }
+  .weekly-detail {
+    grid-template-columns: 1fr;
+  }
+  .weekly-detail small {
+    grid-column: auto;
+  }
+  .weekly {
+    gap: 16px;
+  }
+}
