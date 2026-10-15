@@ -1,15 +1,15 @@
 {
-  "snapshot": "2026-10-08",
+  "snapshot": "2026-10-15",
   "coverage": {
     "leadsFrom": "2026-01-12",
-    "leadsThrough": "2026-10-08",
-    "paymentsThrough": "2026-10-07",
-    "shipmentsThrough": "2026-10-09",
+    "leadsThrough": "2026-10-15",
+    "paymentsThrough": "2026-10-15",
+    "shipmentsThrough": "2026-10-15",
     "moneyCompleteThrough": "2026-09-30",
     "firstMonth": "2026-01",
     "lastMonth": "2026-10"
   },
-  "sourceHash": "78d3659fd5bdc0e897d6f5e6c8241882e8647c7f9e9b2cf66b30fd2e335e9702",
+  "sourceHash": "b69e4e7e06eac8ce78cec0474381ce8fb53939cac84653e1cb53ec1a1a0714d1",
   "categories": [
     "Реготоп",
     "Контрактное производство",
@@ -8307,7 +8307,7 @@
         {
           "name": "Реготоп",
           "count": 9.0,
-          "amount": 2243335.0
+          "amount": 2143735.0
         },
         {
           "name": "Контрактное производство",
@@ -8352,7 +8352,7 @@
         {
           "name": "Реготоп",
           "count": 11.0,
-          "amount": 2407570.36
+          "amount": 2402960.0
         },
         {
           "name": "Контрактное производство",
@@ -8441,8 +8441,8 @@
       "items": [
         {
           "name": "Реготоп",
-          "count": 10.0,
-          "amount": 1344427.17
+          "count": 11.0,
+          "amount": 1583568.17
         },
         {
           "name": "Контрактное производство",
@@ -8486,8 +8486,233 @@
       "items": [
         {
           "name": "Реготоп",
-          "count": 3.0,
-          "amount": 958940.0
+          "count": 9.0,
+          "amount": 4282526.0
+        },
+        {
+          "name": "Контрактное производство",
+          "count": 2.0,
+          "amount": 134904.0
+        },
+        {
+          "name": "Экобоксы",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Постаматы",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Мехобработка",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Фасадные металлокассеты",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Корзины для кондиционеров",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Блины",
+          "count": null,
+          "amount": null
+        }
+      ]
+    },
+    {
+      "date": "2026-10-09",
+      "items": [
+        {
+          "name": "Реготоп",
+          "count": 9.0,
+          "amount": 6962811.16
+        },
+        {
+          "name": "Контрактное производство",
+          "count": 2.0,
+          "amount": 2.0
+        },
+        {
+          "name": "Экобоксы",
+          "count": 2.0,
+          "amount": 405001.0
+        },
+        {
+          "name": "Постаматы",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Мехобработка",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Фасадные металлокассеты",
+          "count": 1.0,
+          "amount": 145500.0
+        },
+        {
+          "name": "Корзины для кондиционеров",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Блины",
+          "count": null,
+          "amount": null
+        }
+      ]
+    },
+    {
+      "date": "2026-10-12",
+      "items": [
+        {
+          "name": "Реготоп",
+          "count": 12.0,
+          "amount": 3027591.0
+        },
+        {
+          "name": "Контрактное производство",
+          "count": 2.0,
+          "amount": 91000.0
+        },
+        {
+          "name": "Экобоксы",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Постаматы",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Мехобработка",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Фасадные металлокассеты",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Корзины для кондиционеров",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Блины",
+          "count": null,
+          "amount": null
+        }
+      ]
+    },
+    {
+      "date": "2026-10-13",
+      "items": [
+        {
+          "name": "Реготоп",
+          "count": 7.0,
+          "amount": 2768531.52
+        },
+        {
+          "name": "Контрактное производство",
+          "count": 1.0,
+          "amount": 1.0
+        },
+        {
+          "name": "Экобоксы",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Постаматы",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Мехобработка",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Фасадные металлокассеты",
+          "count": 1.0,
+          "amount": 406569.94
+        },
+        {
+          "name": "Корзины для кондиционеров",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Блины",
+          "count": null,
+          "amount": null
+        }
+      ]
+    },
+    {
+      "date": "2026-10-14",
+      "items": [
+        {
+          "name": "Реготоп",
+          "count": 4.0,
+          "amount": 3071671.0
+        },
+        {
+          "name": "Контрактное производство",
+          "count": 2.0,
+          "amount": 129281.0
+        },
+        {
+          "name": "Экобоксы",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Постаматы",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Мехобработка",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Фасадные металлокассеты",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Корзины для кондиционеров",
+          "count": null,
+          "amount": null
+        },
+        {
+          "name": "Блины",
+          "count": null,
+          "amount": null
+        }
+      ]
+    },
+    {
+      "date": "2026-10-15",
+      "items": [
+        {
+          "name": "Реготоп",
+          "count": null,
+          "amount": null
         },
         {
           "name": "Контрактное производство",
@@ -8530,45 +8755,45 @@
   "pipeline": [
     {
       "stage": "Новые",
-      "count": 1.0,
+      "count": 6.0,
       "amount": 0.0
     },
     {
       "stage": "Расчет",
-      "count": 26.0,
-      "amount": 28226150.0
+      "count": 37.0,
+      "amount": 13588206.0
     },
     {
       "stage": "КП выставлено",
-      "count": 95.0,
-      "amount": 55610777.0
+      "count": 109.0,
+      "amount": 53762182.0
     },
     {
       "stage": "Переговоры",
-      "count": 9.0,
-      "amount": 4542305.0
+      "count": 6.0,
+      "amount": 2534752.0
     },
     {
       "stage": "Счет согласован/договор подписан",
-      "count": 3.0,
-      "amount": 2981968.0
+      "count": 4.0,
+      "amount": 3988848.0
     },
     {
       "stage": "Производство",
       "count": 38.0,
-      "amount": 15630000.0
+      "amount": 15934000.0
     }
   ],
   "pipelineExtra": [
     {
       "stage": "Дубль",
-      "count": 6.0,
-      "amount": 4627989.0
+      "count": 4.0,
+      "amount": 3865309.0
     },
     {
       "stage": "Долгосрочные",
-      "count": 41.0,
-      "amount": 76244852.0
+      "count": 40.0,
+      "amount": 76436862.0
     },
     {
       "stage": "Крупные",
@@ -8581,15 +8806,15 @@
   "forecast": [
     {
       "name": "Подтвержденные",
-      "amount": 8125000.0
+      "amount": 6523600.0
     },
     {
       "name": "Подтвержденные с риском",
-      "amount": 9156000.0
+      "amount": 7396000.0
     },
     {
       "name": "Не подтвержденные",
-      "amount": 45854000.0
+      "amount": 39842582.0
     }
   ],
   "monthly": [
@@ -8976,12 +9201,12 @@
       "items": [
         {
           "name": "регистры",
-          "payments": 477167.5,
-          "shipments": 7486419.0
+          "payments": 2843611.5,
+          "shipments": 9234760.0
         },
         {
           "name": "контракт",
-          "payments": 0,
+          "payments": 36600.0,
           "shipments": 282369.5
         },
         {
@@ -8992,7 +9217,7 @@
         {
           "name": "экобоксы",
           "payments": 588600.0,
-          "shipments": 380000.0
+          "shipments": 524000.0
         },
         {
           "name": "металлокассеты",
@@ -9007,11 +9232,11 @@
         {
           "name": "блины",
           "payments": null,
-          "shipments": null
+          "shipments": 1654320.0
         }
       ],
-      "payments": 1065767.5,
-      "shipments": 8148788.5
+      "payments": 3468811.5,
+      "shipments": 11695449.5
     },
     {
       "month": "2026-11",
@@ -11140,6 +11365,71 @@
           null,
           null
         ]
+      },
+      {
+        "date": "2026-10-09",
+        "amount": 1430940.0,
+        "values": [
+          1430940.0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      {
+        "date": "2026-10-12",
+        "amount": 547500.0,
+        "values": [
+          511900.0,
+          35600.0,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      {
+        "date": "2026-10-13",
+        "amount": 1000.0,
+        "values": [
+          null,
+          1000.0,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      {
+        "date": "2026-10-14",
+        "amount": 187404.0,
+        "values": [
+          187404.0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      {
+        "date": "2026-10-15",
+        "amount": 236200.0,
+        "values": [
+          236200.0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
       }
     ],
     "shipments": [
@@ -13160,10 +13450,36 @@
       },
       {
         "date": "2026-10-08",
-        "amount": 135830.0,
+        "amount": 3287500.0,
+        "values": [
+          1382350.0,
+          135830.0,
+          null,
+          115000.0,
+          null,
+          null,
+          1654320.0
+        ]
+      },
+      {
+        "date": "2026-10-09",
+        "amount": 29000.0,
         "values": [
           null,
-          135830.0,
+          null,
+          null,
+          29000.0,
+          null,
+          null,
+          null
+        ]
+      },
+      {
+        "date": "2026-10-12",
+        "amount": 942670.0,
+        "values": [
+          942670.0,
+          null,
           null,
           null,
           null,
@@ -13172,10 +13488,23 @@
         ]
       },
       {
-        "date": "2026-10-09",
-        "amount": 1497359.0,
+        "date": "2026-10-14",
+        "amount": 624680.0,
         "values": [
-          1497359.0,
+          624680.0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      {
+        "date": "2026-10-15",
+        "amount": 296000.0,
+        "values": [
+          296000.0,
           null,
           null,
           null,

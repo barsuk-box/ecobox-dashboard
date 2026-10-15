@@ -1,0 +1,202 @@
+.history {
+  display: grid;
+  gap: 24px;
+  min-width: 0;
+}
+.history-toolbar,
+.history-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+.history p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
+.history h2 {
+  font-size: 25px;
+  letter-spacing: -0.8px;
+}
+.history label {
+  display: grid;
+  gap: 8px;
+  font-size: 12px;
+  min-width: 180px;
+}
+.history select {
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--line);
+  padding: 12px;
+  border-radius: 12px;
+  font: inherit;
+}
+.history-section {
+  padding: 28px;
+  min-width: 0;
+}
+.history-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin: 28px 0;
+}
+.history-cards article {
+  background: var(--panel2);
+  border-top: 3px solid var(--year-color);
+  border-radius: 12px;
+  padding: 22px;
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+}
+.history-cards span {
+  font-size: 16px;
+  font-weight: 700;
+}
+.history-cards strong {
+  font-size: clamp(18px, 2vw, 30px);
+  letter-spacing: -1px;
+}
+.history-cards small {
+  color: var(--muted);
+}
+.history-legend {
+  display: flex;
+  gap: 24px;
+  font-size: 12px;
+}
+.history-legend span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.history-legend i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+.history-chart {
+  height: 220px;
+  display: flex;
+  gap: 12px;
+  padding-top: 20px;
+  margin-bottom: 28px;
+}
+.history-month {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: center;
+  font-size: 11px;
+  color: var(--muted);
+}
+.history-bars {
+  flex: 1;
+  display: flex;
+  gap: 3px;
+  align-items: flex-end;
+  border-bottom: 1px solid var(--line);
+}
+.history-bars > div {
+  flex: 1;
+  border-radius: 5px 5px 0 0;
+  transition: height 0.3s;
+  min-width: 0;
+}
+.history-bars > div:hover {
+  filter: brightness(1.2);
+}
+.history-table {
+  max-width: 100%;
+  overflow-x: auto;
+}
+.history table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.history th,
+.history td {
+  padding: 13px 10px;
+  text-align: right;
+  border-bottom: 1px solid var(--line);
+}
+.history th:first-child {
+  text-align: left;
+}
+.history-muted {
+  opacity: 0.55;
+}
+.history details {
+  margin-top: 20px;
+  font-size: 13px;
+}
+.history summary {
+  cursor: pointer;
+  color: var(--blue);
+  padding: 14px 0;
+}
+.history-footnote {
+  margin-top: 20px;
+}
+.history .eyebrow {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--blue);
+}
+@media (max-width: 760px) {
+  .history-toolbar,
+  .history-heading {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .history-section {
+    padding: 18px;
+  }
+  .history h2 {
+    font-size: 22px;
+  }
+  .history-cards {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin: 20px 0;
+  }
+  .history-cards article {
+    padding: 16px;
+    grid-template-columns: 50px 1fr;
+    align-items: center;
+    gap: 8px;
+  }
+  .history-cards strong {
+    font-size: 23px;
+    text-align: right;
+  }
+  .history-cards small {
+    grid-column: 1/-1;
+  }
+  .history-chart {
+    gap: 6px;
+    height: 180px;
+  }
+  .history-bars {
+    gap: 2px;
+  }
+  .history-month {
+    font-size: 10px;
+  }
+  .history table {
+    font-size: 11px;
+  }
+  .history th,
+  .history td {
+    padding: 12px 8px;
+  }
+}
+.history .history-heading h2 {font-size:24px;margin:12px 0 8px}@media(max-width:760px){.history .history-heading h2{font-size:21px}}

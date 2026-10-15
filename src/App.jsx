@@ -38,6 +38,7 @@ import {
 } from "./metrics.js";
 import Assembly from "./Assembly.jsx";
 import Weekly from "./Weekly.jsx";
+import History from "./History.jsx";
 
 const colors = [
   "#528bff",
@@ -80,8 +81,15 @@ const tabs = [
   },
   { id: "pipeline", label: "Воронка продаж", short: "Воронка", icon: Filter },
   { id: "money", label: "Денежный поток", short: "Деньги", icon: Wallet },
+  {
+    id: "history",
+    label: "Статистика 2024–2026",
+    short: "История",
+    icon: FileChartColumn,
+  },
 ];
 const titles = {
+  history: ["Динамика в перспективе", "Поступления и регистры · 2024–2026."],
   weekly: ["Неделя в фокусе", "Движение денег, спрос и выполнение заказов."],
   overview: ["Пульс бизнеса", "Всё, что важно. В одном пространстве."],
   leads: ["От интереса к заказу", "Динамика входящего спроса по направлениям."],
@@ -725,7 +733,9 @@ export default function App() {
             </div>
             <div className="hero-index">ЭБ / 26</div>
           </section>
-          {tab === "weekly" ? (
+          {tab === "history" ? (
+            <History />
+          ) : tab === "weekly" ? (
             <Weekly data={data} />
           ) : (
             <>

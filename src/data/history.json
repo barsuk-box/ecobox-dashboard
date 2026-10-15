@@ -1,0 +1,298 @@
+{
+  "asOf": "2026-09-11",
+  "receipts": [
+    {
+      "year": 2024,
+      "months": [
+        5894481,
+        6169720,
+        6013625,
+        4249253,
+        4750784,
+        6562109,
+        15856383,
+        9915847,
+        13336885,
+        10392467,
+        6961603,
+        8954011
+      ],
+      "reportedTotal": 99057168.46,
+      "additional": 72000000,
+      "reportedWithAdditional": 171057168.46
+    },
+    {
+      "year": 2025,
+      "months": [
+        5142932,
+        5506830,
+        9394971,
+        12331817,
+        6996286,
+        8053512,
+        9397783,
+        9711723,
+        7398974,
+        11891451,
+        14020183,
+        15304597
+      ],
+      "reportedTotal": 115151059.05,
+      "additional": 26652264,
+      "reportedWithAdditional": 141803323.05
+    },
+    {
+      "year": 2026,
+      "months": [
+        3599385,
+        12551556,
+        6846932,
+        19023475,
+        13281219,
+        15649123,
+        13472567,
+        17281709,
+        null,
+        null,
+        null,
+        null
+      ],
+      "reportedTotal": 101705966,
+      "additional": 24339000,
+      "reportedWithAdditional": 126044966
+    }
+  ],
+  "registers": [
+    {
+      "year": 2024,
+      "months": [
+        {
+          "month": 1,
+          "requests": 73,
+          "pipeline": 44104250.46,
+          "amount": 1631489
+        },
+        {
+          "month": 2,
+          "requests": 85,
+          "pipeline": 70566795.46,
+          "amount": 2343773
+        },
+        {
+          "month": 3,
+          "requests": 66,
+          "pipeline": 50955994,
+          "amount": 385680
+        },
+        {
+          "month": 4,
+          "requests": 68,
+          "pipeline": 68882629.55,
+          "amount": 602480
+        },
+        {
+          "month": 5,
+          "requests": 65,
+          "pipeline": 23059751.97,
+          "amount": 349820
+        },
+        {
+          "month": 6,
+          "requests": 61,
+          "pipeline": 26000303.76,
+          "amount": 1256990
+        },
+        {
+          "month": 7,
+          "requests": 100,
+          "pipeline": 61000947.85,
+          "amount": 7097204
+        },
+        {
+          "month": 8,
+          "requests": 115,
+          "pipeline": 69570992.72,
+          "amount": 5120399
+        },
+        {
+          "month": 9,
+          "requests": 117,
+          "pipeline": 57157643.83,
+          "amount": 7641159
+        },
+        {
+          "month": 10,
+          "requests": 143,
+          "pipeline": 80698993.22,
+          "amount": 5856714
+        },
+        {
+          "month": 11,
+          "requests": 116,
+          "pipeline": 83663142.42,
+          "amount": 3175872
+        },
+        {
+          "month": 12,
+          "requests": 79,
+          "pipeline": 34107809.41,
+          "amount": 3536632
+        }
+      ]
+    },
+    {
+      "year": 2025,
+      "months": [
+        {
+          "month": 1,
+          "requests": 74,
+          "pipeline": 35856038.38,
+          "amount": 1530573.7
+        },
+        {
+          "month": 2,
+          "requests": 98,
+          "pipeline": 84574376.87,
+          "amount": 1790752
+        },
+        {
+          "month": 3,
+          "requests": 96,
+          "pipeline": 52100861.75,
+          "amount": 5628441.9
+        },
+        {
+          "month": 4,
+          "requests": 103,
+          "pipeline": 72030282.5,
+          "amount": 7115936.8
+        },
+        {
+          "month": 5,
+          "requests": 70,
+          "pipeline": 84628149.63,
+          "amount": 3282841.3
+        },
+        {
+          "month": 6,
+          "requests": 115,
+          "pipeline": 75809940.32,
+          "amount": 2743876.4
+        },
+        {
+          "month": 7,
+          "requests": 128,
+          "pipeline": 64009615,
+          "amount": 4061798
+        },
+        {
+          "month": 8,
+          "requests": 92,
+          "pipeline": 33748356,
+          "amount": 9299474
+        },
+        {
+          "month": 9,
+          "requests": 168,
+          "pipeline": 68614529.74000001,
+          "amount": 6086368
+        },
+        {
+          "month": 10,
+          "requests": 180,
+          "pipeline": 86652686,
+          "amount": 9302517
+        },
+        {
+          "month": 11,
+          "requests": 184,
+          "pipeline": 103926429,
+          "amount": 6398740
+        },
+        {
+          "month": 12,
+          "requests": 117,
+          "pipeline": 76762475,
+          "amount": 10967219
+        }
+      ]
+    },
+    {
+      "year": 2026,
+      "months": [
+        {
+          "month": 1,
+          "requests": 98,
+          "pipeline": 70422993.38,
+          "amount": 3599385.11
+        },
+        {
+          "month": 2,
+          "requests": 144,
+          "pipeline": 84098235.88,
+          "amount": 9987490.99
+        },
+        {
+          "month": 3,
+          "requests": 41,
+          "pipeline": 35852898.18,
+          "amount": 2315011.9
+        },
+        {
+          "month": 4,
+          "requests": 60,
+          "pipeline": 34883088.95,
+          "amount": 9817964.45
+        },
+        {
+          "month": 5,
+          "requests": 66,
+          "pipeline": 30729989,
+          "amount": 7903880.5
+        },
+        {
+          "month": 6,
+          "requests": 93,
+          "pipeline": 47743239,
+          "amount": 11742429
+        },
+        {
+          "month": 7,
+          "requests": 86,
+          "pipeline": 51656177,
+          "amount": 10115882
+        },
+        {
+          "month": 8,
+          "requests": 106,
+          "pipeline": 85755067,
+          "amount": 13519087
+        },
+        {
+          "month": 9,
+          "requests": null,
+          "pipeline": null,
+          "amount": 8038131
+        },
+        {
+          "month": 10,
+          "requests": null,
+          "pipeline": null,
+          "amount": null
+        },
+        {
+          "month": 11,
+          "requests": null,
+          "pipeline": null,
+          "amount": null
+        },
+        {
+          "month": 12,
+          "requests": null,
+          "pipeline": null,
+          "amount": null
+        }
+      ]
+    }
+  ]
+}

@@ -8,7 +8,7 @@ test("weekly view compares periods and shows honest missing-data states", async 
     .getByRole("navigation", { name: "Разделы дашборда" })
     .getByRole("button", { name: "Недельная динамика" })
     .click();
-  await expect(page.getByLabel("Неделя сравнения")).toHaveValue("2026-10-05");
+  await expect(page.getByLabel("Неделя сравнения")).toHaveValue("2026-10-12");
   await expect(
     page.getByRole("heading", { name: "Регистры", level: 2 }),
   ).toBeVisible();
@@ -41,8 +41,8 @@ test("desktop filters, themes, navigation, search, export and source dialog", as
   await expect(
     page.getByRole("heading", { name: "Пульс бизнеса." }),
   ).toBeVisible();
-  await expect(page.locator(".kpi").first()).toContainText("1 650");
-  await expect(page.locator(".snapshot")).toContainText("08.10.2026");
+  await expect(page.locator(".kpi").first()).toContainText("1 702");
+  await expect(page.locator(".snapshot")).toContainText("15.10.2026");
   await expect(page.locator(".coverage-note")).toContainText(
     "30 сентября 2026",
   );
@@ -53,11 +53,11 @@ test("desktop filters, themes, navigation, search, export and source dialog", as
     page.getByLabel("Период отчёта").locator('option[value="2026-11"]'),
   ).toHaveCount(0);
   await page.getByLabel("Период отчёта").selectOption("2026-10");
-  await expect(page.locator(".kpi").first()).toContainText("59 заявок");
-  await expect(page.locator(".kpi").first()).toContainText("17,4");
-  await expect(page.locator(".kpi").nth(1)).toContainText("1,07");
-  await expect(page.locator(".kpi").nth(2)).toContainText("8,15");
-  await expect(page.locator(".coverage-note")).toContainText(
+  await expect(page.locator(".kpi").first()).toContainText("111 заявок");
+  await expect(page.locator(".kpi").first()).toContainText("38");
+  await expect(page.locator(".kpi").nth(1)).toContainText("3,47");
+  await expect(page.locator(".kpi").nth(2)).toContainText("11,7");
+  await expect(page.locator(".coverage-note")).not.toContainText(
     "после даты среза",
   );
   await page.getByLabel("Период отчёта").selectOption("2026-09");
@@ -107,7 +107,7 @@ test("desktop filters, themes, navigation, search, export and source dialog", as
   await expect(page.getByText("Дополнительно в портфеле")).toBeVisible();
   await expect(page.getByText("Октябрь 2026", { exact: true })).toBeVisible();
   await expect(page.locator(".kpi").nth(1)).toContainText("38 сделок");
-  await expect(page.locator(".kpi").first()).toContainText("106,99");
+  await expect(page.locator(".kpi").first()).toContainText("89,81");
   await page
     .getByRole("navigation", { name: "Разделы дашборда" })
     .getByRole("button", { name: "Денежный поток" })
@@ -116,7 +116,7 @@ test("desktop filters, themes, navigation, search, export and source dialog", as
   await page.getByRole("button", { name: "О данных", exact: true }).click();
   await expect(page.getByRole("dialog")).toBeVisible();
   await expect(page.getByRole("dialog")).toContainText(
-    "Заявки представлены по 8 октября 2026",
+    "Заявки представлены по 15 октября 2026",
   );
   await page.keyboard.press("Escape");
   await expect(page.getByRole("dialog")).toHaveCount(0);
@@ -134,6 +134,7 @@ for (const width of [320, 375, 390, 768])
       "Заявки",
       "Воронка",
       "Деньги",
+      "История",
     ].entries()) {
       if (width <= 760)
         await page
@@ -165,4 +166,32 @@ test("reduced motion retains poster and does not start WebGL", async ({
   await page.goto("");
   await expect(page.locator(".poster")).toBeVisible();
   await expect(page.locator(".assembly canvas")).toHaveCount(0);
+});
+
+test("historical receipts and registers compare matching periods", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 1050 });
+  await page.goto("");
+  await page
+    .locator(".sidebar nav")
+    .getByRole("button", { name: "Статистика 2024–2026" })
+    .click();
+  await expect(page.getByLabel("Период сравнения")).toHaveValue("8");
+  await expect(page.locator(".history-cards").first()).toContainText(
+    "101 705 966",
+  );
+  await expect(page.locator(".history-cards").nth(1)).toContainText(
+    "69 001 130,95",
+  );
+  await page.getByLabel("Показатель РегОтоп").selectOption("requests");
+  await expect(page.locator(".history-cards").nth(1)).toContainText("694");
+  await page.getByLabel("Период сравнения").selectOption("1");
+  await expect(page.locator(".history-cards").first()).toContainText(
+    "3 599 385",
+  );
+  await page.getByLabel("Период сравнения").selectOption("8");
+  await page.screenshot({ path: ".private/history-dark.png", fullPage: true });
+  await page.getByRole("button", { name: "Включить светлую тему" }).click();
+  await page.screenshot({ path: ".private/history-light.png", fullPage: true });
 });
