@@ -185,12 +185,12 @@ test("historical receipts and registers compare matching periods", async ({
     .locator(".sidebar nav")
     .getByRole("button", { name: "Статистика 2024–2026" })
     .click();
-  await expect(page.getByLabel("Период сравнения")).toHaveValue("8");
+  await expect(page.getByLabel("Период сравнения")).toHaveValue("9");
   await expect(page.locator(".history-cards").first()).toContainText(
-    "101 705 966",
+    "114 064 841,89",
   );
   await expect(page.locator(".history-cards").nth(1)).toContainText(
-    "69 001 130,95",
+    "77 039 261,95",
   );
   await page.getByLabel("Показатель РегОтоп").selectOption("requests");
   await expect(page.locator(".history-cards").nth(1)).toContainText("694");

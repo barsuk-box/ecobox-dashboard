@@ -52,7 +52,7 @@
         15649123,
         13472567,
         17281709,
-        null,
+        12358875.89,
         null,
         null,
         null
@@ -294,5 +294,8 @@
         }
       ]
     }
-  ]
+  ],
+  "completedMonths": 9,
+  "supplementAsOf": "2026-10-15",
+  "registersActivityCompletedMonths": 8
 }

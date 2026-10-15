@@ -27,7 +27,12 @@ export function total(values, end) {
     ? null
     : values.slice(0, end).reduce((a, b) => a + b, 0);
 }
-function Comparison({ series, end, count = false }) {
+function Comparison({
+  series,
+  end,
+  count = false,
+  completeThrough = history.completedMonths,
+}) {
   const max = Math.max(
     1,
     ...series.flatMap((s) => s.values.slice(0, end).filter((v) => v != null)),
@@ -101,7 +106,9 @@ function Comparison({ series, end, count = false }) {
                   <td key={s.year}>{format(s.values[j], count)}</td>
                 ))}
                 <td>
-                  {j < 8 && series[2].values[j] != null && series[1].values[j] > 0
+                  {j < completeThrough &&
+                  series[2].values[j] != null &&
+                  series[1].values[j] > 0
                     ? `${((series[2].values[j] / series[1].values[j] - 1) * 100).toFixed(1)}%`
                     : "—"}
                 </td>
@@ -114,7 +121,7 @@ function Comparison({ series, end, count = false }) {
   );
 }
 export default function History() {
-  const [end, setEnd] = useState(8),
+  const [end, setEnd] = useState(history.completedMonths),
     [metric, setMetric] = useState("amount");
   const labels = {
     amount: "Сумма по отчёту",
@@ -127,7 +134,8 @@ export default function History() {
         <div>
           <h2>Три года в сравнении</h2>
           <p>
-            Исторический срез на 11 сентября 2026 · общий полный период — январь–август
+            Поступления дополнены за сентябрь · данные общего отчёта на 15
+            октября 2026
           </p>
         </div>
         <label>
@@ -137,7 +145,7 @@ export default function History() {
             value={end}
             onChange={(e) => setEnd(Number(e.target.value))}
           >
-            {months.slice(0, 8).map((m, i) => (
+            {months.slice(0, history.completedMonths).map((m, i) => (
               <option value={i + 1} key={m}>
                 {i === 0 ? "Январь" : `Январь — ${m.toLowerCase()}`}
               </option>
@@ -150,7 +158,10 @@ export default function History() {
           <div>
             <span className="eyebrow">01 / ПОСТУПЛЕНИЯ</span>
             <h2>Как растёт денежный поток</h2>
-            <p>Сравниваем одинаковые месяцы каждого года.</p>
+            <p>
+              Сравниваем одинаковые месяцы каждого года. Сентябрь 2026 добавлен
+              из общего отчёта.
+            </p>
           </div>
         </div>
         <Comparison
@@ -158,7 +169,9 @@ export default function History() {
           end={end}
         />
         <details>
-          <summary>Дополнительные поступления и итоги источника</summary>
+          <summary>
+            Дополнительные поступления и исходные итоги на 11 сентября
+          </summary>
           <p>
             АО РТ указано в источнике отдельно, без распределения по месяцам.
             Эти суммы не включены в сравнение выше. Итоги 2024 и 2025 — за
@@ -198,8 +211,8 @@ export default function History() {
             <span className="eyebrow">02 / РЕГИСТРЫ</span>
             <h2>РегОтоп · динамика по годам</h2>
             <p>
-              Заявки, объём воронки и суммы из отдельного отчёта. Сентябрь 2026
-              заполнен частично: только сумма.
+              Сумма за сентябрь подтверждена общим отчётом. Заявки и воронка
+              сопоставимы по август включительно.
             </p>
           </div>
           <label>
@@ -218,12 +231,28 @@ export default function History() {
           </label>
         </div>
         <h3>{labels[metric]}</h3>
+        {metric !== "amount" &&
+          end > history.registersActivityCompletedMonths && (
+            <p>
+              Для этого показателя сравнение ограничено январём–августом:
+              сопоставимых данных за сентябрь нет.
+            </p>
+          )}
         <Comparison
           series={history.registers.map((s) => ({
             year: s.year,
             values: s.months.map((m) => m[metric]),
           }))}
-          end={end}
+          end={
+            metric === "amount"
+              ? end
+              : Math.min(end, history.registersActivityCompletedMonths)
+          }
+          completeThrough={
+            metric === "amount"
+              ? history.completedMonths
+              : history.registersActivityCompletedMonths
+          }
           count={metric === "requests"}
         />
         <p className="history-footnote">
@@ -235,4 +264,3 @@ export default function History() {
     </div>
   );
 }
-

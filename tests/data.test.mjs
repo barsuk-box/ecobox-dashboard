@@ -235,7 +235,7 @@ test("history totals preserve source precision and incomplete months", () => {
   );
   const totals = history.receipts.map((s) => sum(s.months.slice(0, 8)));
   assert.deepEqual(totals, [59412202, 66535854, 101705966]);
-  assert.ok(history.receipts[2].months.slice(8).every((v) => v === null));
+  assert.ok(history.receipts[2].months.slice(9).every((v) => v === null));
   assert.deepEqual(
     history.registers.map((s) =>
       sum(s.months.slice(0, 8).map((m) => m.requests)),
@@ -307,4 +307,22 @@ test("Friday to Thursday reporting week includes October 9 and compares October 
     assert.equal(m.previousEnd, "2026-10-08");
     assert.equal(m.partial, false);
   }
+});
+
+test("September history supplement reconciles to closed cash report without altering original annual totals", () => {
+  const h = JSON.parse(
+    fs.readFileSync(new URL("../src/data/history.json", import.meta.url)),
+  );
+  assert.equal(h.completedMonths, 9);
+  assert.equal(h.registersActivityCompletedMonths, 8);
+  close(h.receipts[2].months[8], monthStats(data, "2026-09").payments);
+  close(sum(h.receipts[2].months.slice(0, 9)), 114064841.89);
+  close(
+    sum(h.registers[2].months.slice(0, 9).map((m) => m.amount)),
+    77039261.95,
+  );
+  close(h.registers[2].months[8].amount, data.monthly[8].items[0].payments);
+  assert.equal(h.receipts[2].reportedTotal, 101705966);
+  assert.equal(h.registers[2].months[8].requests, null);
+  assert.equal(h.registers[2].months[8].pipeline, null);
 });
