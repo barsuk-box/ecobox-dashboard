@@ -8,4 +8,4 @@ playwright-report/
 *.blend1
 *.log
 outputs/
-!public/templates/ecobox-weekly-template.xlsx
+Снимок экрана*.png

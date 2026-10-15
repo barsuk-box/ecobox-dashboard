@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { money, integer } from "./metrics.js";
-import { weeks, shift, weeklyMetric, salesMetrics } from "./weekly.js";
+import { weeks, shift, weeklyMetric } from "./weekly.js";
 import inputs from "./data/weekly-inputs.json";
+import production from "./data/production-sites.json";
 import "./weekly.css";
 const date = (s) =>
   new Date(s + "T12:00:00").toLocaleDateString("ru-RU", {
@@ -25,32 +26,6 @@ function Delta({ value, count }) {
 export default function Weekly({ data }) {
   const options = weeks(data),
     [start, setStart] = useState(options[0]);
-  const end = [shift(start, 6), data.snapshot].sort()[0];
-  const sales = salesMetrics(inputs, start, end, data.snapshot);
-  const previousSales = salesMetrics(
-    inputs,
-    shift(start, -7),
-    shift(end, -7),
-    data.snapshot,
-  );
-  const snapshots = [
-    ...inputs.productionSnapshots.filter((r) => r.date !== data.snapshot),
-    {
-      date: data.snapshot,
-      count: data.pipeline.at(-1).count,
-      amount: data.pipeline.at(-1).amount,
-      pancakesAmount: data.productionSupplement,
-      registersAmount:
-        inputs.productionSnapshots.find((s) => s.date === data.snapshot)
-          ?.registersAmount ?? null,
-    },
-  ].sort((a, b) => a.date.localeCompare(b.date));
-  const current = snapshots
-    .filter((s) => s.date >= start && s.date <= end)
-    .at(-1);
-  const previous = snapshots
-    .filter((s) => s.date >= shift(start, -7) && s.date <= shift(end, -7))
-    .at(-1);
   const metrics = [
     ["payments", "Поступления"],
     ["shipments", "Отгрузки"],
@@ -61,13 +36,6 @@ export default function Weekly({ data }) {
       <div className="weekly-toolbar">
         <div>
           <h2>Неделя в сравнении</h2>
-          <a
-            className="template-download"
-            href={`${import.meta.env.BASE_URL}templates/ecobox-weekly-template.xlsx`}
-            download
-          >
-            Скачать шаблон Excel для заполнения
-          </a>
           <p>Понедельник — воскресенье · срез {date(data.snapshot)}</p>
         </div>
         <label>
@@ -159,110 +127,62 @@ export default function Weekly({ data }) {
           ))}
         </div>
       </section>
-      <section className="panel">
-        <h2>Заказы в производстве</h2>
+      <section className="panel" aria-label="Загрузка производств">
+        <h2>Загрузка производств</h2>
         <p className="weekly-muted">
-          Остаток на дату среза, не сумма за неделю. «Блины» в источнике указаны
-          отдельно от основной воронки. Разбивки производства по регистрам пока
-          нет.
+          Отдельные списки Каменников и РУМСа по скриншотам от{" "}
+          {date(production.snapshot)}. Показаны только видимые позиции. Это
+          портфель заказов, не процент загрузки мощности. Выбор недели выше
+          относится к деньгам и лидам.
         </p>
         <div className="weekly-directions">
-          {[
-            [current, "Выбранная неделя"],
-            [previous, "Предыдущая неделя"],
-          ].map(([s, label]) => (
-            <article key={label}>
-              <h3>{label}</h3>
-              {s ? (
-                <>
-                  <p>
-                    Срез {date(s.date)} · {number(s.count)} заказов
-                  </p>
-                  <strong>{money(s.amount)}</strong>
-                  <p>Регистры: {money(s.registersAmount)}</p>
-                  <p>Блины, отдельный портфель: {money(s.pancakesAmount)}</p>
-                </>
-              ) : (
-                <p>Нет среза за сопоставимые дни этой недели.</p>
+          {production.sites.map((site) => (
+            <article key={site.name}>
+              <h3>{site.name}</h3>
+              <strong>{money(site.amount)}</strong>
+              <p>
+                {site.positions} видимых позиций · суммы заполнены у{" "}
+                {site.amountCount}
+              </p>
+              {site.missingAmounts > 0 && (
+                <p>
+                  У {site.missingAmounts} позиций сумма отсутствует. Итог
+                  включает только заполненные суммы.
+                </p>
               )}
+              <div className="weekly-detail">
+                <span>Регистры</span>
+                <b>{money(site.registersAmount)}</b>
+                <small>
+                  {site.registersCount} позиций, входят в итог площадки
+                </small>
+              </div>
+              <div className="weekly-detail">
+                <span>Блины</span>
+                <b>Нет данных</b>
+                <small>
+                  На видимой части скриншота отдельно не обозначены.
+                </small>
+              </div>
+              <p>
+                План отгрузки указан: {site.plannedDates} позиций. Без даты:{" "}
+                {site.positions - site.plannedDates}.
+              </p>
+              <p>
+                Плановая дата раньше 15 октября: {site.pastPlanDates} позиций.
+                Факт отгрузки на скриншоте не подтверждён.
+              </p>
+              <p className="weekly-muted">
+                Первый срез площадки. Недельная динамика появится после
+                следующего скриншота.
+              </p>
             </article>
           ))}
         </div>
-        {current && previous && (
-          <p>
-            Изменение между срезами {date(previous.date)} и {date(current.date)}
-            : {integer(current.count - previous.count)} заказов ·{" "}
-            {money(current.amount - previous.amount)}. Это изменение остатка, не
-            объём выпуска.
-          </p>
-        )}
-        <details>
-          <summary>История сохранённых срезов</summary>
-          {snapshots.map((s) => (
-            <p key={s.date}>
-              {date(s.date)}: {number(s.count)} заказов · {money(s.amount)} ·
-              отдельно блины {money(s.pancakesAmount)}
-            </p>
-          ))}
-        </details>
-      </section>
-      <section className="panel">
-        <h2>Подписанные, оплаченные и конверсия</h2>
         <p className="weekly-muted">
-          Подписанные и оплаченные — уникальные заказы по дате события.
-          Конверсия — доля лидов выбранной недели с подписанным или оплаченным
-          заказом к дате среза; один лид считается один раз.
-        </p>
-        {sales ? (
-          <div className="weekly-directions">
-            {[
-              [sales, "Выбранная неделя"],
-              [previousSales, "Предыдущая неделя"],
-            ].map(([s, l]) => (
-              <article key={l}>
-                <h3>{l}</h3>
-                {s ? (
-                  <>
-                    <p>
-                      Подписано: {s.signed} · {money(s.signedAmount)}
-                    </p>
-                    <p>
-                      Оплачено: {s.paid} · сумма заказов {money(s.paidAmount)}
-                    </p>
-                    <p>Лидов в когорте: {s.cohort}</p>
-                    <p>
-                      Конверсия в подписание:{" "}
-                      {s.signedConversion == null
-                        ? "—"
-                        : s.signedConversion.toFixed(1) + "%"}
-                    </p>
-                    <p>
-                      Конверсия в оплату:{" "}
-                      {s.paidConversion == null
-                        ? "—"
-                        : s.paidConversion.toFixed(1) + "%"}
-                    </p>
-                  </>
-                ) : (
-                  <p>Нет данных за сопоставимый период.</p>
-                )}
-              </article>
-            ))}
-          </div>
-        ) : (
-          <div className="weekly-empty">
-            <strong>Ожидаем историю сделок</strong>
-            <p>
-              Нужны идентификаторы лидов и заказов, связь между ними, даты
-              создания, подписания и первой оплаты. Текущие суммы стадий воронки
-              не дают недельную конверсию.
-            </p>
-          </div>
-        )}
-        <p className="weekly-muted">
-          У свежей когорты было меньше времени на конверсию. Сравнение
-          показывает текущую зрелость когорт, а не окончательную эффективность
-          менеджеров.
+          Дата среза взята из имён файлов; год плановых дат принят как 2026.
+          Суммы заказов не показывают остаток работ. Не складываем эти списки с
+          суммами стадий воронки.
         </p>
       </section>
       <section className="panel">
@@ -295,7 +215,7 @@ export default function Weekly({ data }) {
           </div>
         ) : (
           <div className="weekly-empty">
-            <strong>Реестр оплат пока не предоставлен</strong>
+            <strong>Ожидаем отдельный файл по крупным оплатам</strong>
             <p>
               Для каждой оплаты: безопасное название заказа, сумма, ожидаемая
               дата, препятствие и следующий шаг.

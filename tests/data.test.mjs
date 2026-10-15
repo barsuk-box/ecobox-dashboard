@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
-import { monday, weeklyMetric, change, salesMetrics } from "../src/weekly.js";
+import { monday, weeklyMetric, change } from "../src/weekly.js";
 import {
   leadRows,
   leadStats,
@@ -55,46 +55,7 @@ test("weekly null differs from recorded zero and percentages have a valid base",
   assert.equal(change(10, 0).percent, null);
   assert.equal(change(10, null), null);
 });
-test("conversion links unique orders to a lead cohort rather than dividing unrelated events", () => {
-  const input = {
-    salesCoverage: { from: "2026-01-01", through: "2026-10-08" },
-    leadCohort: [
-      { id: "a", createdAt: "2026-10-05" },
-      { id: "b", createdAt: "2026-10-06" },
-    ],
-    orders: [
-      {
-        id: "o1",
-        leadId: "a",
-        signedAt: "2026-10-06",
-        paidAt: null,
-        amount: 100,
-      },
-      {
-        id: "o2",
-        leadId: "a",
-        signedAt: "2026-10-07",
-        paidAt: "2026-10-08",
-        amount: 200,
-      },
-      { id: "o3", leadId: "older", signedAt: "2026-10-07", amount: 300 },
-    ],
-  };
-  const m = salesMetrics(input, "2026-10-05", "2026-10-08", "2026-10-08");
-  assert.equal(m.signed, 3);
-  assert.equal(m.paid, 1);
-  assert.equal(m.signedConversion, 50);
-  assert.equal(m.paidConversion, 50);
-  assert.equal(
-    salesMetrics(
-      { ...input, salesCoverage: null },
-      "2026-10-05",
-      "2026-10-08",
-      "2026-10-08",
-    ),
-    null,
-  );
-});
+
 test("source control totals and date coverage", () => {
   const stats = leadStats(leadRows(data));
   assert.equal(stats.count, 1650);

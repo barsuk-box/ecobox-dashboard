@@ -1,0 +1,27 @@
+{
+  "snapshot": "2026-10-15",
+  "sites": [
+    {
+      "name": "Каменники",
+      "positions": 14,
+      "amountCount": 12,
+      "missingAmounts": 2,
+      "amount": 1662626.32,
+      "registersCount": 5,
+      "registersAmount": 661970,
+      "plannedDates": 10,
+      "pastPlanDates": 1
+    },
+    {
+      "name": "РУМС",
+      "positions": 22,
+      "amountCount": 22,
+      "missingAmounts": 0,
+      "amount": 14272149,
+      "registersCount": 22,
+      "registersAmount": 14272149,
+      "plannedDates": 21,
+      "pastPlanDates": 3
+    }
+  ]
+}

@@ -14,18 +14,20 @@ test("weekly view compares periods and shows honest missing-data states", async 
   ).toBeVisible();
   await expect(
     page.getByText("Ожидаем историю сделок", { exact: true }),
-  ).toBeVisible();
+  ).toHaveCount(0);
   await expect(
-    page.getByText("Реестр оплат пока не предоставлен", { exact: true }),
+    page.getByText("Ожидаем отдельный файл по крупным оплатам", {
+      exact: true,
+    }),
   ).toBeVisible();
-  await expect(page.locator(".weekly")).toContainText("15 630 000");
-  await expect(page.locator(".weekly")).toContainText("18 016 400");
+  await expect(page.locator(".weekly")).toContainText("14 272 149");
+  await expect(page.locator(".weekly")).toContainText("Каменники");
   await page.screenshot({
     path: ".private/weekly-desktop.png",
     fullPage: true,
   });
   await page.getByLabel("Неделя сравнения").selectOption("2026-09-28");
-  await expect(page.locator(".weekly")).toContainText("28 132 539");
+  await expect(page.locator(".weekly")).toContainText("РУМС");
   await page.getByRole("button", { name: "Включить светлую тему" }).click();
   await page.screenshot({ path: ".private/weekly-light.png", fullPage: true });
 });
