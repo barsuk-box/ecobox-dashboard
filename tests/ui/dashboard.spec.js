@@ -15,11 +15,16 @@ test("weekly view compares periods and shows honest missing-data states", async 
   await expect(
     page.getByText("Ожидаем историю сделок", { exact: true }),
   ).toHaveCount(0);
-  await expect(
-    page.getByText("Ожидаем отдельный файл по крупным оплатам", {
-      exact: true,
-    }),
-  ).toBeVisible();
+  const projects = page.locator(".expected-projects article");
+  await expect(projects).toHaveCount(14);
+  const amounts = await projects.evaluateAll((nodes) =>
+    nodes.map((n) => Number(n.dataset.amount)),
+  );
+  expect(
+    amounts.every((v, i) => v >= 300000 && (i === 0 || amounts[i - 1] >= v)),
+  ).toBe(true);
+  await expect(projects.first()).toContainText("3 006 550");
+  await expect(page.locator(".expected-projects")).toContainText("997 210");
   await expect(page.locator(".weekly")).toContainText("14 272 149");
   await expect(page.locator(".weekly")).toContainText("Каменники");
   await page.screenshot({

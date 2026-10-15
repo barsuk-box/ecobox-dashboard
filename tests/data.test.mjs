@@ -252,3 +252,34 @@ test("history totals preserve source precision and incomplete months", () => {
     close(s.reportedTotal + s.additional, s.reportedWithAdditional),
   );
 });
+
+test("expected projects meet threshold, sort descending and retain separate instalments", () => {
+  const d = JSON.parse(
+    fs.readFileSync(
+      new URL("../src/data/expected-payments.json", import.meta.url),
+    ),
+  );
+  assert.equal(d.projects.length, 14);
+  assert.equal(d.minimum, 300000);
+  assert.equal(sum(d.projects.map((p) => p.amount)), 15064275);
+  assert.ok(
+    d.projects.every(
+      (p, i) =>
+        p.amount >= d.minimum && (!i || d.projects[i - 1].amount >= p.amount),
+    ),
+  );
+  assert.equal(new Set(d.projects.map((p) => p.id)).size, d.projects.length);
+  d.projects.forEach((p) =>
+    close(p.amount, sum(p.payments.map((x) => x.amount))),
+  );
+  const split = d.projects.find((p) => p.id === "10646");
+  assert.equal(split.amount, 997210);
+  assert.deepEqual(
+    split.payments.map((p) => p.dueDate),
+    ["2026-10-15", "2026-10-29"],
+  );
+  assert.equal(
+    d.projects.find((p) => p.id === "ЭБ00-16231").payments[0].dueLabel,
+    "15-16 октября",
+  );
+});

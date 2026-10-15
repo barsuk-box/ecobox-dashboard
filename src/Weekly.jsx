@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { money, integer } from "./metrics.js";
 import { weeks, shift, weeklyMetric } from "./weekly.js";
-import inputs from "./data/weekly-inputs.json";
+import expected from "./data/expected-payments.json";
 import production from "./data/production-sites.json";
 import "./weekly.css";
 const date = (s) =>
@@ -150,43 +150,42 @@ export default function Weekly({ data }) {
           ))}
         </div>
       </section>
-      <section className="panel">
+      <section className="panel expected-projects">
         <h2>Крупные ожидаемые оплаты</h2>
         <p className="weekly-muted">
-          Список на дату среза, независимо от выбранной недели. Только оплаты,
-          отмеченные владельцем как крупные; денежный прогноз не разбивается на
-          вымышленные сделки.
+          Проекты от {money(expected.minimum)} · по убыванию ожидаемой суммы ·
+          на {date(expected.asOf)}. Список не зависит от выбранной недели.
         </p>
-        {inputs.expectedPayments.length ? (
-          <div className="weekly-payments">
-            {[...inputs.expectedPayments]
-              .sort((a, b) =>
-                (a.dueDate || "9999").localeCompare(b.dueDate || "9999"),
-              )
-              .map((p) => (
-                <article key={p.id}>
-                  <h3>{p.label}</h3>
-                  <strong>{money(p.amount)}</strong>
-                  <p>
-                    Дата: {p.dueDate ? date(p.dueDate) : "Не указана"}
-                    {p.dueDate && p.dueDate < data.snapshot
-                      ? " · срок прошёл"
-                      : ""}
-                  </p>
-                  <p>Препятствие: {p.blocker || "Не указано"}</p>
-                  <p>Следующий шаг: {p.nextStep || "Не указан"}</p>
-                </article>
+        <div className="expected-summary">
+          <strong>{expected.projects.length} проектов</strong>
+          <span>
+            Ожидается{" "}
+            {money(expected.projects.reduce((total, p) => total + p.amount, 0))}
+          </span>
+        </div>
+        <div className="weekly-payments">
+          {expected.projects.map((p, index) => (
+            <article key={p.id} data-amount={p.amount}>
+              <span className="weekly-muted">
+                {String(index + 1).padStart(2, "0")} / Проект {p.id}
+              </span>
+              <h3>{p.label}</h3>
+              <strong>{money(p.amount)}</strong>
+              {p.payments.map((payment, i) => (
+                <div className="expected-installment" key={i}>
+                  {p.payments.length > 1 && (
+                    <h4>
+                      Платёж {i + 1} · {money(payment.amount)}
+                    </h4>
+                  )}
+                  <p>Ожидаемая дата: {payment.dueLabel || "Не указана"}</p>
+                  <p>Препятствие: {payment.blocker || "Не указано"}</p>
+                  <p>Следующий шаг: {payment.nextStep || "Не указан"}</p>
+                </div>
               ))}
-          </div>
-        ) : (
-          <div className="weekly-empty">
-            <strong>Ожидаем отдельный файл по крупным оплатам</strong>
-            <p>
-              Для каждой оплаты: безопасное название заказа, сумма, ожидаемая
-              дата, препятствие и следующий шаг.
-            </p>
-          </div>
-        )}
+            </article>
+          ))}
+        </div>
       </section>
     </section>
   );

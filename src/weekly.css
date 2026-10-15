@@ -152,3 +152,25 @@
     gap: 16px;
   }
 }
+.expected-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 28px;
+  margin-top: 20px;
+  align-items: center;
+}
+.expected-summary strong {
+  color: var(--teal);
+}
+.expected-installment {
+  border-top: 1px solid var(--line);
+  margin-top: 16px;
+  padding-top: 8px;
+}
+.expected-installment p {
+  font-size: 13px;
+  line-height: 1.7;
+}
+.expected-installment h4 {
+  font-size: 14px;
+}
