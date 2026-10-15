@@ -88,16 +88,12 @@ export default function Weekly({ data }) {
         })}
       </div>
       <section className="panel">
-        <h2>Регистры и «блины» отдельно</h2>
-        <p className="weekly-muted">
-          Регистры — направление «Реготоп». Строки входят в общие итоги;
-          повторно их не прибавляем.
-        </p>
-        <div className="weekly-directions">
-          {[
-            ["registers", "Регистры"],
-            ["pancakes", "Блины"],
-          ].map(([group, label]) => (
+        <h2>Регистры</h2>
+        <div
+          className="weekly-directions"
+          style={{ gridTemplateColumns: "1fr" }}
+        >
+          {[["registers", "Реготоп"]].map(([group, label]) => (
             <article key={group}>
               <h3>{label}</h3>
               {metrics.map(([metric, title]) => {
@@ -129,61 +125,30 @@ export default function Weekly({ data }) {
       </section>
       <section className="panel" aria-label="Загрузка производств">
         <h2>Загрузка производств</h2>
-        <p className="weekly-muted">
-          Отдельные списки Каменников и РУМСа по скриншотам от{" "}
-          {date(production.snapshot)}. Показаны только видимые позиции. Это
-          портфель заказов, не процент загрузки мощности. Выбор недели выше
-          относится к деньгам и лидам.
-        </p>
+        <p className="weekly-muted">На {date(production.snapshot)}</p>
         <div className="weekly-directions">
           {production.sites.map((site) => (
             <article key={site.name}>
               <h3>{site.name}</h3>
               <strong>{money(site.amount)}</strong>
-              <p>
-                {site.positions} видимых позиций · суммы заполнены у{" "}
-                {site.amountCount}
-              </p>
+              <p>Позиций в списке: {site.positions}</p>
               {site.missingAmounts > 0 && (
-                <p>
-                  У {site.missingAmounts} позиций сумма отсутствует. Итог
-                  включает только заполненные суммы.
-                </p>
+                <p>Без суммы: {site.missingAmounts} позиции</p>
               )}
               <div className="weekly-detail">
                 <span>Регистры</span>
                 <b>{money(site.registersAmount)}</b>
-                <small>
-                  {site.registersCount} позиций, входят в итог площадки
-                </small>
+                <small>{site.registersCount} позиций</small>
               </div>
-              <div className="weekly-detail">
-                <span>Блины</span>
-                <b>Нет данных</b>
-                <small>
-                  На видимой части скриншота отдельно не обозначены.
-                </small>
-              </div>
+              <p>С планом отгрузки: {site.plannedDates} позиций</p>
+              <p>Без даты отгрузки: {site.positions - site.plannedDates}</p>
               <p>
-                План отгрузки указан: {site.plannedDates} позиций. Без даты:{" "}
-                {site.positions - site.plannedDates}.
-              </p>
-              <p>
-                Плановая дата раньше 15 октября: {site.pastPlanDates} позиций.
-                Факт отгрузки на скриншоте не подтверждён.
-              </p>
-              <p className="weekly-muted">
-                Первый срез площадки. Недельная динамика появится после
-                следующего скриншота.
+                План отгрузки до {date(production.snapshot)}:{" "}
+                {site.pastPlanDates} позиций
               </p>
             </article>
           ))}
         </div>
-        <p className="weekly-muted">
-          Дата среза взята из имён файлов; год плановых дат принят как 2026.
-          Суммы заказов не показывают остаток работ. Не складываем эти списки с
-          суммами стадий воронки.
-        </p>
       </section>
       <section className="panel">
         <h2>Крупные ожидаемые оплаты</h2>

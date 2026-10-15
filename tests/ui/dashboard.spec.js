@@ -10,7 +10,7 @@ test("weekly view compares periods and shows honest missing-data states", async 
     .click();
   await expect(page.getByLabel("Неделя сравнения")).toHaveValue("2026-10-05");
   await expect(
-    page.getByRole("heading", { name: "Регистры и «блины» отдельно" }),
+    page.getByRole("heading", { name: "Регистры", level: 2 }),
   ).toBeVisible();
   await expect(
     page.getByText("Ожидаем историю сделок", { exact: true }),
