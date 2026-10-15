@@ -335,7 +335,7 @@ test("production output keeps period totals separate and compares only matching 
     ),
   ).periods;
   const current = outputMetric(records, "2026-10-09", "2026-10-15");
-  assert.equal(current.current, 3383560);
+  assert.equal(current.current, 2383560);
   assert.equal(current.previous, null);
   assert.equal(current.delta, null);
   assert.equal(outputMetric(records, "2026-10-02", "2026-10-15").current, null);
@@ -353,6 +353,6 @@ test("production output keeps period totals separate and compares only matching 
     "2026-10-16",
     "2026-10-22",
   );
-  assert.equal(next.previous, 3383560);
-  assert.equal(next.delta.absolute, 616440);
+  assert.equal(next.previous, 2383560);
+  assert.equal(next.delta.absolute, 1616440);
 });

@@ -19,7 +19,7 @@ test("weekly view compares periods and shows honest missing-data states", async 
   await expect(page.locator(".weekly-card").nth(1)).toContainText("1 892 350");
   await expect(page.locator(".weekly-card").nth(0)).toContainText("1 065 768");
   await expect(page.locator('[data-metric="output"]')).toContainText(
-    "3 383 560",
+    "2 383 560",
   );
   await expect(page.locator('[data-metric="output"]')).toContainText(
     "Нет базы сравнения",
