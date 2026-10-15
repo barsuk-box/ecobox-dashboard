@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { money, integer } from "./metrics.js";
-import { weeks, shift, weeklyMetric } from "./weekly.js";
+import { weeks, shift, weeklyMetric, outputMetric } from "./weekly.js";
 import expected from "./data/expected-payments.json";
+import output from "./data/production-output.json";
 import production from "./data/production-sites.json";
 import "./weekly.css";
 const date = (s) =>
@@ -60,13 +61,24 @@ export default function Weekly({ data }) {
         полноты каждого дня.
       </p>
       <div className="weekly-cards">
-        {metrics.map(([key, label]) => {
-          const m = weeklyMetric(data, start, key);
+        {[
+          ...metrics.slice(0, 2),
+          ["output", "Выпуск продукции на склад"],
+          ...metrics.slice(2),
+        ].map(([key, label]) => {
+          const m =
+            key === "output"
+              ? outputMetric(output.periods, start, data.snapshot)
+              : weeklyMetric(data, start, key);
           return (
-            <article className="panel weekly-card" key={key}>
+            <article className="panel weekly-card" data-metric={key} key={key}>
               <h3>{label}</h3>
               <strong>
-                {key === "leads" ? number(m.current) : money(m.current)}
+                {key === "output" && m.current == null
+                  ? "Нет данных"
+                  : key === "leads"
+                    ? number(m.current)
+                    : money(m.current)}
               </strong>
               <p>
                 {m.end >= start

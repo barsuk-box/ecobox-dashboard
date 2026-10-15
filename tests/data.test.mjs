@@ -1,3 +1,4 @@
+import { outputMetric } from "../src/weekly.js";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
@@ -325,4 +326,33 @@ test("September history supplement reconciles to closed cash report without alte
   assert.equal(h.receipts[2].reportedTotal, 101705966);
   assert.equal(h.registers[2].months[8].requests, null);
   assert.equal(h.registers[2].months[8].pipeline, null);
+});
+
+test("production output keeps period totals separate and compares only matching reports", () => {
+  const records = JSON.parse(
+    fs.readFileSync(
+      new URL("../src/data/production-output.json", import.meta.url),
+    ),
+  ).periods;
+  const current = outputMetric(records, "2026-10-09", "2026-10-15");
+  assert.equal(current.current, 3383560);
+  assert.equal(current.previous, null);
+  assert.equal(current.delta, null);
+  assert.equal(outputMetric(records, "2026-10-02", "2026-10-15").current, null);
+  assert.equal(outputMetric(records, "2026-10-09", "2026-10-14").current, null);
+  const next = outputMetric(
+    [
+      ...records,
+      {
+        start: "2026-10-16",
+        end: "2026-10-22",
+        amount: 4000000,
+        reportedAt: "2026-10-22",
+      },
+    ],
+    "2026-10-16",
+    "2026-10-22",
+  );
+  assert.equal(next.previous, 3383560);
+  assert.equal(next.delta.absolute, 616440);
 });

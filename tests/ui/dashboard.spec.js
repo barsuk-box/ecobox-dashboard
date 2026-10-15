@@ -18,6 +18,12 @@ test("weekly view compares periods and shows honest missing-data states", async 
   await expect(page.locator(".weekly-card").nth(0)).toContainText("2 403 044");
   await expect(page.locator(".weekly-card").nth(1)).toContainText("1 892 350");
   await expect(page.locator(".weekly-card").nth(0)).toContainText("1 065 768");
+  await expect(page.locator('[data-metric="output"]')).toContainText(
+    "3 383 560",
+  );
+  await expect(page.locator('[data-metric="output"]')).toContainText(
+    "Нет базы сравнения",
+  );
   const projects = page.locator(".expected-projects article");
   await expect(projects).toHaveCount(14);
   const amounts = await projects.evaluateAll((nodes) =>
@@ -36,6 +42,9 @@ test("weekly view compares periods and shows honest missing-data states", async 
   });
   await page.getByLabel("Неделя сравнения").selectOption("2026-10-02");
   await expect(page.locator(".weekly")).toContainText("РУМС");
+  await expect(page.locator('[data-metric="output"]')).toContainText(
+    "Нет данных",
+  );
   await page.getByRole("button", { name: "Включить светлую тему" }).click();
   await page.screenshot({ path: ".private/weekly-light.png", fullPage: true });
 });
