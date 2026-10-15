@@ -187,10 +187,16 @@ test("historical receipts and registers compare matching periods", async ({
     .click();
   await expect(page.getByLabel("Период сравнения")).toHaveValue("9");
   await expect(page.locator(".history-cards").first()).toContainText(
-    "114 064 841,89",
+    "114 064 842",
   );
   await expect(page.locator(".history-cards").nth(1)).toContainText(
-    "77 039 261,95",
+    "77 039 262",
+  );
+  await expect(page.locator(".history-general-september")).toContainText(
+    "65 857 711",
+  );
+  await expect(page.locator(".history-general-september")).toContainText(
+    "144 заявки",
   );
   await page.getByLabel("Показатель РегОтоп").selectOption("requests");
   await expect(page.locator(".history-cards").nth(1)).toContainText("694");

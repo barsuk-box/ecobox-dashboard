@@ -20,7 +20,7 @@ const format = (v, count = false) =>
   v == null
     ? "—"
     : new Intl.NumberFormat("ru-RU", {
-        maximumFractionDigits: count ? 0 : 2,
+        maximumFractionDigits: 0,
       }).format(v) + (count ? "" : " ₽");
 export function total(values, end) {
   return values.slice(0, end).some((v) => v == null)
@@ -49,7 +49,7 @@ function Comparison({
               <strong>{format(value, count)}</strong>
               <small>
                 {previous > 0 && value != null
-                  ? `${value >= previous ? "+" : ""}${((value / previous - 1) * 100).toFixed(1)}% к ${s.year - 1} году`
+                  ? `${value >= previous ? "+" : ""}${((value / previous - 1) * 100).toFixed(0)}% к ${s.year - 1} году`
                   : "Январь — " + months[end - 1].toLowerCase()}
               </small>
             </article>
@@ -109,7 +109,7 @@ function Comparison({
                   {j < completeThrough &&
                   series[2].values[j] != null &&
                   series[1].values[j] > 0
-                    ? `${((series[2].values[j] / series[1].values[j] - 1) * 100).toFixed(1)}%`
+                    ? `${((series[2].values[j] / series[1].values[j] - 1) * 100).toFixed(0)}%`
                     : "—"}
                 </td>
               </tr>
@@ -255,6 +255,22 @@ export default function History() {
           }
           count={metric === "requests"}
         />
+        <div className="history-general-september">
+          <h3>Сентябрь · общий отчёт</h3>
+          <p>
+            <strong>
+              {format(history.registersSeptemberGeneral.requests, true)} заявки
+            </strong>{" "}
+            · сумма новых заявок{" "}
+            <strong>
+              {format(history.registersSeptemberGeneral.requestAmount)}
+            </strong>
+          </p>
+          <p>
+            Отдельный показатель из общего отчёта на 15 октября. В исторические
+            итоги заявок и воронки не включён: состав двух отчётов различается.
+          </p>
+        </div>
         <p className="history-footnote">
           «Сумма по отчёту» — показатель из статистики РегОтоп; он не
           объединяется с поступлениями Эко-Бокс. Пустые месяцы обозначены

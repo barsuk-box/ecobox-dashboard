@@ -297,5 +297,11 @@
   ],
   "completedMonths": 9,
   "supplementAsOf": "2026-10-15",
-  "registersActivityCompletedMonths": 8
+  "registersActivityCompletedMonths": 8,
+  "registersSeptemberGeneral": {
+    "month": "2026-09",
+    "requests": 144,
+    "requestAmount": 65857711.28,
+    "sourceAsOf": "2026-10-15"
+  }
 }
