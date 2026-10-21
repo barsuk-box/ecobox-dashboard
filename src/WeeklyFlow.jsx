@@ -4,7 +4,7 @@ import { weeks, shift, weeklyMetric, outputMetric } from "./weekly.js";
 import output from "./data/production-output.json";
 const series = [
   { key: "payments", label: "Поступления", color: "#528bff" },
-  { key: "shipments", label: "Отгрузки", color: "#ef869f" },
+  { key: "shipments", label: "Отгрузки без блинов", color: "#ef869f" },
   { key: "output", label: "Выпуск на склад", color: "#37c9b1" },
 ];
 const date = (s) => s.slice(8) + "." + s.slice(5, 7);

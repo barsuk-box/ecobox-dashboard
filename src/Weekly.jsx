@@ -31,7 +31,7 @@ export default function Weekly({ data }) {
     [start, setStart] = useState(options[0]);
   const metrics = [
     ["payments", "Поступления"],
-    ["shipments", "Отгрузки"],
+    ["shipments", "Отгрузки без блинов"],
     ["leads", "Новые лиды"],
   ];
   return (

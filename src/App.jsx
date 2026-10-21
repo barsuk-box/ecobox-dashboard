@@ -26,8 +26,9 @@ import {
 } from "lucide-react";
 import sourceData from "./data/dashboard.json";
 import { adjustedStages } from "./production.js";
+import { withoutPancakeShipments } from "./shipmentScope.js";
 const data = {
-  ...sourceData,
+  ...withoutPancakeShipments(sourceData),
   pipeline: adjustedStages(sourceData.pipeline, sourceData.snapshot),
 };
 import {
@@ -304,7 +305,7 @@ function MoneyChart({ rows }) {
         </span>
         <span>
           <b style={{ background: colors[1] }} />
-          Отгрузки
+          Отгрузки без блинов
         </span>
         <span className="legend-unit">млн ₽</span>
       </div>
@@ -422,7 +423,7 @@ function exportCSV(tab, month, rows) {
     ];
   else if (tab === "money")
     values = [
-      ["Месяц", "Поступления, руб.", "Отгрузки, руб."],
+      ["Месяц", "Поступления, руб.", "Отгрузки без блинов, руб."],
       ...data.monthly
         .filter(
           (r) =>
@@ -509,7 +510,7 @@ function SourceModal({ close }) {
           </dd>
           <dt>Поступления</dt>
           <dd>Последняя запись: {day(data.daily.payments.at(-1).date)} 2026</dd>
-          <dt>Отгрузки</dt>
+          <dt>Отгрузки без блинов</dt>
           <dd>
             Последняя запись: {day(data.daily.shipments.at(-1).date)} 2026
           </dd>
@@ -875,7 +876,7 @@ export default function App() {
                     />
                     <KPI
                       index={2}
-                      label="Отгрузки"
+                      label="Отгрузки без блинов"
                       value={compact(ms.shipments)}
                       sub="По месячной сводке"
                       icon={PackageCheck}
@@ -1298,7 +1299,7 @@ function DailyMoney({ month, view }) {
   return (
     <Panel
       title="Дневная динамика"
-      sub={`${view === "payments" ? "Поступления" : "Отгрузки"} по дневному листу, без месячных корректировок`}
+      sub={`${view === "payments" ? "Поступления" : "Отгрузки без блинов"} по дневному листу, без месячных корректировок`}
       className="detail-panel"
       action={
         <Segment
@@ -1315,7 +1316,7 @@ function DailyMoney({ month, view }) {
       <LineChart
         points={points}
         granularity={agg}
-        seriesName={view === "payments" ? "Поступления" : "Отгрузки"}
+        seriesName={view === "payments" ? "Поступления" : "Отгрузки без блинов"}
       />
     </Panel>
   );
