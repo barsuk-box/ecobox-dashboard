@@ -4,6 +4,7 @@ import { weeks, shift, weeklyMetric, outputMetric } from "./weekly.js";
 import expected from "./data/expected-payments.json";
 import output from "./data/production-output.json";
 import production from "./data/production-sites.json";
+import WeeklyFlow from "./WeeklyFlow.jsx";
 import "./weekly.css";
 const date = (s) =>
   new Date(s + "T12:00:00").toLocaleDateString("ru-RU", {
@@ -99,6 +100,7 @@ export default function Weekly({ data }) {
           );
         })}
       </div>
+      <WeeklyFlow data={data} start={start} />
       <section className="panel">
         <h2>Регистры</h2>
         <div
@@ -139,9 +141,38 @@ export default function Weekly({ data }) {
         <h2>Загрузка производств</h2>
         <p className="weekly-muted">На {date(production.snapshot)}</p>
         <div className="weekly-directions">
+          <article>
+            <h3>Готовая продукция — выпущено на склад</h3>
+            <strong>
+              {money(
+                outputMetric(output.periods, start, data.snapshot).current,
+              )}
+            </strong>
+            <p>{period(start, shift(start, 6))}</p>
+            <small>
+              Выпуск за период. Не относится к незавершённому производству и не
+              равен остатку склада.
+            </small>
+          </article>
+          <article>
+            <h3>Остаток в производстве после выпуска</h3>
+            <strong>
+              {money(
+                data.pipeline.find((s) => s.stage === "Производство")?.amount,
+              )}
+            </strong>
+            <p>На {date(data.snapshot)} · по воронке продаж</p>
+            <small>
+              Из 15 934 000 ₽ исключён выпуск 2 383 560 ₽. По площадкам выпуск
+              не распределён.
+            </small>
+          </article>
+        </div>
+        <div className="weekly-directions">
           {production.sites.map((site) => (
             <article key={site.name}>
               <h3>{site.name}</h3>
+              <p>Стоимость заказов по отчёту</p>
               <strong>{money(site.amount)}</strong>
               <p>Позиций в списке: {site.positions}</p>
               {site.missingAmounts > 0 && (

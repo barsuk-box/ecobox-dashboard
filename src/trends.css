@@ -1,0 +1,97 @@
+.trends {
+  min-width: 0;
+  margin: 20px 0;
+}
+.trends-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.trends-legend button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel2);
+  color: var(--text);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.trends-legend button[aria-pressed="false"] {
+  opacity: 0.45;
+  text-decoration: line-through;
+}
+.trends-legend span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.trends svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 18px 0;
+  overflow: visible;
+}
+.trends svg text {
+  fill: var(--muted);
+  font-size: 10px;
+}
+.trends-grid {
+  stroke: var(--line);
+  stroke-dasharray: 3 4;
+}
+.trends-picker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+}
+.trends-picker select {
+  color: var(--text);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px;
+}
+.trends-readout {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+  margin-top: 16px;
+}
+.trends-readout > div {
+  display: grid;
+  gap: 8px;
+  border-top: 2px solid var(--line);
+  padding-top: 12px;
+}
+.trends-readout span,
+.trends-readout small {
+  font-size: 12px;
+  color: var(--muted);
+}
+.trends-readout strong {
+  font-size: 19px;
+}
+.trends button:focus-visible,
+.trends select:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
+}
+@media (max-width: 600px) {
+  .trends-readout {
+    grid-template-columns: 1fr;
+  }
+  .trends svg {
+    min-height: 170px;
+  }
+  .trends-legend button {
+    max-width: 100%;
+    text-align: left;
+  }
+}

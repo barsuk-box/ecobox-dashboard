@@ -124,7 +124,15 @@ test("desktop filters, themes, navigation, search, export and source dialog", as
   await expect(page.getByText("Дополнительно в портфеле")).toBeVisible();
   await expect(page.getByText("Октябрь 2026", { exact: true })).toBeVisible();
   await expect(page.locator(".kpi").nth(1)).toContainText("38 сделок");
-  await expect(page.locator(".kpi").first()).toContainText("89,81");
+  await expect(page.locator(".kpi").first()).toContainText("87,42");
+  await expect(page.locator(".trends-readout")).toContainText("13 550 440");
+  await page.locator(".trends-picker select").selectOption("2026-10-08");
+  await expect(page.locator(".trends-readout")).toContainText("15 630 000");
+  await page.getByRole("button", { name: "Количество сделок", exact: true }).click();
+  await expect(page.locator(".trends-readout")).toContainText("38 сдел.");
+  await page.locator(".trends-legend").getByRole("button", { name: "Производство", exact: true }).click();
+  await expect(page.locator(".trends-readout")).not.toContainText("Производство");
+  await page.screenshot({ path: ".private/pipeline-trend.png", fullPage: true });
   await page
     .getByRole("navigation", { name: "Разделы дашборда" })
     .getByRole("button", { name: "Денежный поток" })

@@ -24,7 +24,12 @@ import {
   Factory,
   Menu,
 } from "lucide-react";
-import data from "./data/dashboard.json";
+import sourceData from "./data/dashboard.json";
+import { adjustedStages } from "./production.js";
+const data = {
+  ...sourceData,
+  pipeline: adjustedStages(sourceData.pipeline, sourceData.snapshot),
+};
 import {
   sum,
   money,
@@ -39,6 +44,7 @@ import {
 import Assembly from "./Assembly.jsx";
 import Weekly from "./Weekly.jsx";
 import History from "./History.jsx";
+import PipelineTrend from "./PipelineTrend.jsx";
 
 const colors = [
   "#528bff",
@@ -1065,10 +1071,17 @@ export default function App() {
               )}
               {tab === "pipeline" && (
                 <>
+                  <Panel
+                    title="Динамика стадий по неделям"
+                    sub="Суммы и количество сделок на даты отчётов"
+                    className="detail-panel"
+                  >
+                    <PipelineTrend />
+                  </Panel>
                   <div className="bottom-layout">
                     <Panel
                       title="Стадии продаж"
-                      sub="Суммы текущих сделок, а не последовательная конверсия"
+                      sub="В производстве учтён выпуск на склад; количество сделок — по исходному отчёту"
                     >
                       <Funnel full />
                     </Panel>
