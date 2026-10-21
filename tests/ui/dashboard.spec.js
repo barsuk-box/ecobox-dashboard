@@ -8,14 +8,16 @@ test("weekly view compares periods and shows honest missing-data states", async 
     .getByRole("navigation", { name: "Разделы дашборда" })
     .getByRole("button", { name: "Недельная динамика" })
     .click();
-  await expect(page.getByLabel("Неделя сравнения")).toHaveValue("2026-10-09");
+  await expect(page.getByLabel("Неделя сравнения")).toHaveValue("2026-10-16");
+  await expect(page.locator('[data-metric="output"]')).toContainText("3 531 270");
+  await page.getByLabel("Неделя сравнения").selectOption("2026-10-09");
   await expect(
     page.getByRole("heading", { name: "Регистры", level: 2 }),
   ).toBeVisible();
   await expect(
     page.getByText("Ожидаем историю сделок", { exact: true }),
   ).toHaveCount(0);
-  await expect(page.locator(".weekly-card").nth(0)).toContainText("2 403 044");
+  await expect(page.locator(".weekly-card").nth(0)).toContainText("2 901 649");
   await expect(page.locator(".weekly-card").nth(1)).toContainText("1 892 350");
   await expect(page.locator(".weekly-card").nth(0)).toContainText("1 065 768");
   await expect(page.locator('[data-metric="output"]')).toContainText(
@@ -59,7 +61,7 @@ test("desktop filters, themes, navigation, search, export and source dialog", as
     page.getByRole("heading", { name: "Пульс бизнеса." }),
   ).toBeVisible();
   await expect(page.locator(".kpi").first()).toContainText("1 702");
-  await expect(page.locator(".snapshot")).toContainText("15.10.2026");
+  await expect(page.locator(".snapshot")).toContainText("22.10.2026");
   await expect(page.locator(".coverage-note")).toContainText(
     "30 сентября 2026",
   );
@@ -124,12 +126,12 @@ test("desktop filters, themes, navigation, search, export and source dialog", as
   await expect(page.getByText("Дополнительно в портфеле")).toBeVisible();
   await expect(page.getByText("Октябрь 2026", { exact: true })).toBeVisible();
   await expect(page.locator(".kpi").nth(1)).toContainText("38 сделок");
-  await expect(page.locator(".kpi").first()).toContainText("87,42");
+  await expect(page.locator(".kpi").first()).toContainText("94,36");
   const salesTrend = page.locator(".panel").filter({ has: page.getByRole("heading", { name: "Динамика стадий по неделям", exact: true }) });
   const productionHistory = page.getByRole("region", { name: "История остатка производства" });
   await expect(productionHistory).toContainText("28 132 539");
   await expect(productionHistory).toContainText("18 016 400");
-  await expect(salesTrend.locator(".trends-readout")).toContainText("13 550 440");
+  await expect(salesTrend.locator(".trends-readout")).toContainText("13 691 804");
   await salesTrend.locator(".trends-picker select").selectOption("2026-10-08");
   await expect(salesTrend.locator(".trends-readout")).toContainText("15 630 000");
   await page.getByRole("button", { name: "Количество сделок", exact: true }).click();
@@ -145,7 +147,7 @@ test("desktop filters, themes, navigation, search, export and source dialog", as
   await page.getByRole("button", { name: "О данных", exact: true }).click();
   await expect(page.getByRole("dialog")).toBeVisible();
   await expect(page.getByRole("dialog")).toContainText(
-    "Заявки представлены по 15 октября 2026",
+    "Заявки представлены по 21 октября 2026",
   );
   await page.keyboard.press("Escape");
   await expect(page.getByRole("dialog")).toHaveCount(0);
