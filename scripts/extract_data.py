@@ -11,6 +11,7 @@ from functools import lru_cache
 parser = argparse.ArgumentParser()
 parser.add_argument('source', type=Path)
 parser.add_argument('--complete-through', help='Confirmed closing date of monetary data, YYYY-MM-DD')
+parser.add_argument('--snapshot', help='Confirmed snapshot date if Pipeline A1 is missing, YYYY-MM-DD')
 parser.add_argument('--output', type=Path, default=Path('src/data/dashboard.json'))
 args = parser.parse_args()
 source = args.source
@@ -64,7 +65,14 @@ for r in sorted(int(c[1:]) for c in z if re.fullmatch(r'A\d+',c) and int(c[1:])>
     if not isinstance(d,(float,int)): continue
     items=[{'name':n,'count':num(z.get(f'{col(2+i*2)}{r}')),'amount':num(z.get(f'{col(3+i*2)}{r}'))} for i,n in enumerate(cats)]
     if any(v['count'] is not None or v['amount'] is not None for v in items): leads.append({'date':date(d),'items':items})
-p=sheets['Pipeline']; snap=date(p['A1'])
+p=sheets['Pipeline']
+if args.snapshot:
+    datetime.strptime(args.snapshot, '%Y-%m-%d')
+    snap=args.snapshot
+elif isinstance(p.get('A1'), (int,float)):
+    snap=date(p['A1'])
+else:
+    raise ValueError('Pipeline A1 has no date; supply a confirmed --snapshot YYYY-MM-DD')
 pipeline=[{'stage':p[f'A{r}'].strip(),'count':p[f'B{r}'],'amount':p[f'C{r}']} for r in range(3,9)]
 extra=[{'stage':p[f'A{r}'].strip(),'count':p[f'B{r}'],'amount':p[f'C{r}']} for r in range(10,13)]
 forecast=[{'name':p[f'A{r}'],'amount':p[f'B{r}']} for r in range(14,17)]

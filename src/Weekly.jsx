@@ -141,7 +141,7 @@ export default function Weekly({ data }) {
       <section className="panel" aria-label="Загрузка производств">
         <h2>Загрузка производств</h2>
         <p className="weekly-muted">На {date(production.snapshot)}</p>
-        <ProductionTrend />
+        <ProductionTrend data={data} />
         <div className="weekly-directions">
           <article>
             <h3>Готовая продукция — выпущено на склад</h3>
@@ -165,8 +165,8 @@ export default function Weekly({ data }) {
             </strong>
             <p>На {date(data.snapshot)} · по воронке продаж</p>
             <small>
-              Из 15 934 000 ₽ исключён выпуск 2 383 560 ₽. По площадкам выпуск
-              не распределён.
+              Выпуск учтён по подтверждённым корректировкам на дату отчёта. По
+              площадкам выпуск не распределён.
             </small>
           </article>
         </div>

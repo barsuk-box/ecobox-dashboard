@@ -1077,7 +1077,7 @@ export default function App() {
                     sub="История стоимости продукции в работе"
                     className="detail-panel"
                   >
-                    <ProductionTrend />
+                    <ProductionTrend data={data} />
                   </Panel>
                   <Panel
                     title="Динамика стадий по неделям"

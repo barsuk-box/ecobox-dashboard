@@ -124,6 +124,7 @@ export default function TrendChart({ rows, series, unit = "₽", label }) {
             <div key={s.key}>
               <span>{s.label}</span>
               <strong>{format(v)}</strong>
+              {s.noteKey && row?.[s.noteKey] && <small>{row[s.noteKey]}</small>}
               <small>
                 {v != null && previous != null
                   ? `К предыдущему периоду: ${v - previous > 0 ? "+" : ""}${format(v - previous)}`
