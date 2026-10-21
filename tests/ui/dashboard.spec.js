@@ -125,13 +125,17 @@ test("desktop filters, themes, navigation, search, export and source dialog", as
   await expect(page.getByText("Октябрь 2026", { exact: true })).toBeVisible();
   await expect(page.locator(".kpi").nth(1)).toContainText("38 сделок");
   await expect(page.locator(".kpi").first()).toContainText("87,42");
-  await expect(page.locator(".trends-readout")).toContainText("13 550 440");
-  await page.locator(".trends-picker select").selectOption("2026-10-08");
-  await expect(page.locator(".trends-readout")).toContainText("15 630 000");
+  const salesTrend = page.locator(".panel").filter({ has: page.getByRole("heading", { name: "Динамика стадий по неделям", exact: true }) });
+  const productionHistory = page.getByRole("region", { name: "История остатка производства" });
+  await expect(productionHistory).toContainText("28 132 539");
+  await expect(productionHistory).toContainText("18 016 400");
+  await expect(salesTrend.locator(".trends-readout")).toContainText("13 550 440");
+  await salesTrend.locator(".trends-picker select").selectOption("2026-10-08");
+  await expect(salesTrend.locator(".trends-readout")).toContainText("15 630 000");
   await page.getByRole("button", { name: "Количество сделок", exact: true }).click();
-  await expect(page.locator(".trends-readout")).toContainText("38 сдел.");
+  await expect(salesTrend.locator(".trends-readout")).toContainText("38 сдел.");
   await page.locator(".trends-legend").getByRole("button", { name: "Производство", exact: true }).click();
-  await expect(page.locator(".trends-readout")).not.toContainText("Производство");
+  await expect(salesTrend.locator(".trends-readout")).not.toContainText("Производство");
   await page.screenshot({ path: ".private/pipeline-trend.png", fullPage: true });
   await page
     .getByRole("navigation", { name: "Разделы дашборда" })

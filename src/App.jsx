@@ -45,6 +45,7 @@ import Assembly from "./Assembly.jsx";
 import Weekly from "./Weekly.jsx";
 import History from "./History.jsx";
 import PipelineTrend from "./PipelineTrend.jsx";
+import ProductionTrend from "./ProductionTrend.jsx";
 
 const colors = [
   "#528bff",
@@ -1071,6 +1072,13 @@ export default function App() {
               )}
               {tab === "pipeline" && (
                 <>
+                  <Panel
+                    title="Воронка производства"
+                    sub="История стоимости продукции в работе"
+                    className="detail-panel"
+                  >
+                    <ProductionTrend />
+                  </Panel>
                   <Panel
                     title="Динамика стадий по неделям"
                     sub="Суммы и количество сделок на даты отчётов"

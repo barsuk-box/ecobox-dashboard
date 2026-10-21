@@ -5,6 +5,7 @@ import expected from "./data/expected-payments.json";
 import output from "./data/production-output.json";
 import production from "./data/production-sites.json";
 import WeeklyFlow from "./WeeklyFlow.jsx";
+import ProductionTrend from "./ProductionTrend.jsx";
 import "./weekly.css";
 const date = (s) =>
   new Date(s + "T12:00:00").toLocaleDateString("ru-RU", {
@@ -140,6 +141,7 @@ export default function Weekly({ data }) {
       <section className="panel" aria-label="Загрузка производств">
         <h2>Загрузка производств</h2>
         <p className="weekly-muted">На {date(production.snapshot)}</p>
+        <ProductionTrend />
         <div className="weekly-directions">
           <article>
             <h3>Готовая продукция — выпущено на склад</h3>
