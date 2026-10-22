@@ -3,13 +3,13 @@
   "coverage": {
     "leadsFrom": "2026-01-12",
     "leadsThrough": "2026-10-21",
-    "paymentsThrough": "2026-10-20",
+    "paymentsThrough": "2026-10-21",
     "shipmentsThrough": "2026-10-21",
     "moneyCompleteThrough": "2026-09-30",
     "firstMonth": "2026-01",
     "lastMonth": "2026-10"
   },
-  "sourceHash": "c3b89356af2be1305893931f31bb9f3f872a74ceb135a718ca8ecd760117136f",
+  "sourceHash": "886fcd16c16b63fd24f4d60311dd6c134b9c352561aa7bee7832e1f761c88694",
   "categories": [
     "Реготоп",
     "Контрактное производство",
@@ -8956,12 +8956,12 @@
     {
       "stage": "Счет согласован/договор подписан",
       "count": 6.0,
-      "amount": 5229205.0
+      "amount": 3622205.0
     },
     {
       "stage": "Производство",
       "count": 38.0,
-      "amount": 17223074.32
+      "amount": 18225004.0
     }
   ],
   "pipelineExtra": [
@@ -8986,7 +8986,7 @@
   "forecast": [
     {
       "name": "Подтвержденные",
-      "amount": 5845797.0
+      "amount": 4238797.0
     },
     {
       "name": "Подтвержденные с риском",
@@ -9381,8 +9381,8 @@
       "items": [
         {
           "name": "регистры",
-          "payments": 3789805.5,
-          "shipments": 9355960.0
+          "payments": 5396805.5,
+          "shipments": 9961030.0
         },
         {
           "name": "контракт",
@@ -9415,8 +9415,8 @@
           "shipments": 1654320.0
         }
       ],
-      "payments": 4415005.5,
-      "shipments": 11816649.5
+      "payments": 6022005.5,
+      "shipments": 12421719.5
     },
     {
       "month": "2026-11",
@@ -11636,6 +11636,19 @@
           null,
           null
         ]
+      },
+      {
+        "date": "2026-10-21",
+        "amount": 1607000.0,
+        "values": [
+          1607000.0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
       }
     ],
     "shipments": [
@@ -13721,9 +13734,9 @@
       },
       {
         "date": "2026-10-21",
-        "amount": 121200.0,
+        "amount": 726270.0,
         "values": [
-          121200.0,
+          726270.0,
           null,
           null,
           null,

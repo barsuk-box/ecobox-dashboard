@@ -3,7 +3,7 @@
 // Apply only to these snapshots, never to other reports or site aggregates.
 export const productionAdjustments = {
   "2026-10-15": 2383560,
-  "2026-10-22": 3531270,
+  "2026-10-22": 2805000,
 };
 export function adjustedStages(stages, snapshot) {
   return stages.map((stage) =>
