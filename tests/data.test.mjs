@@ -77,13 +77,13 @@ test("weekly null differs from recorded zero and percentages have a valid base",
 
 test("source control totals and date coverage", () => {
   const stats = leadStats(leadRows(data));
-  assert.equal(stats.count, 1733);
-  close(stats.amount, 1544122539.17);
+  assert.equal(stats.count, 1782);
+  close(stats.amount, 1607887294.12);
   const money = monthStats(data);
-  close(money.payments, 144425847.51);
-  close(money.shipments, 155027811.17);
-  assert.equal(data.leads.at(-1).date, "2026-10-21");
-  assert.equal(data.snapshot, "2026-10-22");
+  close(money.payments, 145154039.51);
+  close(money.shipments, 161320651.17);
+  assert.equal(data.leads.at(-1).date, "2026-10-29");
+  assert.equal(data.snapshot, "2026-10-29");
 });
 test("monthly and category filters partition the whole without double counting", () => {
   for (const metric of ["count", "amount"]) {
@@ -142,8 +142,8 @@ test("future blank data remains null; recorded zero is preserved", () => {
   );
 });
 test("main funnel excludes additional stages and the production supplement", () => {
-  close(sum(data.pipeline.map((r) => r.amount)), 97287562);
-  assert.equal(sum(data.pipeline.map((r) => r.count)), 197);
+  close(sum(data.pipeline.map((r) => r.amount)), 95574249);
+  assert.equal(sum(data.pipeline.map((r) => r.count)), 179);
   assert.equal(data.productionSupplement, 48678000);
   assert.equal(data.pipeline.length, 6);
 });
@@ -161,16 +161,16 @@ test("September close reconciles independently read daily totals and preserves c
       september[key],
     );
   assert.equal(data.coverage.moneyCompleteThrough, "2026-09-30");
-  assert.equal(data.coverage.leadsThrough, "2026-10-21");
+  assert.equal(data.coverage.leadsThrough, "2026-10-29");
   assert.equal(data.forecastMonth, "Октябрь 2026");
   assert.deepEqual(
     data.forecast.map((r) => r.amount),
-    [4238797, 9699039, 43520582],
+    [1610040, 10843855, 53607620],
   );
-  assert.equal(data.pipeline.at(-1).count, 38);
+  assert.equal(data.pipeline.at(-1).count, 24);
   assert.deepEqual(monthStats(data, "2026-10"), {
-    payments: 6022005.5,
-    shipments: 12421719.5,
+    payments: 6750197.5,
+    shipments: 18714559.5,
   });
 });
 test("September lead additions and corrections retain missing amounts without duplicating dates", () => {
@@ -211,10 +211,10 @@ test("GLB contains original geometry and an animation", () => {
 
 test("October partial period and source dates are preserved", () => {
   const stats = leadStats(leadRows(data, "2026-10"));
-  assert.equal(stats.count, 142);
-  close(stats.amount, 60466005.65);
-  assert.equal(data.coverage.paymentsThrough, "2026-10-21");
-  assert.equal(data.coverage.shipmentsThrough, "2026-10-21");
+  assert.equal(stats.count, 191);
+  close(stats.amount, 124230760.6);
+  assert.equal(data.coverage.paymentsThrough, "2026-10-26");
+  assert.equal(data.coverage.shipmentsThrough, "2026-10-29");
   close(
     data.daily.shipments.find((r) => r.date === "2026-10-09").amount,
     29000,
@@ -295,7 +295,7 @@ test("Friday to Thursday reporting week includes October 9 and compares October 
   assert.equal(reportingWeekStart("2026-10-15"), "2026-10-09");
   assert.equal(reportingWeekStart("2026-10-16"), "2026-10-16");
   assert.equal(reportingWeekStart("2027-01-01"), "2027-01-01");
-  assert.equal(weeks(data)[0], "2026-10-16");
+  assert.equal(weeks(data)[0], "2026-10-23");
   for (const [metric, current, previous] of [
     ["payments", 2901649, 1065767.5],
     ["shipments", 1892350, 9347750],

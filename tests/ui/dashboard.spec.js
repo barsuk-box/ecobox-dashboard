@@ -8,8 +8,8 @@ test("weekly view compares periods and shows honest missing-data states", async 
     .getByRole("navigation", { name: "Разделы дашборда" })
     .getByRole("button", { name: "Недельная динамика" })
     .click();
-  await expect(page.getByLabel("Неделя сравнения")).toHaveValue("2026-10-16");
-  await expect(page.locator('[data-metric="output"]')).toContainText("2 805 000");
+  await expect(page.getByLabel("Неделя сравнения")).toHaveValue("2026-10-23");
+  await expect(page.locator('[data-metric="output"]')).toContainText("3 546 982");
   await page.getByLabel("Неделя сравнения").selectOption("2026-10-09");
   await expect(
     page.getByRole("heading", { name: "Регистры", level: 2 }),
