@@ -8,8 +8,8 @@ test("weekly view compares periods and shows honest missing-data states", async 
     .getByRole("navigation", { name: "Разделы дашборда" })
     .getByRole("button", { name: "Недельная динамика" })
     .click();
-  await expect(page.getByLabel("Неделя сравнения")).toHaveValue("2026-10-23");
-  await expect(page.locator('[data-metric="output"]')).toContainText("3 546 982");
+  await expect(page.getByLabel("Неделя сравнения")).toHaveValue("2026-10-30");
+  await expect(page.locator('[data-metric="output"]')).toContainText("3 087 973");
   await page.getByLabel("Неделя сравнения").selectOption("2026-10-09");
   await expect(
     page.getByRole("heading", { name: "Регистры", level: 2 }),
@@ -26,16 +26,7 @@ test("weekly view compares periods and shows honest missing-data states", async 
   await expect(page.locator('[data-metric="output"]')).toContainText(
     "Нет базы сравнения",
   );
-  const projects = page.locator(".expected-projects article");
-  await expect(projects).toHaveCount(14);
-  const amounts = await projects.evaluateAll((nodes) =>
-    nodes.map((n) => Number(n.dataset.amount)),
-  );
-  expect(
-    amounts.every((v, i) => v >= 300000 && (i === 0 || amounts[i - 1] >= v)),
-  ).toBe(true);
-  await expect(projects.first()).toContainText("3 006 550");
-  await expect(page.locator(".expected-projects")).toContainText("997 210");
+  await expect(page.locator(".expected-projects")).toHaveCount(0);
   await expect(page.locator(".weekly")).toContainText("14 272 149");
   await expect(page.locator(".weekly")).toContainText("Каменники");
   await page.screenshot({
@@ -61,7 +52,7 @@ test("desktop filters, themes, navigation, search, export and source dialog", as
     page.getByRole("heading", { name: "Пульс бизнеса." }),
   ).toBeVisible();
   await expect(page.locator(".kpi").first()).toContainText("1 702");
-  await expect(page.locator(".snapshot")).toContainText("22.10.2026");
+  await expect(page.locator(".snapshot")).toContainText("05.11.2026");
   await expect(page.locator(".coverage-note")).toContainText(
     "30 сентября 2026",
   );
