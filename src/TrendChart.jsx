@@ -3,11 +3,13 @@ import { integer } from "./metrics.js";
 import "./trends.css";
 
 // Null observations break lines: a missing report is never a zero.
-export default function TrendChart({ rows, series, unit = "₽", label }) {
+export default function TrendChart({ rows, series, unit = "₽", label, selectedId, onSelect }) {
   const [hidden, setHidden] = useState([]);
   const [selected, setSelected] = useState(null);
   const visible = series.filter((s) => !hidden.includes(s.key));
-  const index = Math.min(selected ?? rows.length - 1, rows.length - 1);
+  const controlled = selectedId === undefined ? -1 : rows.findIndex(r => r.id === selectedId);
+  const index = selectedId === undefined ? Math.min(selected ?? rows.length - 1, rows.length - 1) : controlled;
+  const choose = (i) => { setSelected(i); onSelect?.(rows[i].id); };
   const row = rows[index];
   const max = Math.max(
     1,
@@ -85,8 +87,13 @@ export default function TrendChart({ rows, series, unit = "₽", label }) {
         {rows.map((r, i) => (
           <g
             key={r.id}
-            onPointerEnter={() => setSelected(i)}
-            onClick={() => setSelected(i)}
+            onPointerEnter={() => { if (!onSelect) setSelected(i); }}
+            onClick={() => choose(i)}
+            role="button"
+            tabIndex={0}
+            aria-label={`Выбрать период ${r.label}`}
+            aria-pressed={index === i}
+            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); choose(i); } }}
           >
             <rect
               x={x(i) - 20}
@@ -106,7 +113,7 @@ export default function TrendChart({ rows, series, unit = "₽", label }) {
         <select
           value={row?.id ?? ""}
           onChange={(e) =>
-            setSelected(rows.findIndex((r) => r.id === e.target.value))
+            choose(rows.findIndex((r) => r.id === e.target.value))
           }
         >
           {rows.map((r) => (

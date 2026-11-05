@@ -1,3 +1,4 @@
+import "./lead-explorer.css";
 import React, { useState } from "react";
 import { reportingWeekStart, shift } from "./weekly.js";
 import { leadStats, money, integer } from "./metrics.js";
@@ -23,9 +24,18 @@ export default function LeadExplorer({ data }) {
       <label>Направление <select value={category} onChange={e=>setCategory(e.target.value)}><option value="all">Все направления</option>{data.categories.map(c=><option key={c}>{c}</option>)}</select></label>
       <label>Показатель <select value={metric} onChange={e=>setMetric(e.target.value)}><option value="count">Количество</option><option value="amount">Сумма</option></select></label>
     </div>
-    <TrendChart rows={chart} series={[{key:"value",label:metric === "count" ? "Новые заявки" : "Сумма заявок",color:"#528bff"}]} unit={metric === "count" ? "шт." : "₽"} label="Динамика заявок за 12 недель" />
+    <TrendChart selectedId={week} onSelect={setWeek} rows={chart} series={[{key:"value",label:metric === "count" ? "Новые заявки" : "Сумма заявок",color:"#528bff"}]} unit={metric === "count" ? "шт." : "₽"} label="Динамика заявок за 12 недель" />
     <label>Неделя для детализации <select value={week} onChange={e=>setWeek(e.target.value)}>{[...starts].reverse().map(s=><option key={s} value={s}>{date(s)} — {date(shift(s,6))}</option>)}</select></label>
     <div className="trends-readout"><div><span>Выбранная неделя</span><strong>{current ? format(current[metric]) : "Нет данных"}</strong><small>{current && `Записи по ${date(end)}`}</small></div><div><span>Предыдущая, за столько же дней</span><strong>{previous ? format(previous[metric]) : "Нет данных"}</strong></div><div><span>Изменение</span><strong>{current ? format(current[metric]-previous[metric]) : "—"}</strong><small>{previous?.[metric] > 0 ? `${Math.round((current[metric]/previous[metric]-1)*100)}%` : "Нет базы для процента"}</small></div></div>
-    <div style={{overflowX:"auto",maxWidth:"100%"}}><table style={{width:"100%"}}><thead><tr><th>День</th><th>Заявки</th><th>Сумма</th></tr></thead><tbody>{Array.from({length:7},(_,i)=>shift(week,i)).map(day=>{const found=rows.find(r=>r.date===day);const s=found ? leadStats([found]) : null;return <tr key={day}><td>{date(day)}</td><td>{s ? integer(s.count) : "Нет записи"}</td><td>{s ? money(s.amount) : "—"}</td></tr>;})}</tbody></table></div>
+    <h3>По дням: {date(week)} — {date(shift(week,6))}</h3>
+    <div className="lead-days" aria-live="polite">{Array.from({length:7},(_,i)=>shift(week,i)).map(day=>{
+      const found=rows.find(r=>r.date===day);
+      const s=found ? leadStats([found]) : null;
+      return <article className="lead-day" key={day}>
+        <h4>{date(day)}</h4>
+        <p>{s ? integer(s.count)+" заявок · "+money(s.amount) : "Нет записи за этот день"}</p>
+        {found && <table><thead><tr><th>Направление</th><th>Заявки</th><th>Сумма</th></tr></thead><tbody>{found.items.map(item=><tr key={item.name}><td>{item.name}</td><td>{item.count == null ? "—" : integer(item.count)}</td><td>{money(item.amount)}</td></tr>)}</tbody></table>}
+      </article>;
+    })}</div>
   </section>;
 }

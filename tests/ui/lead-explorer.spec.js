@@ -1,0 +1,16 @@
+import { test, expect } from "@playwright/test";
+test.use({ baseURL: process.env.PLAYWRIGHT_BASE_URL || "http://127.0.0.1:5173/ecobox-dashboard/" });
+test("week click synchronizes daily direction breakdown", async ({ page }) => {
+  await page.goto("");
+  await page.getByRole("navigation", { name: "Разделы дашборда" }).getByRole("button", { name: "Новые заявки" }).click();
+  await page.getByRole("button", { name: "Выбрать период 23.10.2026 — 29.10.2026", exact: true }).click();
+  await expect(page.getByLabel("Неделя для детализации")).toHaveValue("2026-10-23");
+  await expect(page.locator(".lead-day")).toHaveCount(7);
+  await expect(page.locator(".lead-day").first()).toContainText("23.10.2026");
+  await expect(page.locator(".lead-days")).toContainText("Реготоп");
+  await page.getByLabel("Неделя для детализации").selectOption("2026-10-30");
+  await expect(page.getByRole("button", { name: "Выбрать период 30.10.2026 — 05.11.2026", exact: true })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator(".lead-day").last()).toContainText("05.11.2026");
+  await page.setViewportSize({ width: 320, height: 800 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});

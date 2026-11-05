@@ -77,12 +77,12 @@ test("weekly null differs from recorded zero and percentages have a valid base",
 
 test("source control totals and date coverage", () => {
   const stats = leadStats(leadRows(data));
-  assert.equal(stats.count, 1794);
-  close(stats.amount, 1612584355.11);
+  assert.equal(stats.count, 1805);
+  close(stats.amount, 1613891705.11);
   const money = monthStats(data);
   close(money.payments, 153924099.51);
   close(money.shipments, 163470837.17);
-  assert.equal(data.leads.at(-1).date, "2026-10-30");
+  assert.equal(data.leads.at(-1).date, "2026-11-05");
   assert.equal(data.snapshot, "2026-11-05");
 });
 test("monthly and category filters partition the whole without double counting", () => {
@@ -161,7 +161,7 @@ test("September close reconciles independently read daily totals and preserves c
       september[key],
     );
   assert.equal(data.coverage.moneyCompleteThrough, "2026-09-30");
-  assert.equal(data.coverage.leadsThrough, "2026-10-30");
+  assert.equal(data.coverage.leadsThrough, "2026-11-05");
   assert.equal(data.forecastMonth, "Ноябрь 2026");
   assert.deepEqual(
     data.forecast.map((r) => r.amount),
