@@ -1,4 +1,17 @@
 import { outputMetric } from "../src/weekly.js";
+import { compareDirections } from "../src/leadComparison.js";
+test("direction comparison uses equal days and preserves zero and missing bases", () => {
+  const sample = { categories: ["A"], coverage: {leadsFrom:"2026-10-01", leadsThrough:"2026-11-02"}, leads: [
+    {date:"2026-10-23",items:[{name:"A",count:0,amount:null}]},
+    {date:"2026-10-27",items:[{name:"A",count:100,amount:100}]},
+    {date:"2026-10-30",items:[{name:"A",count:2,amount:500}]}
+  ]};
+  const result = compareDirections(sample,"2026-10-30");
+  assert.equal(result.previousEnd,"2026-10-26");
+  assert.equal(result.rows[0].metrics[0].delta,2);
+  assert.equal(result.rows[0].metrics[0].percent,null);
+  assert.equal(result.rows[0].metrics[1].delta,null);
+});
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";

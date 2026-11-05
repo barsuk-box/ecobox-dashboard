@@ -11,6 +11,10 @@ test("week click synchronizes daily direction breakdown", async ({ page }) => {
   await page.getByLabel("Неделя для детализации").selectOption("2026-10-30");
   await expect(page.getByRole("button", { name: "Выбрать период 30.10.2026 — 05.11.2026", exact: true })).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator(".lead-day").last()).toContainText("05.11.2026");
+  const comparison = page.getByRole("region", { name: "Сравнение заявок по направлениям" });
+  await expect(comparison.locator(".lead-direction-card")).toHaveCount(8);
+  await expect(comparison.locator(".lead-direction-card").first()).toContainText("Снижение -21");
+  await expect(comparison.locator(".lead-direction-card").first()).toContainText("3 222 433");
   await page.setViewportSize({ width: 320, height: 800 });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });

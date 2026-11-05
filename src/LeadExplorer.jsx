@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { reportingWeekStart, shift } from "./weekly.js";
 import { leadStats, money, integer } from "./metrics.js";
 import TrendChart from "./TrendChart.jsx";
+import LeadComparison from "./LeadComparison.jsx";
 const date = (s) => new Date(s + "T12:00:00").toLocaleDateString("ru-RU");
 export default function LeadExplorer({ data }) {
   const [category, setCategory] = useState("all");
@@ -27,6 +28,7 @@ export default function LeadExplorer({ data }) {
     <TrendChart selectedId={week} onSelect={setWeek} rows={chart} series={[{key:"value",label:metric === "count" ? "Новые заявки" : "Сумма заявок",color:"#528bff"}]} unit={metric === "count" ? "шт." : "₽"} label="Динамика заявок за 12 недель" />
     <label>Неделя для детализации <select value={week} onChange={e=>setWeek(e.target.value)}>{[...starts].reverse().map(s=><option key={s} value={s}>{date(s)} — {date(shift(s,6))}</option>)}</select></label>
     <div className="trends-readout"><div><span>Выбранная неделя</span><strong>{current ? format(current[metric]) : "Нет данных"}</strong><small>{current && `Записи по ${date(end)}`}</small></div><div><span>Предыдущая, за столько же дней</span><strong>{previous ? format(previous[metric]) : "Нет данных"}</strong></div><div><span>Изменение</span><strong>{current ? format(current[metric]-previous[metric]) : "—"}</strong><small>{previous?.[metric] > 0 ? `${Math.round((current[metric]/previous[metric]-1)*100)}%` : "Нет базы для процента"}</small></div></div>
+    <LeadComparison data={data} week={week} category={category} />
     <h3>По дням: {date(week)} — {date(shift(week,6))}</h3>
     <div className="lead-days" aria-live="polite">{Array.from({length:7},(_,i)=>shift(week,i)).map(day=>{
       const found=rows.find(r=>r.date===day);
