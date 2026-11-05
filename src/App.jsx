@@ -1,3 +1,4 @@
+import LeadExplorer from "./LeadExplorer.jsx";
 import React, { useState, useMemo, useEffect } from "react";
 import {
   Box,
@@ -893,6 +894,7 @@ export default function App() {
                   </>
                 )}
               </div>
+              {tab === "leads" && <LeadExplorer data={data} />}
               {(tab === "overview" || tab === "leads") && (
                 <div className="chart-layout">
                   <Panel

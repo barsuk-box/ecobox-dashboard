@@ -73,7 +73,11 @@ elif isinstance(p.get('A1'), (int,float)):
     snap=date(p['A1'])
 else:
     raise ValueError('Pipeline A1 has no date; supply a confirmed --snapshot YYYY-MM-DD')
-pipeline=[{'stage':p[f'A{r}'].strip(),'count':p[f'B{r}'],'amount':p[f'C{r}']} for r in range(3,9)]
+def numeric(v):
+    if isinstance(v, (int, float)): return v
+    if isinstance(v, str): return float(re.sub(r'\s+', '', v).replace(',', '.'))
+    raise ValueError(f'Expected numeric pipeline value: {v!r}')
+pipeline=[{'stage':p[f'A{r}'].strip(),'count':numeric(p[f'B{r}']),'amount':numeric(p[f'C{r}'])} for r in range(3,9)]
 extra=[{'stage':p[f'A{r}'].strip(),'count':p[f'B{r}'],'amount':p[f'C{r}']} for r in range(10,13)]
 forecast=[{'name':p[f'A{r}'],'amount':p[f'B{r}']} for r in range(14,17)]
 forecast_month = str(p['B13']).strip() + ' ' + snap[:4]

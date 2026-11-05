@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { money, integer } from "./metrics.js";
 import { weeks, shift, weeklyMetric, outputMetric } from "./weekly.js";
-import expected from "./data/expected-payments.json";
 import output from "./data/production-output.json";
 import production from "./data/production-sites.json";
 import WeeklyFlow from "./WeeklyFlow.jsx";
@@ -165,7 +164,7 @@ export default function Weekly({ data }) {
             </strong>
             <p>На {date(data.snapshot)} · по воронке продаж</p>
             <small>
-              На 29 октября указан остаток после выпуска — повторно выпуск не вычитается. По площадкам не распределён.
+              Указан остаток после выпуска — повторно выпуск не вычитается. По площадкам не распределён.
             </small>
           </article>
         </div>
@@ -190,43 +189,6 @@ export default function Weekly({ data }) {
                 План отгрузки до {date(production.snapshot)}:{" "}
                 {site.pastPlanDates} позиций
               </p>
-            </article>
-          ))}
-        </div>
-      </section>
-      <section className="panel expected-projects">
-        <h2>Крупные ожидаемые оплаты</h2>
-        <p className="weekly-muted">
-          Проекты от {money(expected.minimum)} · по убыванию ожидаемой суммы ·
-          на {date(expected.asOf)}. Список не зависит от выбранной недели.
-        </p>
-        <div className="expected-summary">
-          <strong>{expected.projects.length} проектов</strong>
-          <span>
-            Ожидается{" "}
-            {money(expected.projects.reduce((total, p) => total + p.amount, 0))}
-          </span>
-        </div>
-        <div className="weekly-payments">
-          {expected.projects.map((p, index) => (
-            <article key={p.id} data-amount={p.amount}>
-              <span className="weekly-muted">
-                {String(index + 1).padStart(2, "0")} / Проект {p.id}
-              </span>
-              <h3>{p.label}</h3>
-              <strong>{money(p.amount)}</strong>
-              {p.payments.map((payment, i) => (
-                <div className="expected-installment" key={i}>
-                  {p.payments.length > 1 && (
-                    <h4>
-                      Платёж {i + 1} · {money(payment.amount)}
-                    </h4>
-                  )}
-                  <p>Ожидаемая дата: {payment.dueLabel || "Не указана"}</p>
-                  <p>Препятствие: {payment.blocker || "Не указано"}</p>
-                  <p>Следующий шаг: {payment.nextStep || "Не указан"}</p>
-                </div>
-              ))}
             </article>
           ))}
         </div>
