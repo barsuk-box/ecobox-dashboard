@@ -8,8 +8,8 @@ test("weekly view compares periods and shows honest missing-data states", async 
     .getByRole("navigation", { name: "Разделы дашборда" })
     .getByRole("button", { name: "Недельная динамика" })
     .click();
-  await expect(page.getByLabel("Неделя сравнения")).toHaveValue("2026-10-30");
-  await expect(page.locator('[data-metric="output"]')).toContainText("3 087 973");
+  await expect(page.getByLabel("Неделя сравнения")).toHaveValue("2026-11-06");
+  await expect(page.locator('[data-metric="output"]')).toContainText("3 731 630");
   await page.getByLabel("Неделя сравнения").selectOption("2026-10-09");
   await expect(
     page.getByRole("heading", { name: "Регистры", level: 2 }),
@@ -52,7 +52,7 @@ test("desktop filters, themes, navigation, search, export and source dialog", as
     page.getByRole("heading", { name: "Пульс бизнеса." }),
   ).toBeVisible();
   await expect(page.locator(".kpi").first()).toContainText("1 702");
-  await expect(page.locator(".snapshot")).toContainText("05.11.2026");
+  await expect(page.locator(".snapshot")).toContainText("12.11.2026");
   await expect(page.locator(".coverage-note")).toContainText(
     "30 сентября 2026",
   );
