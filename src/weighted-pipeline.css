@@ -1,0 +1,6 @@
+.weighted-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,185px),1fr));gap:12px }
+.weighted-grid > div { display:grid;align-content:start;gap:7px;padding:14px;border:1px solid var(--border,currentColor);border-radius:12px }
+.weighted-grid strong {font-size:1.18rem;font-variant-numeric:tabular-nums}
+.weighted small,.weighted p {opacity:.8}
+.weighted h3 {margin:24px 0 12px}
+.weighted select {font:inherit;padding:.45em;border-radius:6px;max-width:100%}
