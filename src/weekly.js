@@ -1,3 +1,4 @@
+import weeklyDeals from "./data/weekly-deals.json" with { type: "json" };
 import { sum } from "./metrics.js";
 export function shift(date, days) {
   const d = new Date(date + "T12:00:00Z");
@@ -30,7 +31,11 @@ export function change(current, previous) {
 }
 // Each metric uses its own source cutoff; the comparison has the same number of calendar days.
 export function weeklyMetric(data, start, metric, group = "all") {
-  const coverage =
+  const dealWeek = metric === "leads" && group === "all";
+  const breakdownFor = (week, through) => dealWeek && through === shift(week, 6) && through <= data.snapshot ? weeklyDeals[week] : undefined;
+  const weekEnd = shift(start, 6);
+  const breakdown = breakdownFor(start, weekEnd);
+  const coverage = breakdown ? weekEnd :
     metric === "leads"
       ? data.coverage.leadsThrough
       : data.coverage[metric + "Through"];
@@ -39,6 +44,8 @@ export function weeklyMetric(data, start, metric, group = "all") {
     previousEnd = shift(end, -7);
   const value = (from, through) => {
     if (through < from) return null;
+    const manual = breakdownFor(from, through);
+    if (manual) return manual.incoming + manual.outgoing;
     const rows = (metric === "leads" ? data.leads : data.daily[metric]).filter(
       (r) => r.date >= from && r.date <= through,
     );
@@ -62,6 +69,7 @@ export function weeklyMetric(data, start, metric, group = "all") {
   const current = value(start, end),
     previous = value(previousStart, previousEnd);
   return {
+    ...(breakdown ? { breakdown } : {}),
     current,
     previous,
     end,

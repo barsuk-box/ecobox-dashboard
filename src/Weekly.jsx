@@ -33,7 +33,7 @@ export default function Weekly({ data }) {
   const metrics = [
     ["payments", "Поступления"],
     ["shipments", "Отгрузки без блинов"],
-    ["leads", "Новые лиды"],
+    ["leads", "Сделки"],
   ];
   return (
     <section className="weekly" aria-label="Недельный обзор">
@@ -89,6 +89,10 @@ export default function Weekly({ data }) {
                   : "Нет записей за выбранную неделю"}
                 {m.partial ? " · неполная неделя" : ""}
               </p>
+              {m.breakdown && <div className="deal-channels">
+                <div><span>Входящие обращения</span><b>{number(m.breakdown.incoming)}</b></div>
+                <div><span>Исходящие обращения</span><b>{number(m.breakdown.outgoing)}</b></div>
+              </div>}
               <div className="weekly-change">
                 <Delta value={m.delta} count={key === "leads"} />
               </div>
