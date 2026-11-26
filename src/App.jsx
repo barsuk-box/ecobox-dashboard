@@ -46,7 +46,7 @@ import {
 import Assembly from "./Assembly.jsx";
 import Weekly from "./Weekly.jsx";
 import History from "./History.jsx";
-import WeightedPipeline from "./WeightedPipeline.jsx";
+import WeightedPipeline, { DecemberPipeline } from "./WeightedPipeline.jsx";
 import PipelineTrend from "./PipelineTrend.jsx";
 import ProductionTrend from "./ProductionTrend.jsx";
 
@@ -1077,8 +1077,11 @@ export default function App() {
               {tab === "pipeline" && (
                 <>
                   <Panel
-                    title="Взвешенный пайплайн" sub="Прогноз поступлений · 25 ноября 2026 · 54 сделки" className="detail-panel">
+                    title="Взвешенный пайплайн ноября" sub="Сделки на 25 ноября 2026" className="detail-panel">
                     <WeightedPipeline />
+                  </Panel>
+                  <Panel title="Взвешенный пайплайн декабря" sub="Сделки на 25 ноября 2026" className="detail-panel">
+                    <DecemberPipeline />
                   </Panel>
                   <Panel
                     title="Воронка производства"

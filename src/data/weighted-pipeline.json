@@ -1,6 +1,49 @@
-{"fact":8966920.5,"plan":20432293,"december":14698701.59,"decemberPlan":30000000,"targetDeal":8790150,"categories":[
-{"name":"Подтверждённые","count":2,"nominal":833413,"weight":1,"previous":15915030.5},
-{"name":"С риском","count":7,"nominal":4121798,"weight":0.5,"previous":4908699},
-{"name":"Неподтверждённые","count":14,"nominal":18767040.95,"weight":0.2,"previous":41798351.55},
-{"name":"Перенос на декабрь","count":13,"nominal":9136892,"weight":0},
-{"name":"Архив","count":18,"nominal":37453295.6,"weight":0}]}
+{
+  "fact": 9600282,
+  "plan": 20432293,
+  "decemberPlan": 30000000,
+  "targetDeal": 8790150,
+  "categories": [
+    {
+      "name": "Подтверждённые",
+      "count": 2,
+      "nominal": 833413,
+      "weight": 1,
+      "previous": 15915030.5
+    },
+    {
+      "name": "С риском",
+      "count": 7,
+      "nominal": 4121798,
+      "weight": 0.5,
+      "previous": 4908699
+    },
+    {
+      "name": "Неподтверждённые",
+      "count": 14,
+      "nominal": 18767040.95,
+      "weight": 0.2,
+      "previous": 41798351.55
+    }
+  ],
+  "decemberCategories": [
+    {
+      "name": "Подтверждённые",
+      "weight": 1,
+      "count": 9,
+      "nominal": 5057978
+    },
+    {
+      "name": "С риском",
+      "weight": 0.5,
+      "count": 7,
+      "nominal": 14418410
+    },
+    {
+      "name": "Неподтверждённые",
+      "weight": 0.2,
+      "count": 17,
+      "nominal": 12157592.95
+    }
+  ]
+}
