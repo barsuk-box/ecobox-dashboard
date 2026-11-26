@@ -75,13 +75,15 @@ export function weeklyMetric(data, start, metric, group = "all") {
 // Period totals are comparable only when both reports cover matching calendar days.
 export function outputMetric(periods, start, snapshot) {
   const end = [shift(start, 6), snapshot].sort()[0];
-  const previousStart = shift(start, -7),
+  const report = periods.find(p => p.start >= start && p.start <= end && p.end === end && p.reportedAt <= snapshot);
+  const actualStart = report?.start ?? start;
+  const previousStart = shift(actualStart, -7),
     previousEnd = shift(end, -7);
   const value = (from, through) =>
     periods.find(
       (p) => p.start === from && p.end === through && p.reportedAt <= snapshot,
     )?.amount ?? null;
-  const current = value(start, end),
+  const current = report?.amount ?? null,
     previous = value(previousStart, previousEnd);
   return {
     current,
@@ -89,7 +91,8 @@ export function outputMetric(periods, start, snapshot) {
     end,
     previousStart,
     previousEnd,
-    partial: end < shift(start, 6),
+    start: actualStart,
+    partial: actualStart !== start || end < shift(start, 6),
     delta: change(current, previous),
   };
 }

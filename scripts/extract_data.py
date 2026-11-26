@@ -74,12 +74,13 @@ elif isinstance(p.get('A1'), (int,float)):
 else:
     raise ValueError('Pipeline A1 has no date; supply a confirmed --snapshot YYYY-MM-DD')
 def numeric(v):
+    if v is None: return None
     if isinstance(v, (int, float)): return v
     if isinstance(v, str): return float(re.sub(r'\s+', '', v).replace(',', '.'))
     raise ValueError(f'Expected numeric pipeline value: {v!r}')
-pipeline=[{'stage':p[f'A{r}'].strip(),'count':numeric(p[f'B{r}']),'amount':numeric(p[f'C{r}'])} for r in range(3,9)]
+pipeline=[{'stage':p[f'A{r}'].strip(),'count':numeric(p.get(f'B{r}')),'amount':numeric(p.get(f'C{r}'))} for r in range(3,9)]
 extra=[{'stage':p[f'A{r}'].strip(),'count':p[f'B{r}'],'amount':p[f'C{r}']} for r in range(10,13)]
-forecast=[{'name':p[f'A{r}'],'amount':p[f'B{r}']} for r in range(14,17)]
+forecast=[{'name':p[f'A{r}'],'amount':numeric(p[f'B{r}'])} for r in range(14,17)]
 forecast_month = str(p['B13']).strip() + ' ' + snap[:4]
 monthly=[]; ms='ПоступленияОтгрузки - месяц'
 for c in range(2,14):
@@ -108,7 +109,7 @@ for m in monthly:
         if abs(delta)>.01: corrections.append({'month':m['month'],'metric':key,'monthly':m[key],'daily':raw,'difference':delta})
 available_months=[m['month'] for m in monthly if m['payments'] is not None or m['shipments'] is not None]
 coverage={'leadsFrom':leads[0]['date'],'leadsThrough':leads[-1]['date'],'paymentsThrough':daily['payments'][-1]['date'],'shipmentsThrough':daily['shipments'][-1]['date'],'moneyCompleteThrough':args.complete_through,'firstMonth':min(available_months),'lastMonth':max(available_months)}
-data={'snapshot':snap,'coverage':coverage,'sourceHash':hashlib.sha256(source.read_bytes()).hexdigest(),'categories':cats,'leads':leads,'pipeline':pipeline,'pipelineExtra':extra,'productionSupplement':p['E8'],'forecastMonth':forecast_month,'forecast':forecast,'monthly':monthly,'daily':daily,'reconciliation':corrections}
+data={'snapshot':snap,'coverage':coverage,'sourceHash':hashlib.sha256(source.read_bytes()).hexdigest(),'categories':cats,'leads':leads,'pipeline':pipeline,'pipelineExtra':extra,'productionSupplement':p.get('E8'),'forecastMonth':forecast_month,'forecast':forecast,'monthly':monthly,'daily':daily,'reconciliation':corrections}
 args.output.parent.mkdir(parents=True,exist_ok=True)
 args.output.write_text(json.dumps(data,ensure_ascii=False,indent=2),encoding='utf-8')
 print(json.dumps({'snapshot':snap,'leadsDates':[leads[0]['date'],leads[-1]['date']],'leadAmount':total([total([i['amount'] for i in r['items']]) for r in leads]),'leadCount':total([total([i['count'] for i in r['items']]) for r in leads]),'payments':total([m['payments'] for m in monthly]),'shipments':total([m['shipments'] for m in monthly]),'reconciliation':corrections},ensure_ascii=False,indent=2))

@@ -14,14 +14,14 @@ const series = [
     color: "#528bff",
     noteKey: "paymentPeriod",
   },
-  { key: "output", label: "Выпуск за неделю", color: "#f1b96a" },
+  { key: "output", noteKey: "outputPeriod", label: "Выпуск за неделю", color: "#f1b96a" },
 ];
 const productionRows = history.snapshots.map((snapshot) => ({
   id: snapshot.date,
   label: new Date(snapshot.date + "T12:00:00").toLocaleDateString("ru-RU"),
   short: snapshot.date.slice(8) + "." + snapshot.date.slice(5, 7),
   amount:
-    adjustedStages(snapshot.stages, snapshot.date).find(
+    snapshot.productionBalance ?? adjustedStages(snapshot.stages, snapshot.date).find(
       (s) => s.stage === "Производство",
     )?.amount ?? null,
 }));
@@ -41,6 +41,7 @@ export default function ProductionTrend({ data }) {
       payments: payments.current,
       paymentPeriod: `Записи с ${start.slice(8)}.${start.slice(5, 7)} по ${payments.end.slice(8)}.${payments.end.slice(5, 7)}`,
       output: outputMetric(output.periods, start, cutoff).current,
+      outputPeriod: "Начало периода выпуска · " + outputMetric(output.periods, start, cutoff).start.split("-").reverse().join("."),
     };
   });
   return (

@@ -1,15 +1,15 @@
 {
-  "snapshot": "2026-11-19",
+  "snapshot": "2026-11-26",
   "coverage": {
     "leadsFrom": "2026-01-12",
     "leadsThrough": "2026-11-19",
-    "paymentsThrough": "2026-11-18",
-    "shipmentsThrough": "2026-11-19",
+    "paymentsThrough": "2026-11-25",
+    "shipmentsThrough": "2026-11-25",
     "moneyCompleteThrough": "2026-09-30",
     "firstMonth": "2026-01",
     "lastMonth": "2026-11"
   },
-  "sourceHash": "b39a15263182b4c470e9b825471a32a180b743129a8daf3ec11ef1a51d788b64",
+  "sourceHash": "09e5d8b806977f300b037ca00c0708e5501b03b117cc53c9e5a4c6196e034d64",
   "categories": [
     "Реготоп",
     "Контрактное производство",
@@ -9790,28 +9790,28 @@
   "pipeline": [
     {
       "stage": "Новые",
-      "count": 20.0,
-      "amount": 0.0
+      "count": 110.0,
+      "amount": 5430268.56
     },
     {
       "stage": "Расчет",
-      "count": 16.0,
-      "amount": 5963770.0
+      "count": null,
+      "amount": null
     },
     {
       "stage": "КП выставлено",
-      "count": 91.0,
-      "amount": 90562394.15
+      "count": 131.0,
+      "amount": 120928224.51
     },
     {
       "stage": "Переговоры",
-      "count": 12.0,
-      "amount": 14682830.5
+      "count": 16.0,
+      "amount": 15590408.5
     },
     {
       "stage": "Счет согласован/договор подписан",
-      "count": 2.0,
-      "amount": 1168928.0
+      "count": 5.0,
+      "amount": 5617598.0
     },
     {
       "stage": "Производство",
@@ -9836,20 +9836,20 @@
       "amount": "152 017 635,00"
     }
   ],
-  "productionSupplement": 48678000.0,
+  "productionSupplement": null,
   "forecastMonth": "Ноябрь 2026",
   "forecast": [
     {
       "name": "Подтвержденные",
-      "amount": 15915030.5
+      "amount": 4317323.01
     },
     {
       "name": "Подтвержденные с риском",
-      "amount": 4908699.0
+      "amount": 2173600.0
     },
     {
       "name": "Не подтвержденные",
-      "amount": 41798351.55
+      "amount": 65099138.05
     }
   ],
   "monthly": [
@@ -10278,8 +10278,8 @@
       "items": [
         {
           "name": "регистры",
-          "payments": 7917121.0,
-          "shipments": 6339771.0
+          "payments": 9138282.0,
+          "shipments": 8034931.0
         },
         {
           "name": "контракт",
@@ -10309,11 +10309,11 @@
         {
           "name": "блины",
           "payments": null,
-          "shipments": 2942640.0
+          "shipments": 10828720.0
         }
       ],
-      "payments": 8379121.0,
-      "shipments": 9282411.0
+      "payments": 9600282.0,
+      "shipments": 18863651.0
     },
     {
       "month": "2026-12",
@@ -12686,6 +12686,45 @@
           null,
           null
         ]
+      },
+      {
+        "date": "2026-11-19",
+        "amount": 14400.0,
+        "values": [
+          14400.0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      {
+        "date": "2026-11-20",
+        "amount": 573400.0,
+        "values": [
+          573400.0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      {
+        "date": "2026-11-25",
+        "amount": 633361.0,
+        "values": [
+          633361.0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
       }
     ],
     "shipments": [
@@ -14849,7 +14888,7 @@
       },
       {
         "date": "2026-11-03",
-        "amount": 124920.0,
+        "amount": 2037880.0,
         "values": [
           124920.0,
           null,
@@ -14857,14 +14896,14 @@
           null,
           null,
           null,
-          null
+          1912960.0
         ]
       },
       {
         "date": "2026-11-05",
-        "amount": 628276.0,
+        "amount": 878676.0,
         "values": [
-          628276.0,
+          878676.0,
           null,
           null,
           null,
@@ -14901,9 +14940,22 @@
       },
       {
         "date": "2026-11-10",
-        "amount": 1109980.0,
+        "amount": 4111180.0,
         "values": [
           1109980.0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          3001200.0
+        ]
+      },
+      {
+        "date": "2026-11-11",
+        "amount": 638300.0,
+        "values": [
+          638300.0,
           null,
           null,
           null,
@@ -14913,10 +14965,10 @@
         ]
       },
       {
-        "date": "2026-11-11",
-        "amount": 638300.0,
+        "date": "2026-11-12",
+        "amount": 215470.0,
         "values": [
-          638300.0,
+          215470.0,
           null,
           null,
           null,
@@ -14965,10 +15017,75 @@
         ]
       },
       {
+        "date": "2026-11-18",
+        "amount": 2971920.0,
+        "values": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          2971920.0
+        ]
+      },
+      {
         "date": "2026-11-19",
         "amount": 390540.0,
         "values": [
           390540.0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      {
+        "date": "2026-11-20",
+        "amount": 98400.0,
+        "values": [
+          98400.0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      {
+        "date": "2026-11-23",
+        "amount": 997210.0,
+        "values": [
+          997210.0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      {
+        "date": "2026-11-24",
+        "amount": 57580.0,
+        "values": [
+          57580.0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      {
+        "date": "2026-11-25",
+        "amount": 76100.0,
+        "values": [
+          76100.0,
           null,
           null,
           null,

@@ -93,10 +93,10 @@ test("source control totals and date coverage", () => {
   assert.equal(stats.count, 1934);
   close(stats.amount, 1699776089.84);
   const money = monthStats(data);
-  close(money.payments, 161295320.51);
-  close(money.shipments, 171267052.17);
+  close(money.payments, 162516481.51);
+  close(money.shipments, 180848292.17);
   assert.equal(data.leads.at(-1).date, "2026-11-19");
-  assert.equal(data.snapshot, "2026-11-19");
+  assert.equal(data.snapshot, "2026-11-26");
 });
 test("monthly and category filters partition the whole without double counting", () => {
   for (const metric of ["count", "amount"]) {
@@ -155,9 +155,9 @@ test("future blank data remains null; recorded zero is preserved", () => {
   );
 });
 test("main funnel excludes additional stages and the production supplement", () => {
-  close(sum(data.pipeline.map((r) => r.amount)), 121601508.65);
-  assert.equal(sum(data.pipeline.map((r) => r.count)), 162);
-  assert.equal(data.productionSupplement, 48678000);
+  close(sum(data.pipeline.map((r) => r.amount)), 156790085.57);
+  assert.equal(sum(data.pipeline.map((r) => r.count)), 283);
+  assert.equal(data.productionSupplement, null);
   assert.equal(data.pipeline.length, 6);
 });
 test("September close reconciles independently read daily totals and preserves coverage differences", () => {
@@ -178,7 +178,7 @@ test("September close reconciles independently read daily totals and preserves c
   assert.equal(data.forecastMonth, "Ноябрь 2026");
   assert.deepEqual(
     data.forecast.map((r) => r.amount),
-    [15915030.5, 4908699, 41798351.55],
+    [4317323.01, 2173600, 65099138.05],
   );
   assert.equal(data.pipeline.at(-1).count, 21);
   assert.deepEqual(monthStats(data, "2026-10"), {
@@ -226,8 +226,8 @@ test("October partial period and source dates are preserved", () => {
   const stats = leadStats(leadRows(data, "2026-10"));
   assert.equal(stats.count, 203);
   close(stats.amount, 128927821.59);
-  assert.equal(data.coverage.paymentsThrough, "2026-11-18");
-  assert.equal(data.coverage.shipmentsThrough, "2026-11-19");
+  assert.equal(data.coverage.paymentsThrough, "2026-11-25");
+  assert.equal(data.coverage.shipmentsThrough, "2026-11-25");
   close(
     data.daily.shipments.find((r) => r.date === "2026-10-09").amount,
     29000,
@@ -308,7 +308,7 @@ test("Friday to Thursday reporting week includes October 9 and compares October 
   assert.equal(reportingWeekStart("2026-10-15"), "2026-10-09");
   assert.equal(reportingWeekStart("2026-10-16"), "2026-10-16");
   assert.equal(reportingWeekStart("2027-01-01"), "2027-01-01");
-  assert.equal(weeks(data)[0], "2026-11-13");
+  assert.equal(weeks(data)[0], "2026-11-20");
   for (const [metric, current, previous] of [
     ["payments", 2901649, 1065767.5],
     ["shipments", 1892350, 9347750],

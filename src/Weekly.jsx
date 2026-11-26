@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { money, integer } from "./metrics.js";
 import { weeks, shift, weeklyMetric, outputMetric } from "./weekly.js";
+import history from "./data/pipeline-history.json";
 import output from "./data/production-output.json";
 import production from "./data/production-sites.json";
 import WeeklyFlow from "./WeeklyFlow.jsx";
@@ -28,6 +29,7 @@ function Delta({ value, count }) {
 export default function Weekly({ data }) {
   const options = weeks(data),
     [start, setStart] = useState(options[0]);
+  const balance = history.snapshots.find(s => s.date === data.snapshot)?.productionBalance;
   const metrics = [
     ["payments", "Поступления"],
     ["shipments", "Отгрузки без блинов"],
@@ -83,7 +85,7 @@ export default function Weekly({ data }) {
               </strong>
               <p>
                 {m.end >= start
-                  ? period(start, m.end)
+                  ? period(m.start ?? start, m.end)
                   : "Нет записей за выбранную неделю"}
                 {m.partial ? " · неполная неделя" : ""}
               </p>
@@ -149,7 +151,7 @@ export default function Weekly({ data }) {
                 outputMetric(output.periods, start, data.snapshot).current,
               )}
             </strong>
-            <p>{period(start, shift(start, 6))}</p>
+            <p>{period(outputMetric(output.periods, start, data.snapshot).start, shift(start, 6))}</p>
             <small>
               Выпуск за период. Не относится к незавершённому производству и не
               равен остатку склада.
@@ -159,10 +161,10 @@ export default function Weekly({ data }) {
             <h3>Остаток в производстве после выпуска</h3>
             <strong>
               {money(
-                data.pipeline.find((s) => s.stage === "Производство")?.amount,
+                balance ?? data.pipeline.find((s) => s.stage === "Производство")?.amount,
               )}
             </strong>
-            <p>На {date(data.snapshot)} · по воронке продаж</p>
+            <p>На {date(data.snapshot)} · {balance == null ? "воронка продаж" : "производственный отчёт"}</p>
             <small>
               Указан остаток после выпуска — повторно выпуск не вычитается. По площадкам не распределён.
             </small>

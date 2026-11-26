@@ -400,7 +400,7 @@ function Funnel({ full = false }) {
               {String(i + 1).padStart(2, "0")}
             </span>
             <span>{s.stage}</span>
-            <small>{integer(s.count)} сдел.</small>
+            <small>{s.count == null ? "Нет данных" : integer(s.count) + " сдел."}</small>
           </div>
           <div className="funnel-track">
             <div
@@ -1097,7 +1097,7 @@ export default function App() {
                   <div className="bottom-layout">
                     <Panel
                       title="Стадии продаж"
-                      sub="В производстве учтён выпуск на склад; количество сделок — по исходному отчёту"
+                      sub="По листу Pipeline. Итоги учитывают стадии с заполненными данными."
                     >
                       <Funnel full />
                     </Panel>

@@ -5,7 +5,7 @@ import output from "./data/production-output.json";
 const series = [
   { key: "payments", label: "Поступления", color: "#528bff" },
   { key: "shipments", label: "Отгрузки без блинов", color: "#ef869f" },
-  { key: "output", label: "Выпуск на склад", color: "#37c9b1" },
+  { key: "output", noteKey: "outputPeriod", label: "Выпуск на склад", color: "#37c9b1" },
 ];
 const date = (s) => s.slice(8) + "." + s.slice(5, 7);
 export default function WeeklyFlow({ data, start }) {
@@ -21,6 +21,7 @@ export default function WeeklyFlow({ data, start }) {
       payments: weeklyMetric(data, s, "payments").current,
       shipments: weeklyMetric(data, s, "shipments").current,
       output: outputMetric(output.periods, s, data.snapshot).current,
+      outputPeriod: "Начало периода выпуска · " + outputMetric(output.periods, s, data.snapshot).start.split("-").reverse().join("."),
     }));
   return (
     <section className="panel">
@@ -46,9 +47,7 @@ export default function WeeklyFlow({ data, start }) {
       />
       <p className="panel-note">
         Нажмите на легенду, чтобы скрыть или показать показатель. Значения
-        доступны при наведении и в выборе периода. Пропуски не равны нулю;
-        выпуск передан за 9–15 и 16–22 октября. Последняя неделя может быть
-        неполной.
+        доступны при наведении и в выборе периода. Для выпуска указан период производственного отчёта.
       </p>
     </section>
   );
